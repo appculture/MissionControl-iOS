@@ -10,14 +10,16 @@ import Foundation
 
 // MARK: CloudConfig
 
-/// Facade class for using remote settings via ACCloudConfig.
+/// Facade class for using cloud config for remote settings.
 public class CloudConfig {
     
     // MARK: - Types
     
     /// Errors types which can be throwed when refreshing local settings from remote.
     public enum Error: ErrorType {
+        /// This error is returned if there is no internet connection.
         case NoInternet
+        /// This error is returned if cloud config is not available on configured remote URL.
         case BadResponse
     }
     
