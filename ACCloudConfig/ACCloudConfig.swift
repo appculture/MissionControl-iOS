@@ -88,7 +88,9 @@ public typealias ThrowConfigWithInnerBlock = (config: () throws -> [String : Any
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
 public func CloudInt(key: String, _ defaultValue: Int) -> Int {
-    return defaultValue
+    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Int
+        else { return defaultValue }
+    return value
 }
 
 /**
@@ -100,7 +102,9 @@ public func CloudInt(key: String, _ defaultValue: Int) -> Int {
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
 public func CloudDouble(key: String, _ defaultValue: Double) -> Double {
-    return defaultValue
+    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Double
+        else { return defaultValue }
+    return value
 }
 
 /**
@@ -112,7 +116,9 @@ public func CloudDouble(key: String, _ defaultValue: Double) -> Double {
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
 public func CloudBool(key: String, _ defaultValue: Bool) -> Bool {
-    return defaultValue
+    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Bool
+        else { return defaultValue }
+    return value
 }
 
 /**
@@ -124,7 +130,9 @@ public func CloudBool(key: String, _ defaultValue: Bool) -> Bool {
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
 public func CloudString(key: String, _ defaultValue: String) -> String {
-    return defaultValue
+    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? String
+        else { return defaultValue }
+    return value
 }
 
 // MARK: ACCloudConfig
@@ -133,9 +141,9 @@ private class ACCloudConfig {
     
     static let sharedInstance = ACCloudConfig()
     
-    var lastRefreshDate: NSDate?
     var settings: [String : AnyObject]?
     var remoteURL: NSURL?
+    var lastRefreshDate: NSDate?
     
     func refresh(completion: ThrowConfigWithInnerBlock? = nil) {
         
