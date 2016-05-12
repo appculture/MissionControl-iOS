@@ -143,12 +143,19 @@ public func CloudString(key: String, _ defaultValue: String) -> String {
 
 // MARK: ACCloudConfig
 
-private class ACCloudConfig {
+class ACCloudConfig {
     
     static let sharedInstance = ACCloudConfig()
     
-    var settings: [String : AnyObject]?
     var remoteURL: NSURL?
+    var settings: [String : AnyObject]? {
+        didSet {
+            if oldValue == nil {
+                sendNotification(CloudConfig.Notification.ConfigLoaded)
+            }
+            sendNotification(CloudConfig.Notification.ConfigRefreshed)
+        }
+    }
     var lastRefreshDate: NSDate?
     
     func refresh(completion: ThrowWithInnerBlock? = nil) {
@@ -158,12 +165,19 @@ private class ACCloudConfig {
                 self.settings = cloudConfig
                 completion?({ })
             } catch {
+                let userInfo = ["Error" : "\(error)"]
+                self.sendNotification(CloudConfig.Notification.ConfigRefreshFailed, userInfo: userInfo)
                 completion?({ throw error })
             }
         }
     }
     
-    func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
+    private func sendNotification(name: String, userInfo: [NSObject : AnyObject]? = nil) {
+        let center = NSNotificationCenter.defaultCenter()
+        center.postNotificationName(name, object: self, userInfo: userInfo)
+    }
+    
+    private func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
             else { completion(json: { throw CloudConfig.Error.BadURL }); return }
     
@@ -182,7 +196,7 @@ private class ACCloudConfig {
         task.resume()
     }
     
-    func parseCloudConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
+    private func parseCloudConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
             else { completion(json: { throw CloudConfig.Error.NoData }); return }
         
