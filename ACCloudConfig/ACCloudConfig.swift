@@ -17,10 +17,14 @@ public class CloudConfig {
     
     /// Errors types which can be throwed when refreshing local settings from remote.
     public enum Error: ErrorType {
-        /// This error is returned if there is no internet connection.
-        case NoInternet
-        /// This error is returned if cloud config is not available on configured remote URL.
-        case BadResponse
+        /// Property `remoteConfigURL` is not set on launch.
+        case BadURL
+        /// Server returned response code other then 200 OK.
+        case BadResponseCode
+        /// Server returned no data.
+        case NoData
+        /// Server returned data in unsupported format.
+        case BadData
     }
     
     /// Constants for keys of sent NSNotification objects.
@@ -161,7 +165,7 @@ private class ACCloudConfig {
     
     func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(json: { throw CloudConfig.Error.BadResponse }); return }
+            else { completion(json: { throw CloudConfig.Error.BadURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
@@ -170,11 +174,9 @@ private class ACCloudConfig {
             let httpResponse = response as! NSHTTPURLResponse
             let statusCode = httpResponse.statusCode
             
-            if statusCode == 200 {
-                self.parseCloudConfigFromData(data, completion: completion)
-            } else {
-                completion(json: { throw CloudConfig.Error.BadResponse })
-            }
+            guard statusCode == 200
+                else { completion(json: { throw CloudConfig.Error.BadResponseCode }); return }
+            self.parseCloudConfigFromData(data, completion: completion)
         }
         
         task.resume()
@@ -182,15 +184,13 @@ private class ACCloudConfig {
     
     func parseCloudConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(json: { throw CloudConfig.Error.BadResponse }); return }
+            else { completion(json: { throw CloudConfig.Error.NoData }); return }
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
-            if let config = json as? [String : AnyObject] {
-                completion(json: { return config })
-            } else {
-                completion(json: { throw CloudConfig.Error.BadResponse })
-            }
+            guard let config = json as? [String : AnyObject]
+                else { completion(json: { throw CloudConfig.Error.BadData }); return }
+            completion(json: { return config })
         } catch {
             completion(json: { throw error })
         }
