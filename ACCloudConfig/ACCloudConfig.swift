@@ -64,9 +64,9 @@ public class CloudConfig {
         Manually initiates refreshing of local config from cloud config if needed.
         This is also automatically called on `UIApplicationDidBecomeActiveNotification`.
      
-        - parameter completion: Completion handler (SEE: `ThrowConfigWithInnerBlock`).
+        - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
-    public class func refresh(completion: ThrowConfigWithInnerBlock? = nil) {
+    public class func refresh(completion: ThrowWithInnerBlock? = nil) {
         ACCloudConfig.sharedInstance.refresh(completion)
     }
     
@@ -74,8 +74,10 @@ public class CloudConfig {
 
 // MARK: Custom Types
 
-/// Block which throws received cloud config inside inner block.
-public typealias ThrowConfigWithInnerBlock = (config: () throws -> [String : AnyObject]) -> Void
+/// Block which throws via inner block.
+public typealias ThrowWithInnerBlock = (() throws -> Void) -> Void
+/// Block which throws dictionary via inner block.
+public typealias ThrowJSONWithInnerBlock = (json: () throws -> [String : AnyObject]) -> Void
 
 // MARK: Accessors
 
@@ -145,8 +147,53 @@ private class ACCloudConfig {
     var remoteURL: NSURL?
     var lastRefreshDate: NSDate?
     
-    func refresh(completion: ThrowConfigWithInnerBlock? = nil) {
+    func refresh(completion: ThrowWithInnerBlock? = nil) {
+        getCloudConfig { [unowned self] (config) in
+            do {
+                let cloudConfig = try config()
+                self.settings = cloudConfig
+                completion?({ })
+            } catch {
+                completion?({ throw error })
+            }
+        }
+    }
+    
+    func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
+        guard let url = remoteURL
+            else { completion(json: { throw CloudConfig.Error.BadResponse }); return }
+    
+        let request = NSURLRequest(URL: url)
+        let session = NSURLSession.sharedSession()
         
+        let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
+            let httpResponse = response as! NSHTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            if statusCode == 200 {
+                self.parseCloudConfigFromData(data, completion: completion)
+            } else {
+                completion(json: { throw CloudConfig.Error.BadResponse })
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func parseCloudConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
+        guard let configData = data
+            else { completion(json: { throw CloudConfig.Error.BadResponse }); return }
+        
+        do {
+            let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
+            if let config = json as? [String : AnyObject] {
+                completion(json: { return config })
+            } else {
+                completion(json: { throw CloudConfig.Error.BadResponse })
+            }
+        } catch {
+            completion(json: { throw error })
+        }
     }
     
 }
