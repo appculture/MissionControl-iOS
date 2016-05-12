@@ -8,12 +8,12 @@
 
 import Foundation
 
-// MARK: CloudConfig
+// MARK: - CloudConfig
 
 /// Facade class for using cloud config for remote settings.
 public class CloudConfig {
     
-    // MARK: - Types
+    // MARK: Types
     
     /// Errors types which can be throwed when refreshing local settings from remote.
     public enum Error: ErrorType {
@@ -37,7 +37,7 @@ public class CloudConfig {
         static let ConfigRefreshFailed = "ACCloudConfig.RefreshFailed"
     }
     
-    // MARK: - Properties
+    // MARK: Properties
     
     /// Returns date of last successful refresh of local config from cloud.
     public class var lastRefreshDate: NSDate? {
@@ -49,7 +49,7 @@ public class CloudConfig {
         return ACCloudConfig.sharedInstance.settings ?? [String : AnyObject]()
     }
     
-    // MARK: - API
+    // MARK: API
     
     /**
         This should be called on your app start to initialize cloud config. 
@@ -76,14 +76,14 @@ public class CloudConfig {
     
 }
 
-// MARK: Custom Types
+// MARK: - Custom Types
 
 /// Block which throws via inner block.
 public typealias ThrowWithInnerBlock = (() throws -> Void) -> Void
 /// Block which throws dictionary via inner block.
 public typealias ThrowJSONWithInnerBlock = (json: () throws -> [String : AnyObject]) -> Void
 
-// MARK: Accessors
+// MARK: - Accessors
 
 /**
     Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
@@ -141,13 +141,18 @@ public func CloudString(key: String, _ defaultValue: String) -> String {
     return value
 }
 
-// MARK: ACCloudConfig
+// MARK: - ACCloudConfig
 
 class ACCloudConfig {
     
+    // MARK: Singleton
+    
     static let sharedInstance = ACCloudConfig()
     
+    // MARK: Properties
+    
     var remoteURL: NSURL?
+    
     var settings: [String : AnyObject]? {
         didSet {
             if oldValue == nil {
@@ -156,7 +161,10 @@ class ACCloudConfig {
             sendNotification(CloudConfig.Notification.ConfigRefreshed)
         }
     }
+    
     var lastRefreshDate: NSDate?
+    
+    // MARK: API
     
     func refresh(completion: ThrowWithInnerBlock? = nil) {
         getCloudConfig { [unowned self] (config) in
@@ -171,6 +179,8 @@ class ACCloudConfig {
             }
         }
     }
+    
+    // MARK: Helpers
     
     private func sendNotification(name: String, userInfo: [NSObject : AnyObject]? = nil) {
         let center = NSNotificationCenter.defaultCenter()
