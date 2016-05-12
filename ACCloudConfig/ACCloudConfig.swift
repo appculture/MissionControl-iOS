@@ -104,11 +104,11 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
     Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
     
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to 0.
  
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
-public func CloudInt(key: String, _ defaultValue: Int) -> Int {
+public func CloudInt(key: String, _ defaultValue: Int = 0) -> Int {
     guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Int
         else { return defaultValue }
     return value
@@ -118,11 +118,11 @@ public func CloudInt(key: String, _ defaultValue: Int) -> Int {
     Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
 
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to 0.0.
 
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
-public func CloudDouble(key: String, _ defaultValue: Double) -> Double {
+public func CloudDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Double
         else { return defaultValue }
     return value
@@ -132,11 +132,11 @@ public func CloudDouble(key: String, _ defaultValue: Double) -> Double {
     Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
 
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to false.
 
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
-public func CloudBool(key: String, _ defaultValue: Bool) -> Bool {
+public func CloudBool(key: String, _ defaultValue: Bool = false) -> Bool {
     guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Bool
         else { return defaultValue }
     return value
@@ -146,11 +146,11 @@ public func CloudBool(key: String, _ defaultValue: Bool) -> Bool {
     Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
 
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to "".
 
     - returns: Latest cached value for given key, or provided default value if cloud config is not available.
 */
-public func CloudString(key: String, _ defaultValue: String) -> String {
+public func CloudString(key: String, _ defaultValue: String = String()) -> String {
     guard let value = ACCloudConfig.sharedInstance.settings?[key] as? String
         else { return defaultValue }
     return value
