@@ -62,17 +62,17 @@ public class CloudConfig {
     /**
         This should be called on your app start to initialize cloud config. 
         All parameters are optional but this is the only way you can set them.
-        Best place to call this method is in your AppDelegate's `didFinishLaunchingWithOptions:`.
+        Good place to call this is in your AppDelegate's `didFinishLaunchingWithOptions:`.
      
-        - parameter localConfig: Default local config which can be used before refreshing from cloud config.
-        - parameter localConfig: Default local config which can be used before refreshing from cloud config.
+        - parameter localConfig: Default local config which can be used before refreshing from remote config.
+        - parameter remoteConfigURL: Remote config URL.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
         ACCloudConfig.sharedInstance.settings = localConfig
         ACCloudConfig.sharedInstance.remoteURL = url
-        ACCloudConfig.sharedInstance.refresh { (handler) in
+        ACCloudConfig.sharedInstance.refresh { (block) in
             do {
-                _ = try handler()
+                _ = try block()
             } catch {
                 print(error)
             }
@@ -81,7 +81,7 @@ public class CloudConfig {
     
     /**
         Manually initiates refreshing of local config from cloud config if needed.
-        This is also automatically called on `UIApplicationDidBecomeActiveNotification`.
+        Good place to call this is in your AppDelegate's `applicationDidBecomeActive:`.
      
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
@@ -170,12 +170,14 @@ class ACCloudConfig {
     
     var settings: [String : AnyObject]? {
         didSet {
-            let userInfo = userInfoWithSettings(old: oldValue, new: settings)
-            if oldValue == nil {
-                sendNotification(CloudConfig.Notification.ConfigLoaded, userInfo: userInfo)
+            if let newSetings = settings {
+                let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
+                if oldValue == nil {
+                    sendNotification(CloudConfig.Notification.ConfigLoaded, userInfo: userInfo)
+                }
+                sendNotification(CloudConfig.Notification.ConfigRefreshed, userInfo: userInfo)
+                lastRefreshDate = NSDate()
             }
-            sendNotification(CloudConfig.Notification.ConfigRefreshed, userInfo: userInfo)
-            lastRefreshDate = NSDate()
         }
     }
     
@@ -184,9 +186,9 @@ class ACCloudConfig {
     // MARK: API
     
     func refresh(completion: ThrowWithInnerBlock? = nil) {
-        getCloudConfig { [unowned self] (config) in
+        getCloudConfig { [unowned self] (block) in
             do {
-                let cloudConfig = try config()
+                let cloudConfig = try block()
                 self.settings = cloudConfig
                 completion?({ })
             } catch {
