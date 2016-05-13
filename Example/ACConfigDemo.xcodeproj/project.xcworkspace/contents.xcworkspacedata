@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ACCloudConfig.xcodeproj">
+      location = "self:/Users/tadija/Dropbox/Developer/appculture/ACConfig/Example/ACConfigDemo.xcodeproj">
    </FileRef>
 </Workspace>

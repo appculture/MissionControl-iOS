@@ -12,18 +12,57 @@
 		8B464DD51CE3742F00BAE834 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD31CE3742F00BAE834 /* Main.storyboard */; };
 		8B464DD71CE3742F00BAE834 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD61CE3742F00BAE834 /* Assets.xcassets */; };
 		8B464DDA1CE3742F00BAE834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */; };
-		8B464DE21CE3744400BAE834 /* ACConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B464DE11CE3744400BAE834 /* ACConfig.swift */; };
+		8B6313A51CE5FC2D0029DC98 /* ACConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6313A11CE5FC060029DC98 /* ACConfig.framework */; };
+		8B6313A61CE5FC2D0029DC98 /* ACConfig.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6313A11CE5FC060029DC98 /* ACConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8B6313A01CE5FC060029DC98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B63137B1CE5F9A10029DC98;
+			remoteInfo = "ACConfig iOS";
+		};
+		8B6313A21CE5FC060029DC98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B6313851CE5F9A10029DC98;
+			remoteInfo = "ACConfig iOS Tests";
+		};
+		8B6313A71CE5FC2D0029DC98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B63137A1CE5F9A10029DC98;
+			remoteInfo = "ACConfig iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8B6313A91CE5FC2D0029DC98 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8B6313A61CE5FC2D0029DC98 /* ACConfig.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		8B464DCC1CE3742F00BAE834 /* ACCloudConfig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACCloudConfig.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B464DD11CE3742F00BAE834 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8B464DD41CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B464DD61CE3742F00BAE834 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B464DD91CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B464DDB1CE3742F00BAE834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B464DE11CE3744400BAE834 /* ACConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACConfig.swift; sourceTree = "<group>"; };
+		8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ACConfig.xcodeproj; path = ../ACConfig.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B6313A51CE5FC2D0029DC98 /* ACConfig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,51 +80,70 @@
 		8B464DC31CE3742F00BAE834 = {
 			isa = PBXGroup;
 			children = (
-				8B464DCE1CE3742F00BAE834 /* ACCloudConfig */,
+				8B464DCE1CE3742F00BAE834 /* ACConfigDemo */,
 				8B464DCD1CE3742F00BAE834 /* Products */,
+				8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
 		8B464DCD1CE3742F00BAE834 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B464DCC1CE3742F00BAE834 /* ACCloudConfig.app */,
+				8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8B464DCE1CE3742F00BAE834 /* ACCloudConfig */ = {
+		8B464DCE1CE3742F00BAE834 /* ACConfigDemo */ = {
 			isa = PBXGroup;
 			children = (
 				8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */,
 				8B464DD11CE3742F00BAE834 /* ViewController.swift */,
-				8B464DE11CE3744400BAE834 /* ACConfig.swift */,
+				8B63139A1CE5FB290029DC98 /* Supporting Files */,
+			);
+			path = ACConfigDemo;
+			sourceTree = "<group>";
+		};
+		8B63139A1CE5FB290029DC98 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
 				8B464DD31CE3742F00BAE834 /* Main.storyboard */,
 				8B464DD61CE3742F00BAE834 /* Assets.xcassets */,
 				8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */,
 				8B464DDB1CE3742F00BAE834 /* Info.plist */,
 			);
-			path = ACCloudConfig;
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B63139C1CE5FC060029DC98 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B6313A11CE5FC060029DC98 /* ACConfig.framework */,
+				8B6313A31CE5FC060029DC98 /* ACConfig iOS Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8B464DCB1CE3742F00BAE834 /* ACCloudConfig */ = {
+		8B464DCB1CE3742F00BAE834 /* ACConfigDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACCloudConfig" */;
+			buildConfigurationList = 8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACConfigDemo" */;
 			buildPhases = (
 				8B464DC81CE3742F00BAE834 /* Sources */,
 				8B464DC91CE3742F00BAE834 /* Frameworks */,
 				8B464DCA1CE3742F00BAE834 /* Resources */,
+				8B6313A91CE5FC2D0029DC98 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8B6313A81CE5FC2D0029DC98 /* PBXTargetDependency */,
 			);
-			name = ACCloudConfig;
+			name = ACConfigDemo;
 			productName = ACCloudConfig;
-			productReference = 8B464DCC1CE3742F00BAE834 /* ACCloudConfig.app */;
+			productReference = 8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +161,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACCloudConfig" */;
+			buildConfigurationList = 8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACConfigDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -113,12 +172,35 @@
 			mainGroup = 8B464DC31CE3742F00BAE834;
 			productRefGroup = 8B464DCD1CE3742F00BAE834 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8B63139C1CE5FC060029DC98 /* Products */;
+					ProjectRef = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
-				8B464DCB1CE3742F00BAE834 /* ACCloudConfig */,
+				8B464DCB1CE3742F00BAE834 /* ACConfigDemo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8B6313A11CE5FC060029DC98 /* ACConfig.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ACConfig.framework;
+			remoteRef = 8B6313A01CE5FC060029DC98 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6313A31CE5FC060029DC98 /* ACConfig iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ACConfig iOS Tests.xctest";
+			remoteRef = 8B6313A21CE5FC060029DC98 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8B464DCA1CE3742F00BAE834 /* Resources */ = {
@@ -138,13 +220,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B464DE21CE3744400BAE834 /* ACConfig.swift in Sources */,
 				8B464DD21CE3742F00BAE834 /* ViewController.swift in Sources */,
 				8B464DD01CE3742F00BAE834 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8B6313A81CE5FC2D0029DC98 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ACConfig iOS";
+			targetProxy = 8B6313A71CE5FC2D0029DC98 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8B464DD31CE3742F00BAE834 /* Main.storyboard */ = {
@@ -203,7 +292,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -243,7 +332,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -255,10 +344,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ACCloudConfig/Info.plist;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_FILE = ACConfigDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACCloudConfig;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigDemo;
+				PRODUCT_NAME = ACConfigDemo;
 			};
 			name = Debug;
 		};
@@ -266,17 +356,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ACCloudConfig/Info.plist;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_FILE = ACConfigDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACCloudConfig;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigDemo;
+				PRODUCT_NAME = ACConfigDemo;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACCloudConfig" */ = {
+		8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACConfigDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B464DDC1CE3742F00BAE834 /* Debug */,
@@ -285,7 +376,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACCloudConfig" */ = {
+		8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACConfigDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B464DDF1CE3742F00BAE834 /* Debug */,

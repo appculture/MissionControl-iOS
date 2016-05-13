@@ -47,14 +47,14 @@ public class Config {
     
     // MARK: Properties
     
-    /// Date of last successful refresh of local config from remote config.
-    public class var lastRefreshDate: NSDate? {
-        return ACConfig.sharedInstance.lastRefreshDate
-    }
-    
     /// The latest version of settings dictionary, directly accessible, if needed.
     public class var settings: [String : AnyObject] {
         return ACConfig.sharedInstance.settings ?? [String : AnyObject]()
+    }
+    
+    /// Date of last successful refresh of local config from remote config.
+    public class var lastRefreshDate: NSDate? {
+        return ACConfig.sharedInstance.lastRefreshDate
     }
     
     // MARK: API
@@ -207,6 +207,12 @@ class ACConfig {
     
     // MARK: Helpers
     
+    func reset() {
+        settings = nil
+        remoteURL = nil
+        lastRefreshDate = nil
+    }
+    
     private func userInfoWithSettings(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
         if old == nil && new == nil {
             return nil
@@ -235,11 +241,8 @@ class ACConfig {
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
-            let httpResponse = response as! NSHTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            guard statusCode == 200
-                else { completion(block: { throw Config.Error.BadResponseCode }); return }
+            guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200
+            else { completion(block: { throw Config.Error.BadResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         
