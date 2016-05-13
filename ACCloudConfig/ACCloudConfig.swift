@@ -18,7 +18,7 @@ public class CloudConfig {
     /// Errors types which can be throwed when refreshing local settings from remote.
     public enum Error: ErrorType {
         /// Property `remoteConfigURL` is not set on launch.
-        case BadURL
+        case BadRemoteURL
         /// Server returned response code other then 200 OK.
         case BadResponseCode
         /// Server returned no data.
@@ -60,27 +60,21 @@ public class CloudConfig {
     // MARK: API
     
     /**
-        This should be called on your app start to initialize cloud config. 
+        This should be called on your app start to initialize and/or refresh cloud config.
         All parameters are optional but this is the only way you can set them.
         Good place to call this is in your AppDelegate's `didFinishLaunchingWithOptions:`.
      
-        - parameter localConfig: Default local config which can be used before refreshing from remote config.
-        - parameter remoteConfigURL: Remote config URL.
+        - parameter localConfig: Default local config which can be used until remote config is fetched.
+        - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
         ACCloudConfig.sharedInstance.settings = localConfig
         ACCloudConfig.sharedInstance.remoteURL = url
-        ACCloudConfig.sharedInstance.refresh { (block) in
-            do {
-                _ = try block()
-            } catch {
-                print(error)
-            }
-        }
     }
     
     /**
         Manually initiates refreshing of local config from cloud config if needed.
+        If `remoteConfigURL` is not set when this is called an error will be thrown inside inner block.
         Good place to call this is in your AppDelegate's `applicationDidBecomeActive:`.
      
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
@@ -166,8 +160,6 @@ class ACCloudConfig {
     
     // MARK: Properties
     
-    var remoteURL: NSURL?
-    
     var settings: [String : AnyObject]? {
         didSet {
             if let newSetings = settings {
@@ -177,6 +169,20 @@ class ACCloudConfig {
                 }
                 sendNotification(CloudConfig.Notification.ConfigRefreshed, userInfo: userInfo)
                 lastRefreshDate = NSDate()
+            }
+        }
+    }
+    
+    var remoteURL: NSURL? {
+        didSet {
+            if let _ = remoteURL {
+                refresh({ (block) in
+                    do {
+                        _ = try block()
+                    } catch {
+                        print(error)
+                    }
+                })
             }
         }
     }
@@ -223,7 +229,7 @@ class ACCloudConfig {
     
     private func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw CloudConfig.Error.BadURL }); return }
+            else { completion(block: { throw CloudConfig.Error.BadRemoteURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
