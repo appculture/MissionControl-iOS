@@ -12,14 +12,38 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        testWithoutDefaultValues()
+        testWithDefaultValues()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func testWithoutDefaultValues() {
+        let bool = ConfigBool("BoolKey")
+        print("bool: \(bool)")
+        
+        let int = ConfigInt("IntKey")
+        print("int: \(int)")
+        
+        let double = ConfigDouble("DoubleKey")
+        print("double: \(double)")
+        
+        let string = ConfigString("StringKey")
+        print("string: \(string)")
     }
-
+    
+    func testWithDefaultValues() {
+        let bool = ConfigBool("BoolKey", true)
+        print("bool: \(bool)")
+        
+        let int = ConfigInt("IntKey", 21)
+        print("int: \(int)")
+        
+        let double = ConfigDouble("DoubleKey", 0.8)
+        print("double: \(double)")
+        
+        let string = ConfigString("StringKey", "Hello")
+        print("string: \(string)")
+    }
 
 }
 
