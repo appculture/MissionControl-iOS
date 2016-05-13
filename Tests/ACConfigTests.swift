@@ -11,6 +11,8 @@ import XCTest
 
 class ACConfigTests: XCTestCase {
     
+    // MARK: - Set up / Tear Down / Helpers
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -18,8 +20,72 @@ class ACConfigTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        ACConfig.sharedInstance.reset()
+        
         super.tearDown()
     }
+    
+    let localConfig: [String : AnyObject] = [
+        "LocalBool" : true,
+        "LocalInt" : 8,
+        "LocalDouble" : 0.21,
+        "LocalString" : "Local"
+    ]
+    
+    // MARK: - Test Properties
+    
+    func testInitialSettings() {
+        let settings = Config.settings
+        XCTAssertEqual(settings.count, 0, "Initial settings should be empty but not nil.")
+    }
+    
+    func testInitialLastRefreshDate() {
+        let date = Config.lastRefreshDate
+        XCTAssertNil(date, "Initial last refresh date should be nil.")
+    }
+    
+    // MARK: - Test API
+    
+    func testLaunchWithoutParameters() {
+        Config.launch()
+        testInitialSettings()
+        testInitialLastRefreshDate()
+    }
+    
+    func testLaunchWithLocalConfig() {
+        Config.launch(localConfig: localConfig)
+
+        let settings = Config.settings
+        XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
+        
+        let date = Config.lastRefreshDate
+        XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
+    }
+    
+    func testRefreshWithoutRemoteURL() {
+        Config.refresh { (block) in
+            do {
+                let _ = try block()
+            } catch {
+                XCTAssertEqual("\(error)", "\(Config.Error.BadRemoteURL)", "Should return BadRemoteURL error whene remoteURL is not set.")
+            }
+        }
+    }
+    
+    func testRefreshWithBadRemoteURL() {
+        let url = NSURL(string: "bad-url")
+        Config.launch(remoteConfigURL: url)
+        
+        Config.refresh { (block) in
+            do {
+                let _ = try block()
+            } catch {
+                XCTAssertEqual("\(error)", "\(Config.Error.BadRemoteURL)", "Should return BadRemoteURL error whene remoteURL is not ok.")
+            }
+        }
+    }
+    
+    // MARK: - Test Accessors
     
     func testAccessorsWithoutLocalConfigAndDefaultValues() {
         let bool = ConfigBool("BoolKey")
@@ -48,13 +114,6 @@ class ACConfigTests: XCTestCase {
         let string = ConfigString("StringKey", "Hello")
         XCTAssertEqual(string, "Hello", "Should default to given value.")
     }
-    
-    let localConfig: [String : AnyObject] = [
-        "LocalBool" : true,
-        "LocalInt" : 8,
-        "LocalDouble" : 0.21,
-        "LocalString" : "Local"
-    ]
     
     func testAccessorsWithLocalConfigButWithoutDefaultValues() {
         Config.launch(localConfig: localConfig)

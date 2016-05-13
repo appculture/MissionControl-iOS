@@ -47,14 +47,14 @@ public class Config {
     
     // MARK: Properties
     
-    /// Date of last successful refresh of local config from remote config.
-    public class var lastRefreshDate: NSDate? {
-        return ACConfig.sharedInstance.lastRefreshDate
-    }
-    
     /// The latest version of settings dictionary, directly accessible, if needed.
     public class var settings: [String : AnyObject] {
         return ACConfig.sharedInstance.settings ?? [String : AnyObject]()
+    }
+    
+    /// Date of last successful refresh of local config from remote config.
+    public class var lastRefreshDate: NSDate? {
+        return ACConfig.sharedInstance.lastRefreshDate
     }
     
     // MARK: API
@@ -206,6 +206,12 @@ class ACConfig {
     }
     
     // MARK: Helpers
+    
+    func reset() {
+        settings = nil
+        remoteURL = nil
+        lastRefreshDate = nil
+    }
     
     private func userInfoWithSettings(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
         if old == nil && new == nil {
