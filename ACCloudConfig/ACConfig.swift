@@ -1,6 +1,6 @@
 //
-//  ACCloudConfig.swift
-//  ACCloudConfig
+//  ACConfig.swift
+//  ACConfig
 //
 //  Created by Marko Tadic on 5/11/16.
 //  Copyright © 2016 AE. All rights reserved.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-// MARK: - CloudConfig
+// MARK: - Config
 
-/// Facade class for using cloud config for remote settings.
-public class CloudConfig {
+/// Facade class for using ACConfig.
+public class Config {
     
     // MARK: Types
     
@@ -29,38 +29,38 @@ public class CloudConfig {
     
     /// Constants for keys of sent NSNotification objects.
     public struct Notification {
-        /// This notification is sent only the first time when local config is refreshed from cloud config.
-        static let ConfigLoaded = "ACCloudConfig.Loaded"
-        /// This notification is sent each time when local config is refreshed from cloud config.
-        static let ConfigRefreshed = "ACCloudConfig.Refreshed"
-        /// This notification is sent when refreshing local config from cloud config failed.
-        static let ConfigRefreshFailed = "ACCloudConfig.RefreshFailed"
+        /// This notification is sent only the first time when local config is refreshed from remote config.
+        static let ConfigLoaded = "ACConfig.Loaded"
+        /// This notification is sent each time when local config is refreshed from remote config.
+        static let ConfigRefreshed = "ACConfig.Refreshed"
+        /// This notification is sent when refreshing local config from remote config failed.
+        static let ConfigRefreshFailed = "ACConfig.RefreshFailed"
         
         /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
         struct UserInfo {
-            /// Previous value of `settings` property (before refreshing config from cloud)
-            static let OldSettingsKey = "ACCloudConfig.Old"
-            /// Current value of `settings` property (after refreshing config from cloud)
-            static let NewSettingsKey = "ACCloudConfig.New"
+            /// Previous value of `settings` property (before refreshing config from remote)
+            static let OldSettingsKey = "ACConfig.Old"
+            /// Current value of `settings` property (after refreshing config from remote)
+            static let NewSettingsKey = "ACConfig.New"
         }
     }
     
     // MARK: Properties
     
-    /// Returns date of last successful refresh of local config from cloud.
+    /// Date of last successful refresh of local config from remote config.
     public class var lastRefreshDate: NSDate? {
-        return ACCloudConfig.sharedInstance.lastRefreshDate
+        return ACConfig.sharedInstance.lastRefreshDate
     }
     
     /// The latest version of settings dictionary, directly accessible, if needed.
     public class var settings: [String : AnyObject] {
-        return ACCloudConfig.sharedInstance.settings ?? [String : AnyObject]()
+        return ACConfig.sharedInstance.settings ?? [String : AnyObject]()
     }
     
     // MARK: API
     
     /**
-        This should be called on your app start to initialize and/or refresh cloud config.
+        This should be called on your app start to initialize and/or refresh remote config.
         All parameters are optional but this is the only way you can set them.
         Good place to call this is in your AppDelegate's `didFinishLaunchingWithOptions:`.
      
@@ -68,19 +68,19 @@ public class CloudConfig {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
-        ACCloudConfig.sharedInstance.settings = localConfig
-        ACCloudConfig.sharedInstance.remoteURL = url
+        ACConfig.sharedInstance.settings = localConfig
+        ACConfig.sharedInstance.remoteURL = url
     }
     
     /**
-        Manually initiates refreshing of local config from cloud config if needed.
+        Manually initiates refreshing of local config from remote config if needed.
         If `remoteConfigURL` is not set when this is called an error will be thrown inside inner block.
         Good place to call this is in your AppDelegate's `applicationDidBecomeActive:`.
      
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
     public class func refresh(completion: ThrowWithInnerBlock? = nil) {
-        ACCloudConfig.sharedInstance.refresh(completion)
+        ACConfig.sharedInstance.refresh(completion)
     }
     
 }
@@ -95,68 +95,68 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 // MARK: - Accessors
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
     
     - parameter key: Key for the setting.
     - parameter defaultValue: Default value for the setting. Defaults to 0.
  
-    - returns: Latest cached value for given key, or provided default value if cloud config is not available.
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
-public func CloudInt(key: String, _ defaultValue: Int = 0) -> Int {
-    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Int
+public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
+    guard let value = ACConfig.sharedInstance.settings?[key] as? Int
         else { return defaultValue }
     return value
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
 
     - parameter key: Key for the setting.
     - parameter defaultValue: Default value for the setting. Defaults to 0.0.
 
-    - returns: Latest cached value for given key, or provided default value if cloud config is not available.
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
-public func CloudDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
-    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Double
+public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
+    guard let value = ACConfig.sharedInstance.settings?[key] as? Double
         else { return defaultValue }
     return value
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
 
     - parameter key: Key for the setting.
     - parameter defaultValue: Default value for the setting. Defaults to false.
 
-    - returns: Latest cached value for given key, or provided default value if cloud config is not available.
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
-public func CloudBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? Bool
+public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
+    guard let value = ACConfig.sharedInstance.settings?[key] as? Bool
         else { return defaultValue }
     return value
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of cloud config.
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
 
     - parameter key: Key for the setting.
     - parameter defaultValue: Default value for the setting. Defaults to "".
 
-    - returns: Latest cached value for given key, or provided default value if cloud config is not available.
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
-public func CloudString(key: String, _ defaultValue: String = String()) -> String {
-    guard let value = ACCloudConfig.sharedInstance.settings?[key] as? String
+public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
+    guard let value = ACConfig.sharedInstance.settings?[key] as? String
         else { return defaultValue }
     return value
 }
 
-// MARK: - ACCloudConfig
+// MARK: - ACConfig
 
-class ACCloudConfig {
+class ACConfig {
     
     // MARK: Singleton
     
-    static let sharedInstance = ACCloudConfig()
+    static let sharedInstance = ACConfig()
     
     // MARK: Properties
     
@@ -165,9 +165,9 @@ class ACCloudConfig {
             if let newSetings = settings {
                 let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
                 if oldValue == nil {
-                    sendNotification(CloudConfig.Notification.ConfigLoaded, userInfo: userInfo)
+                    sendNotification(Config.Notification.ConfigLoaded, userInfo: userInfo)
                 }
-                sendNotification(CloudConfig.Notification.ConfigRefreshed, userInfo: userInfo)
+                sendNotification(Config.Notification.ConfigRefreshed, userInfo: userInfo)
                 lastRefreshDate = NSDate()
             }
         }
@@ -192,14 +192,14 @@ class ACCloudConfig {
     // MARK: API
     
     func refresh(completion: ThrowWithInnerBlock? = nil) {
-        getCloudConfig { [unowned self] (block) in
+        getRemoteConfig { [unowned self] (block) in
             do {
-                let cloudConfig = try block()
-                self.settings = cloudConfig
+                let remoteConfig = try block()
+                self.settings = remoteConfig
                 completion?({ })
             } catch {
                 let userInfo = ["Error" : "\(error)"]
-                self.sendNotification(CloudConfig.Notification.ConfigRefreshFailed, userInfo: userInfo)
+                self.sendNotification(Config.Notification.ConfigRefreshFailed, userInfo: userInfo)
                 completion?({ throw error })
             }
         }
@@ -213,10 +213,10 @@ class ACCloudConfig {
         } else {
             var userInfo = [NSObject : AnyObject]()
             if let oldSettings = old {
-                userInfo[CloudConfig.Notification.UserInfo.OldSettingsKey] = oldSettings
+                userInfo[Config.Notification.UserInfo.OldSettingsKey] = oldSettings
             }
             if let newSettings = new {
-                userInfo[CloudConfig.Notification.UserInfo.NewSettingsKey] = newSettings
+                userInfo[Config.Notification.UserInfo.NewSettingsKey] = newSettings
             }
             return userInfo
         }
@@ -227,9 +227,9 @@ class ACCloudConfig {
         center.postNotificationName(name, object: self, userInfo: userInfo)
     }
     
-    private func getCloudConfig(completion: ThrowJSONWithInnerBlock) {
+    private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw CloudConfig.Error.BadRemoteURL }); return }
+            else { completion(block: { throw Config.Error.BadRemoteURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
@@ -239,21 +239,21 @@ class ACCloudConfig {
             let statusCode = httpResponse.statusCode
             
             guard statusCode == 200
-                else { completion(block: { throw CloudConfig.Error.BadResponseCode }); return }
-            self.parseCloudConfigFromData(data, completion: completion)
+                else { completion(block: { throw Config.Error.BadResponseCode }); return }
+            self.parseRemoteConfigFromData(data, completion: completion)
         }
         
         task.resume()
     }
     
-    private func parseCloudConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
+    private func parseRemoteConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw CloudConfig.Error.NoData }); return }
+            else { completion(block: { throw Config.Error.NoData }); return }
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw CloudConfig.Error.BadData }); return }
+                else { completion(block: { throw Config.Error.BadData }); return }
             completion(block: { return config })
         } catch {
             completion(block: { throw error })
