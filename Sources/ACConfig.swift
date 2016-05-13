@@ -241,11 +241,8 @@ class ACConfig {
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
-            let httpResponse = response as! NSHTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            guard statusCode == 200
-                else { completion(block: { throw Config.Error.BadResponseCode }); return }
+            guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200
+            else { completion(block: { throw Config.Error.BadResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         

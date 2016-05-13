@@ -63,26 +63,36 @@ class ACConfigTests: XCTestCase {
     }
     
     func testRefreshWithoutRemoteURL() {
+        let asyncExpectation = expectationWithDescription("refresh-no-remote-url")
+        
         Config.refresh { (block) in
             do {
                 let _ = try block()
             } catch {
                 XCTAssertEqual("\(error)", "\(Config.Error.BadRemoteURL)", "Should return BadRemoteURL error whene remoteURL is not set.")
+                asyncExpectation.fulfill()
             }
         }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     func testRefreshWithBadRemoteURL() {
-        let url = NSURL(string: "bad-url")
+        let asyncExpectation = expectationWithDescription("refresh-bad-url")
+        
+        let url = NSURL(string: "http://appculture.com/not-existing-config.json")
         Config.launch(remoteConfigURL: url)
         
         Config.refresh { (block) in
             do {
                 let _ = try block()
             } catch {
-                XCTAssertEqual("\(error)", "\(Config.Error.BadRemoteURL)", "Should return BadRemoteURL error whene remoteURL is not ok.")
+                XCTAssertEqual("\(error)", "\(Config.Error.BadResponseCode)", "Should return BadResponseCode error when response is not 200 OK.")
+                asyncExpectation.fulfill()
             }
         }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     // MARK: - Test Accessors
