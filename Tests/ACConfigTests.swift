@@ -21,16 +21,32 @@ class ACConfigTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAccessorsWithoutDefaultValues() {
+        let bool = ConfigBool("BoolKey")
+        XCTAssertEqual(bool, false)
+        
+        let int = ConfigInt("IntKey")
+        XCTAssertEqual(int, 0)
+        
+        let double = ConfigDouble("DoubleKey")
+        XCTAssertEqual(double, 0.0)
+        
+        let string = ConfigString("StringKey")
+        XCTAssertEqual(string, String())
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+    func testAccessorsWithDefaultValues() {
+        let bool = ConfigBool("BoolKey", true)
+        XCTAssertEqual(bool, true)
+        
+        let int = ConfigInt("IntKey", 21)
+        XCTAssertEqual(int, 21)
+        
+        let double = ConfigDouble("DoubleKey", 0.8)
+        XCTAssertEqual(double, 0.8)
+        
+        let string = ConfigString("StringKey", "Hello")
+        XCTAssertEqual(string, "Hello")
     }
     
 }
