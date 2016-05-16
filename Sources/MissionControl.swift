@@ -47,12 +47,12 @@ public class Config {
     
     /// The latest version of settings dictionary, directly accessible, if needed.
     public class var settings: [String : AnyObject] {
-        return MissionControl.sharedInstance.settings ?? [String : AnyObject]()
+        return ACMissionControl.sharedInstance.settings ?? [String : AnyObject]()
     }
     
     /// Date of last successful refresh of local config from remote config.
     public class var lastRefreshDate: NSDate? {
-        return MissionControl.sharedInstance.lastRefreshDate
+        return ACMissionControl.sharedInstance.lastRefreshDate
     }
     
     // MARK: API
@@ -66,8 +66,8 @@ public class Config {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
-        MissionControl.sharedInstance.settings = localConfig
-        MissionControl.sharedInstance.remoteURL = url
+        ACMissionControl.sharedInstance.settings = localConfig
+        ACMissionControl.sharedInstance.remoteURL = url
     }
     
     /**
@@ -78,7 +78,7 @@ public class Config {
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
     public class func refresh(completion: ThrowWithInnerBlock? = nil) {
-        MissionControl.sharedInstance.refresh(completion)
+        ACMissionControl.sharedInstance.refresh(completion)
     }
     
 }
@@ -102,7 +102,7 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = MissionControl.sharedInstance.settings?[key] as? Bool
+    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Bool
         else { return defaultValue }
     return value
 }
@@ -116,7 +116,7 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
-    guard let value = MissionControl.sharedInstance.settings?[key] as? Int
+    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Int
         else { return defaultValue }
     return value
 }
@@ -130,7 +130,7 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
-    guard let value = MissionControl.sharedInstance.settings?[key] as? Double
+    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Double
         else { return defaultValue }
     return value
 }
@@ -144,18 +144,18 @@ public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
-    guard let value = MissionControl.sharedInstance.settings?[key] as? String
+    guard let value = ACMissionControl.sharedInstance.settings?[key] as? String
         else { return defaultValue }
     return value
 }
 
-// MARK: - MissionControl
+// MARK: - ACMissionControl
 
-class MissionControl {
+class ACMissionControl {
     
     // MARK: Singleton
     
-    static let sharedInstance = MissionControl()
+    static let sharedInstance = ACMissionControl()
     
     // MARK: Properties
     
