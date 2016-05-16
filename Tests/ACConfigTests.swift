@@ -32,6 +32,13 @@ class ACConfigTests: XCTestCase {
         "LocalString" : "Local"
     ]
     
+    let remoteConfig: [String : AnyObject] = [
+        "RemoteBool" : false,
+        "RemoteInt" : 21,
+        "RemoteDouble" : 0.8,
+        "RemoteString" : "Remote"
+    ]
+    
     // MARK: - Test Properties
     
     func testInitialSettings() {
@@ -68,28 +75,33 @@ class ACConfigTests: XCTestCase {
     
     func testRefreshWithoutRemoteURL() {
         let message = "Should return NoRemoteURL error whene remoteURL is not set."
-        testAsyncRefreshWithURL(nil, errorCode: Config.Error.NoRemoteURL, message: message)
+        performAsyncRefreshWithURL(nil, errorCode: Config.Error.NoRemoteURL, message: message)
     }
     
     func testRefreshWithBadRemoteURL() {
         let url = NSURL(string: "http://appculture.com/not-existing-config.json")
         let message = "Should return BadResponseCode error when response is not 200 OK."
-        testAsyncRefreshWithURL(url, errorCode: Config.Error.BadResponseCode, message: message)
+        performAsyncRefreshWithURL(url, errorCode: Config.Error.BadResponseCode, message: message)
     }
     
     func testRefreshWithRemoteConfigEmptyData() {
         let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/empty-config")
         let message = "Should return InvalidData error when response data is empty."
-        testAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
+        performAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
     }
     
     func testRefreshWithRemoteConfigInvalidData() {
         let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/invalid-config")
         let message = "Should return InvalidData error when response data is not valid JSON."
-        testAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
+        performAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
     }
     
-    func testAsyncRefreshWithURL(url: NSURL?, errorCode: Config.Error, message: String) {
+    func testRefreshWithRemoteConfig() {
+        let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/config")
+        performAsyncRefreshWithURL(url, errorCode: Config.Error.NoRemoteURL, message: nil)
+    }
+    
+    func performAsyncRefreshWithURL(url: NSURL?, errorCode: Config.Error, message: String?) {
         let asyncExpectation = expectationWithDescription("refresh-\(url?.lastPathComponent)")
         
         if let remoteURL = url {
@@ -99,8 +111,10 @@ class ACConfigTests: XCTestCase {
         Config.refresh { (block) in
             do {
                 let _ = try block()
+                self.checkAccessorsWithRemoteConfigButWithoutDefaultValues()
+                asyncExpectation.fulfill()
             } catch {
-                XCTAssertEqual("\(error)", "\(errorCode)", message)
+                XCTAssertEqual("\(error)", "\(errorCode)", "\(message)")
                 asyncExpectation.fulfill()
             }
         }
@@ -109,6 +123,20 @@ class ACConfigTests: XCTestCase {
     }
     
     // MARK: - Test Accessors
+    
+    func checkAccessorsWithRemoteConfigButWithoutDefaultValues() {
+        let bool = ConfigBool("RemoteBool")
+        XCTAssertEqual(bool, false, "Should default to value in remote config.")
+        
+        let int = ConfigInt("RemoteInt")
+        XCTAssertEqual(int, 21, "Should default to value in remote config.")
+        
+        let double = ConfigDouble("RemoteDouble")
+        XCTAssertEqual(double, 0.8, "Should default to value in remote config.")
+        
+        let string = ConfigString("RemoteString")
+        XCTAssertEqual(string, "Remote", "Should default to value in remote config.")
+    }
     
     func testAccessorsWithoutLocalConfigAndDefaultValues() {
         let bool = ConfigBool("BoolKey")
