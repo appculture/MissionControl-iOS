@@ -57,9 +57,9 @@ class MissionControlTests: XCTestCase {
     
     // MARK: - Test Initial State
     
-    func testInitialSettings() {
-        let settings = MissionControl.settings
-        XCTAssertEqual(settings.count, 0, "Initial settings should be empty but not nil.")
+    func testInitialConfig() {
+        let config = MissionControl.config
+        XCTAssertEqual(config.count, 0, "Initial config should be empty but not nil.")
     }
     
     func testInitialLastRefreshDate() {
@@ -103,7 +103,7 @@ class MissionControlTests: XCTestCase {
     }
     
     func confirmInitialState() {
-        testInitialSettings()
+        testInitialConfig()
         testInitialLastRefreshDate()
         
         testInitialAccessorsWithDefaultValues()
@@ -118,8 +118,8 @@ class MissionControlTests: XCTestCase {
     }
     
     func confirmLocalConfigState() {
-        let settings = MissionControl.settings
-        XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
+        let config = MissionControl.config
+        XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
         
         let date = MissionControl.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
@@ -208,8 +208,8 @@ class MissionControlTests: XCTestCase {
     }
     
     func confirmRemoteConfigState() {
-        let settings = MissionControl.settings
-        XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
+        let config = MissionControl.config
+        XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
         
         let date = MissionControl.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")

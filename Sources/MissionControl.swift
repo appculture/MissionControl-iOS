@@ -15,7 +15,7 @@ public class MissionControl {
     
     // MARK: Types
     
-    /// Errors types which can be throwed when refreshing local settings from remote.
+    /// Errors types which can be throwed when refreshing local config from remote.
     public enum Error: ErrorType {
         /// Property `remoteConfigURL` is not set on launch.
         case NoRemoteURL
@@ -36,18 +36,18 @@ public class MissionControl {
         
         /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
         struct UserInfo {
-            /// Previous value of `settings` property (before refreshing config from remote)
-            static let OldSettingsKey = "MissionControl.OldConfig"
-            /// Current value of `settings` property (after refreshing config from remote)
-            static let NewSettingsKey = "MissionControl.NewConfig"
+            /// Previous value of `config` property (before refreshing config from remote)
+            static let OldConfigKey = "MissionControl.OldConfig"
+            /// Current value of `config` property (after refreshing config from remote)
+            static let NewConfigKey = "MissionControl.NewConfig"
         }
     }
     
     // MARK: Properties
     
-    /// The latest version of settings dictionary, directly accessible, if needed.
-    public class var settings: [String : AnyObject] {
-        return ACMissionControl.sharedInstance.settings ?? [String : AnyObject]()
+    /// The latest version of config dictionary, directly accessible, if needed.
+    public class var config: [String : AnyObject] {
+        return ACMissionControl.sharedInstance.config ?? [String : AnyObject]()
     }
     
     /// Date of last successful refresh of local config from remote config.
@@ -66,7 +66,7 @@ public class MissionControl {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
-        ACMissionControl.sharedInstance.settings = localConfig
+        ACMissionControl.sharedInstance.config = localConfig
         ACMissionControl.sharedInstance.remoteURL = url
     }
     
@@ -102,7 +102,7 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Bool
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Bool
         else { return defaultValue }
     return value
 }
@@ -116,7 +116,7 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
-    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Int
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Int
         else { return defaultValue }
     return value
 }
@@ -130,7 +130,7 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
-    guard let value = ACMissionControl.sharedInstance.settings?[key] as? Double
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Double
         else { return defaultValue }
     return value
 }
@@ -144,7 +144,7 @@ public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
-    guard let value = ACMissionControl.sharedInstance.settings?[key] as? String
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? String
         else { return defaultValue }
     return value
 }
@@ -159,12 +159,12 @@ class ACMissionControl {
     
     // MARK: Properties
     
-    var settings: [String : AnyObject]? {
+    var config: [String : AnyObject]? {
         didSet {
-            if let newSetings = settings {
+            if let newConfig = config {
                 lastRefreshDate = NSDate()
                 
-                let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
+                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
                 if oldValue == nil {
                     sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
                 }
@@ -195,7 +195,7 @@ class ACMissionControl {
         getRemoteConfig { [unowned self] (block) in
             do {
                 let remoteConfig = try block()
-                self.settings = remoteConfig
+                self.config = remoteConfig
                 completion?({ })
             } catch {
                 let userInfo = ["Error" : "\(error)"]
@@ -208,21 +208,21 @@ class ACMissionControl {
     // MARK: Helpers
     
     func reset() {
-        settings = nil
+        config = nil
         remoteURL = nil
         lastRefreshDate = nil
     }
     
-    private func userInfoWithSettings(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
+    private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
         if old == nil && new == nil {
             return nil
         } else {
             var userInfo = [NSObject : AnyObject]()
-            if let oldSettings = old {
-                userInfo[MissionControl.Notification.UserInfo.OldSettingsKey] = oldSettings
+            if let oldConfig = old {
+                userInfo[MissionControl.Notification.UserInfo.OldConfigKey] = oldConfig
             }
-            if let newSettings = new {
-                userInfo[MissionControl.Notification.UserInfo.NewSettingsKey] = newSettings
+            if let newConfig = new {
+                userInfo[MissionControl.Notification.UserInfo.NewConfigKey] = newConfig
             }
             return userInfo
         }
