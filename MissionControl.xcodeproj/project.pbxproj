@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B63137F1CE5F9A10029DC98 /* ACConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* ACConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8B6313861CE5F9A10029DC98 /* ACConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B63137B1CE5F9A10029DC98 /* ACConfig.framework */; };
-		8B63138B1CE5F9A10029DC98 /* ACConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* ACConfigTests.swift */; };
-		8B6313961CE5FA2B0029DC98 /* ACConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* ACConfig.swift */; };
+		8B63137F1CE5F9A10029DC98 /* MissionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* MissionControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B6313861CE5F9A10029DC98 /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B63137B1CE5F9A10029DC98 /* MissionControl.framework */; };
+		8B63138B1CE5F9A10029DC98 /* MissionControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */; };
+		8B6313961CE5FA2B0029DC98 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* MissionControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,13 +24,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8B63137B1CE5F9A10029DC98 /* ACConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ACConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B63137E1CE5F9A10029DC98 /* ACConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACConfig.h; sourceTree = "<group>"; };
+		8B63137B1CE5F9A10029DC98 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B63137E1CE5F9A10029DC98 /* MissionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MissionControl.h; sourceTree = "<group>"; };
 		8B6313801CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B6313851CE5F9A10029DC98 /* ACConfig iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ACConfig iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B63138A1CE5F9A10029DC98 /* ACConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACConfigTests.swift; sourceTree = "<group>"; };
+		8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MissionControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlTests.swift; sourceTree = "<group>"; };
 		8B63138C1CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B6313951CE5FA2B0029DC98 /* ACConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACConfig.swift; sourceTree = "<group>"; };
+		8B6313951CE5FA2B0029DC98 /* MissionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B6313861CE5F9A10029DC98 /* ACConfig.framework in Frameworks */,
+				8B6313861CE5F9A10029DC98 /* MissionControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,8 +64,8 @@
 		8B63137C1CE5F9A10029DC98 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B63137B1CE5F9A10029DC98 /* ACConfig.framework */,
-				8B6313851CE5F9A10029DC98 /* ACConfig iOS Tests.xctest */,
+				8B63137B1CE5F9A10029DC98 /* MissionControl.framework */,
+				8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,7 +73,7 @@
 		8B63137D1CE5F9A10029DC98 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8B6313951CE5FA2B0029DC98 /* ACConfig.swift */,
+				8B6313951CE5FA2B0029DC98 /* MissionControl.swift */,
 				8B6313971CE5FA3C0029DC98 /* Supporting Files */,
 			);
 			path = Sources;
@@ -82,7 +82,7 @@
 		8B6313891CE5F9A10029DC98 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				8B63138A1CE5F9A10029DC98 /* ACConfigTests.swift */,
+				8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */,
 				8B6313981CE5FA440029DC98 /* Supporting Files */,
 			);
 			path = Tests;
@@ -91,7 +91,7 @@
 		8B6313971CE5FA3C0029DC98 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B63137E1CE5F9A10029DC98 /* ACConfig.h */,
+				8B63137E1CE5F9A10029DC98 /* MissionControl.h */,
 				8B6313801CE5F9A10029DC98 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -112,16 +112,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B63137F1CE5F9A10029DC98 /* ACConfig.h in Headers */,
+				8B63137F1CE5F9A10029DC98 /* MissionControl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8B63137A1CE5F9A10029DC98 /* ACConfig iOS */ = {
+		8B63137A1CE5F9A10029DC98 /* MissionControl iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B63138F1CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "ACConfig iOS" */;
+			buildConfigurationList = 8B63138F1CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "MissionControl iOS" */;
 			buildPhases = (
 				8B6313761CE5F9A10029DC98 /* Sources */,
 				8B6313771CE5F9A10029DC98 /* Frameworks */,
@@ -132,14 +132,14 @@
 			);
 			dependencies = (
 			);
-			name = "ACConfig iOS";
+			name = "MissionControl iOS";
 			productName = ACConfig;
-			productReference = 8B63137B1CE5F9A10029DC98 /* ACConfig.framework */;
+			productReference = 8B63137B1CE5F9A10029DC98 /* MissionControl.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8B6313841CE5F9A10029DC98 /* ACConfig iOS Tests */ = {
+		8B6313841CE5F9A10029DC98 /* MissionControl iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B6313921CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "ACConfig iOS Tests" */;
+			buildConfigurationList = 8B6313921CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "MissionControl iOS Tests" */;
 			buildPhases = (
 				8B6313811CE5F9A10029DC98 /* Sources */,
 				8B6313821CE5F9A10029DC98 /* Frameworks */,
@@ -150,9 +150,9 @@
 			dependencies = (
 				8B6313881CE5F9A10029DC98 /* PBXTargetDependency */,
 			);
-			name = "ACConfig iOS Tests";
+			name = "MissionControl iOS Tests";
 			productName = ACConfigTests;
-			productReference = 8B6313851CE5F9A10029DC98 /* ACConfig iOS Tests.xctest */;
+			productReference = 8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -173,7 +173,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "ACConfig" */;
+			buildConfigurationList = 8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "MissionControl" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -185,8 +185,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8B63137A1CE5F9A10029DC98 /* ACConfig iOS */,
-				8B6313841CE5F9A10029DC98 /* ACConfig iOS Tests */,
+				8B63137A1CE5F9A10029DC98 /* MissionControl iOS */,
+				8B6313841CE5F9A10029DC98 /* MissionControl iOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -213,7 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B6313961CE5FA2B0029DC98 /* ACConfig.swift in Sources */,
+				8B6313961CE5FA2B0029DC98 /* MissionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B63138B1CE5F9A10029DC98 /* ACConfigTests.swift in Sources */,
+				8B63138B1CE5F9A10029DC98 /* MissionControlTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,7 +230,7 @@
 /* Begin PBXTargetDependency section */
 		8B6313881CE5F9A10029DC98 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B63137A1CE5F9A10029DC98 /* ACConfig iOS */;
+			target = 8B63137A1CE5F9A10029DC98 /* MissionControl iOS */;
 			targetProxy = 8B6313871CE5F9A10029DC98 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -338,8 +338,8 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfig;
-				PRODUCT_NAME = ACConfig;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControl;
+				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -356,8 +356,8 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfig;
-				PRODUCT_NAME = ACConfig;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControl;
+				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -367,8 +367,8 @@
 			buildSettings = {
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
+				PRODUCT_NAME = MissionControlTests;
 			};
 			name = Debug;
 		};
@@ -377,15 +377,15 @@
 			buildSettings = {
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
+				PRODUCT_NAME = MissionControlTests;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "ACConfig" */ = {
+		8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "MissionControl" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B63138D1CE5F9A10029DC98 /* Debug */,
@@ -394,7 +394,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B63138F1CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "ACConfig iOS" */ = {
+		8B63138F1CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "MissionControl iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B6313901CE5F9A10029DC98 /* Debug */,
@@ -403,7 +403,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B6313921CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "ACConfig iOS Tests" */ = {
+		8B6313921CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "MissionControl iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B6313931CE5F9A10029DC98 /* Debug */,

@@ -1,15 +1,15 @@
 //
-//  ACConfigTests.swift
-//  ACConfigTests
+//  MissionControlTests.swift
+//  MissionControlTests
 //
 //  Created by Marko Tadic on 5/13/16.
 //  Copyright © 2016 appculture. All rights reserved.
 //
 
 import XCTest
-@testable import ACConfig
+@testable import MissionControl
 
-class ACConfigTests: XCTestCase {
+class MissionControlTests: XCTestCase {
     
     // MARK: - Lifecycle
     
@@ -20,7 +20,7 @@ class ACConfigTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        ACConfig.sharedInstance.reset()
+        MissionControl.sharedInstance.reset()
         
         super.tearDown()
     }
