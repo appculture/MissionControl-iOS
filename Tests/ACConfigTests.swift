@@ -48,6 +48,7 @@ class ACConfigTests: XCTestCase {
     
     func testLaunchWithoutParameters() {
         Config.launch()
+        
         testInitialSettings()
         testInitialLastRefreshDate()
     }
@@ -60,6 +61,9 @@ class ACConfigTests: XCTestCase {
         
         let date = Config.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
+        
+        testAccessorsWithLocalConfigButWithoutDefaultValues()
+        testAccessorsWithLocalConfigAndDefaultValues()
     }
     
     func testRefreshWithoutRemoteURL() {
@@ -69,7 +73,7 @@ class ACConfigTests: XCTestCase {
             do {
                 let _ = try block()
             } catch {
-                XCTAssertEqual("\(error)", "\(Config.Error.BadRemoteURL)", "Should return BadRemoteURL error whene remoteURL is not set.")
+                XCTAssertEqual("\(error)", "\(Config.Error.NoRemoteURL)", "Should return NoRemoteURL error whene remoteURL is not set.")
                 asyncExpectation.fulfill()
             }
         }
@@ -88,6 +92,24 @@ class ACConfigTests: XCTestCase {
                 let _ = try block()
             } catch {
                 XCTAssertEqual("\(error)", "\(Config.Error.BadResponseCode)", "Should return BadResponseCode error when response is not 200 OK.")
+                asyncExpectation.fulfill()
+            }
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func testRefreshWithEmptyDataRemoteConfig() {
+        let asyncExpectation = expectationWithDescription("refresh-empty-data")
+        
+        let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/empty-config")
+        Config.launch(remoteConfigURL: url)
+        
+        Config.refresh { (block) in
+            do {
+                let _ = try block()
+            } catch {
+                XCTAssertEqual("\(error)", "\(Config.Error.InvalidData)", "Should return InvalidData error when response data is not valid JSON.")
                 asyncExpectation.fulfill()
             }
         }

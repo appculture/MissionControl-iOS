@@ -18,13 +18,11 @@ public class Config {
     /// Errors types which can be throwed when refreshing local settings from remote.
     public enum Error: ErrorType {
         /// Property `remoteConfigURL` is not set on launch.
-        case BadRemoteURL
+        case NoRemoteURL
         /// Server returned response code other then 200 OK.
         case BadResponseCode
-        /// Server returned no data.
-        case NoData
-        /// Server returned data in unsupported format.
-        case BadData
+        /// Server returned data with invalid format.
+        case InvalidData
     }
     
     /// Constants for keys of sent NSNotification objects.
@@ -96,6 +94,20 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 
 /**
     Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
+
+    - parameter key: Key for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to false.
+
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+*/
+public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
+    guard let value = ACConfig.sharedInstance.settings?[key] as? Bool
+        else { return defaultValue }
+    return value
+}
+
+/**
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
     
     - parameter key: Key for the setting.
     - parameter defaultValue: Default value for the setting. Defaults to 0.
@@ -118,20 +130,6 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
 */
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     guard let value = ACConfig.sharedInstance.settings?[key] as? Double
-        else { return defaultValue }
-    return value
-}
-
-/**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
-
-    - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to false.
-
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
-*/
-public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = ACConfig.sharedInstance.settings?[key] as? Bool
         else { return defaultValue }
     return value
 }
@@ -235,7 +233,7 @@ class ACConfig {
     
     private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw Config.Error.BadRemoteURL }); return }
+            else { completion(block: { throw Config.Error.NoRemoteURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
@@ -251,12 +249,12 @@ class ACConfig {
     
     private func parseRemoteConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw Config.Error.NoData }); return }
+            else { completion(block: { throw Config.Error.InvalidData }); return }
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw Config.Error.BadData }); return }
+                else { completion(block: { throw Config.Error.InvalidData }); return }
             completion(block: { return config })
         } catch {
             completion(block: { throw error })
