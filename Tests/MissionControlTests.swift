@@ -28,10 +28,10 @@ class MissionControlTests: XCTestCase {
     // MARK: - Helper Properties
     
     struct URL {
-        static let BadResponseConfig = NSURL(string: "http://appculture.com/not-existing-config.json")!
-        static let EmptyDataConfig = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/empty-config")!
-        static let InvalidDataConfig = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/invalid-config")!
-        static let RemoteTestConfig = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/test-config")!
+        static let BadResponseConfig = NSURL(string: "http://appculture.com/mission-control/not-existing-config.json")!
+        static let EmptyDataConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/empty-config")!
+        static let InvalidDataConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/invalid-config")!
+        static let RemoteTestConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/test-config")!
     }
     
     struct ConfigKey {
