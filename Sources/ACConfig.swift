@@ -257,7 +257,7 @@ class ACConfig {
                 else { completion(block: { throw Config.Error.InvalidData }); return }
             completion(block: { return config })
         } catch {
-            completion(block: { throw error })
+            completion(block: { throw Config.Error.InvalidData })
         }
     }
     

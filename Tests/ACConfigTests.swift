@@ -67,49 +67,40 @@ class ACConfigTests: XCTestCase {
     }
     
     func testRefreshWithoutRemoteURL() {
-        let asyncExpectation = expectationWithDescription("refresh-no-remote-url")
-        
-        Config.refresh { (block) in
-            do {
-                let _ = try block()
-            } catch {
-                XCTAssertEqual("\(error)", "\(Config.Error.NoRemoteURL)", "Should return NoRemoteURL error whene remoteURL is not set.")
-                asyncExpectation.fulfill()
-            }
-        }
-        
-        waitForExpectationsWithTimeout(5, handler: nil)
+        let message = "Should return NoRemoteURL error whene remoteURL is not set."
+        testAsyncRefreshWithURL(nil, errorCode: Config.Error.NoRemoteURL, message: message)
     }
     
     func testRefreshWithBadRemoteURL() {
-        let asyncExpectation = expectationWithDescription("refresh-bad-url")
-        
         let url = NSURL(string: "http://appculture.com/not-existing-config.json")
-        Config.launch(remoteConfigURL: url)
-        
-        Config.refresh { (block) in
-            do {
-                let _ = try block()
-            } catch {
-                XCTAssertEqual("\(error)", "\(Config.Error.BadResponseCode)", "Should return BadResponseCode error when response is not 200 OK.")
-                asyncExpectation.fulfill()
-            }
-        }
-        
-        waitForExpectationsWithTimeout(5, handler: nil)
+        let message = "Should return BadResponseCode error when response is not 200 OK."
+        testAsyncRefreshWithURL(url, errorCode: Config.Error.BadResponseCode, message: message)
     }
     
-    func testRefreshWithEmptyDataRemoteConfig() {
-        let asyncExpectation = expectationWithDescription("refresh-empty-data")
-        
+    func testRefreshWithRemoteConfigEmptyData() {
         let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/empty-config")
-        Config.launch(remoteConfigURL: url)
+        let message = "Should return InvalidData error when response data is empty."
+        testAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
+    }
+    
+    func testRefreshWithRemoteConfigInvalidData() {
+        let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/invalid-config")
+        let message = "Should return InvalidData error when response data is not valid JSON."
+        testAsyncRefreshWithURL(url, errorCode: Config.Error.InvalidData, message: message)
+    }
+    
+    func testAsyncRefreshWithURL(url: NSURL?, errorCode: Config.Error, message: String) {
+        let asyncExpectation = expectationWithDescription("refresh-\(url?.lastPathComponent)")
+        
+        if let remoteURL = url {
+            Config.launch(remoteConfigURL: remoteURL)
+        }
         
         Config.refresh { (block) in
             do {
                 let _ = try block()
             } catch {
-                XCTAssertEqual("\(error)", "\(Config.Error.InvalidData)", "Should return InvalidData error when response data is not valid JSON.")
+                XCTAssertEqual("\(error)", "\(errorCode)", message)
                 asyncExpectation.fulfill()
             }
         }
