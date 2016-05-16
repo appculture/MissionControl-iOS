@@ -87,6 +87,7 @@ public class Config {
 
 /// Block which throws via inner block.
 public typealias ThrowWithInnerBlock = (() throws -> Void) -> Void
+
 /// Block which throws dictionary via inner block.
 public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObject]) -> Void
 

@@ -48,7 +48,7 @@ class ACConfigTests: XCTestCase {
         ConfigKey.TestString : "Remote"
     ]
     
-    // MARK: - Test Properties
+    // MARK: - Test Initial State
     
     func testInitialSettings() {
         let settings = Config.settings
@@ -59,8 +59,6 @@ class ACConfigTests: XCTestCase {
         let date = Config.lastRefreshDate
         XCTAssertNil(date, "Initial last refresh date should be nil.")
     }
-    
-    // MARK: - Test Accessors
     
     func testInitialAccessorsWithoutDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
@@ -90,17 +88,22 @@ class ACConfigTests: XCTestCase {
         XCTAssertEqual(string, "Hello", "Should default to given value.")
     }
     
-    // MARK: - Test API - Launch
+    // MARK: - Test API - Launch (Without Parameters)
     
     func testLaunchWithoutParameters() {
         Config.launch()
-        
+        checkInitialState()
+    }
+    
+    func checkInitialState() {
         testInitialSettings()
         testInitialLastRefreshDate()
         
         testInitialAccessorsWithDefaultValues()
         testInitialAccessorsWithoutDefaultValues()
     }
+    
+    // MARK: - Test API - Launch (With Local Config)
     
     func testLaunchWithLocalConfig() {
         Config.launch(localConfig: localTestConfig)
@@ -149,6 +152,22 @@ class ACConfigTests: XCTestCase {
         let string = ConfigString(ConfigKey.TestString)
         let expectedString = localTestConfig[ConfigKey.TestString] as! String
         XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
+    }
+    
+    // MARK: - Test API - Launch (With Remote Config)
+    
+    func testLaunchWithRemoteConfig() {
+        let url = NSURL(string: "http://private-83024-acconfig.apiary-mock.com/acconfig/config")!
+        Config.launch(remoteConfigURL: url)
+        
+        checkInitialState()
+        
+        let _ = expectationForNotification(Config.Notification.ConfigLoaded, object: nil) { (notification) -> Bool in
+            self.checkRemoteConfigAccessorsWithDefaultValues()
+            self.checkRemoteConfigAccessorsWithoutDefaultValues()
+            return true
+        }
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     // MARK: - Test API - Refresh Errors
