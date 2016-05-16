@@ -162,12 +162,13 @@ class ACConfig {
     var settings: [String : AnyObject]? {
         didSet {
             if let newSetings = settings {
+                lastRefreshDate = NSDate()
+                
                 let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
                 if oldValue == nil {
                     sendNotification(Config.Notification.ConfigLoaded, userInfo: userInfo)
                 }
                 sendNotification(Config.Notification.ConfigRefreshed, userInfo: userInfo)
-                lastRefreshDate = NSDate()
             }
         }
     }
