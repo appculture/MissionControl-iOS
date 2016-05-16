@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B464DCB1CE3742F00BAE834"
-               BuildableName = "ACConfigDemo.app"
+               BuildableName = "MissionControlDemo.app"
                BlueprintName = "MissionControlDemo"
                ReferencedContainer = "container:MissionControlDemo.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B464DCB1CE3742F00BAE834"
-            BuildableName = "ACConfigDemo.app"
+            BuildableName = "MissionControlDemo.app"
             BlueprintName = "MissionControlDemo"
             ReferencedContainer = "container:MissionControlDemo.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B464DCB1CE3742F00BAE834"
-            BuildableName = "ACConfigDemo.app"
+            BuildableName = "MissionControlDemo.app"
             BlueprintName = "MissionControlDemo"
             ReferencedContainer = "container:MissionControlDemo.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B464DCB1CE3742F00BAE834"
-            BuildableName = "ACConfigDemo.app"
+            BuildableName = "MissionControlDemo.app"
             BlueprintName = "MissionControlDemo"
             ReferencedContainer = "container:MissionControlDemo.xcodeproj">
          </BuildableReference>
