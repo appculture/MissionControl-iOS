@@ -1,6 +1,6 @@
 //
-//  ACConfig.swift
-//  ACConfig
+//  MissionControl.swift
+//  MissionControl
 //
 //  Created by Marko Tadic on 5/11/16.
 //  Copyright © 2016 AE. All rights reserved.
@@ -10,51 +10,49 @@ import Foundation
 
 // MARK: - Config
 
-/// Facade class for using ACConfig.
-public class Config {
+/// Facade class for using MissionControl.
+public class MissionControl {
     
     // MARK: Types
     
-    /// Errors types which can be throwed when refreshing local settings from remote.
+    /// Errors types which can be throwed when refreshing local config from remote.
     public enum Error: ErrorType {
         /// Property `remoteConfigURL` is not set on launch.
-        case BadRemoteURL
+        case NoRemoteURL
         /// Server returned response code other then 200 OK.
         case BadResponseCode
-        /// Server returned no data.
-        case NoData
-        /// Server returned data in unsupported format.
-        case BadData
+        /// Server returned data with invalid format.
+        case InvalidData
     }
     
     /// Constants for keys of sent NSNotification objects.
     public struct Notification {
         /// This notification is sent only the first time when local config is refreshed from remote config.
-        static let ConfigLoaded = "ACConfig.Loaded"
+        static let ConfigLoaded = "MissionControl.ConfigLoaded"
         /// This notification is sent each time when local config is refreshed from remote config.
-        static let ConfigRefreshed = "ACConfig.Refreshed"
+        static let ConfigRefreshed = "MissionControl.ConfigRefreshed"
         /// This notification is sent when refreshing local config from remote config failed.
-        static let ConfigRefreshFailed = "ACConfig.RefreshFailed"
+        static let ConfigRefreshFailed = "MissionControl.ConfigRefreshFailed"
         
         /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
         struct UserInfo {
-            /// Previous value of `settings` property (before refreshing config from remote)
-            static let OldSettingsKey = "ACConfig.Old"
-            /// Current value of `settings` property (after refreshing config from remote)
-            static let NewSettingsKey = "ACConfig.New"
+            /// Previous value of `config` property (before refreshing config from remote)
+            static let OldConfigKey = "MissionControl.OldConfig"
+            /// Current value of `config` property (after refreshing config from remote)
+            static let NewConfigKey = "MissionControl.NewConfig"
         }
     }
     
     // MARK: Properties
     
-    /// The latest version of settings dictionary, directly accessible, if needed.
-    public class var settings: [String : AnyObject] {
-        return ACConfig.sharedInstance.settings ?? [String : AnyObject]()
+    /// The latest version of config dictionary, directly accessible, if needed.
+    public class var config: [String : AnyObject] {
+        return ACMissionControl.sharedInstance.config ?? [String : AnyObject]()
     }
     
     /// Date of last successful refresh of local config from remote config.
     public class var lastRefreshDate: NSDate? {
-        return ACConfig.sharedInstance.lastRefreshDate
+        return ACMissionControl.sharedInstance.lastRefreshDate
     }
     
     // MARK: API
@@ -68,8 +66,8 @@ public class Config {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
-        ACConfig.sharedInstance.settings = localConfig
-        ACConfig.sharedInstance.remoteURL = url
+        ACMissionControl.sharedInstance.config = localConfig
+        ACMissionControl.sharedInstance.remoteURL = url
     }
     
     /**
@@ -80,7 +78,7 @@ public class Config {
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
     public class func refresh(completion: ThrowWithInnerBlock? = nil) {
-        ACConfig.sharedInstance.refresh(completion)
+        ACMissionControl.sharedInstance.refresh(completion)
     }
     
 }
@@ -89,10 +87,25 @@ public class Config {
 
 /// Block which throws via inner block.
 public typealias ThrowWithInnerBlock = (() throws -> Void) -> Void
+
 /// Block which throws dictionary via inner block.
 public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObject]) -> Void
 
 // MARK: - Accessors
+
+/**
+    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
+
+    - parameter key: Key for the setting.
+    - parameter defaultValue: Default value for the setting. Defaults to false.
+
+    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+*/
+public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Bool
+        else { return defaultValue }
+    return value
+}
 
 /**
     Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
@@ -103,7 +116,7 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
-    guard let value = ACConfig.sharedInstance.settings?[key] as? Int
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Int
         else { return defaultValue }
     return value
 }
@@ -117,21 +130,7 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
-    guard let value = ACConfig.sharedInstance.settings?[key] as? Double
-        else { return defaultValue }
-    return value
-}
-
-/**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
-
-    - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to false.
-
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
-*/
-public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = ACConfig.sharedInstance.settings?[key] as? Bool
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? Double
         else { return defaultValue }
     return value
 }
@@ -145,30 +144,31 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
-    guard let value = ACConfig.sharedInstance.settings?[key] as? String
+    guard let value = ACMissionControl.sharedInstance.config?[key] as? String
         else { return defaultValue }
     return value
 }
 
-// MARK: - ACConfig
+// MARK: - ACMissionControl
 
-class ACConfig {
+class ACMissionControl {
     
     // MARK: Singleton
     
-    static let sharedInstance = ACConfig()
+    static let sharedInstance = ACMissionControl()
     
     // MARK: Properties
     
-    var settings: [String : AnyObject]? {
+    var config: [String : AnyObject]? {
         didSet {
-            if let newSetings = settings {
-                let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
-                if oldValue == nil {
-                    sendNotification(Config.Notification.ConfigLoaded, userInfo: userInfo)
-                }
-                sendNotification(Config.Notification.ConfigRefreshed, userInfo: userInfo)
+            if let newConfig = config {
                 lastRefreshDate = NSDate()
+                
+                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
+                if oldValue == nil {
+                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
+                }
+                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
             }
         }
     }
@@ -195,11 +195,11 @@ class ACConfig {
         getRemoteConfig { [unowned self] (block) in
             do {
                 let remoteConfig = try block()
-                self.settings = remoteConfig
+                self.config = remoteConfig
                 completion?({ })
             } catch {
                 let userInfo = ["Error" : "\(error)"]
-                self.sendNotification(Config.Notification.ConfigRefreshFailed, userInfo: userInfo)
+                self.sendNotification(MissionControl.Notification.ConfigRefreshFailed, userInfo: userInfo)
                 completion?({ throw error })
             }
         }
@@ -208,21 +208,21 @@ class ACConfig {
     // MARK: Helpers
     
     func reset() {
-        settings = nil
+        config = nil
         remoteURL = nil
         lastRefreshDate = nil
     }
     
-    private func userInfoWithSettings(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
+    private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
         if old == nil && new == nil {
             return nil
         } else {
             var userInfo = [NSObject : AnyObject]()
-            if let oldSettings = old {
-                userInfo[Config.Notification.UserInfo.OldSettingsKey] = oldSettings
+            if let oldConfig = old {
+                userInfo[MissionControl.Notification.UserInfo.OldConfigKey] = oldConfig
             }
-            if let newSettings = new {
-                userInfo[Config.Notification.UserInfo.NewSettingsKey] = newSettings
+            if let newConfig = new {
+                userInfo[MissionControl.Notification.UserInfo.NewConfigKey] = newConfig
             }
             return userInfo
         }
@@ -235,14 +235,14 @@ class ACConfig {
     
     private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw Config.Error.BadRemoteURL }); return }
+            else { completion(block: { throw MissionControl.Error.NoRemoteURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
             guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200
-            else { completion(block: { throw Config.Error.BadResponseCode }); return }
+            else { completion(block: { throw MissionControl.Error.BadResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         
@@ -251,15 +251,15 @@ class ACConfig {
     
     private func parseRemoteConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw Config.Error.NoData }); return }
+            else { completion(block: { throw MissionControl.Error.InvalidData }); return }
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw Config.Error.BadData }); return }
+                else { completion(block: { throw MissionControl.Error.InvalidData }); return }
             completion(block: { return config })
         } catch {
-            completion(block: { throw error })
+            completion(block: { throw MissionControl.Error.InvalidData })
         }
     }
     

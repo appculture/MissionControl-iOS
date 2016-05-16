@@ -1,13 +1,13 @@
 //
 //  AppDelegate.swift
-//  ACCloudConfig
+//  MissionControlDemo
 //
 //  Created by Marko Tadic on 5/11/16.
 //  Copyright © 2016 AE. All rights reserved.
 //
 
 import UIKit
-import ACConfig
+import MissionControl
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        Config.launch()
+        MissionControl.launch()
         return true
     }
 

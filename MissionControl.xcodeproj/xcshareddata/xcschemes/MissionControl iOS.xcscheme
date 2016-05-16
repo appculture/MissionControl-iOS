@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
-               BuildableName = "ACConfig.framework"
-               BlueprintName = "ACConfig iOS"
-               ReferencedContainer = "container:ACConfig.xcodeproj">
+               BuildableName = "MissionControl.framework"
+               BlueprintName = "MissionControl iOS"
+               ReferencedContainer = "container:MissionControl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,16 +26,17 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B6313841CE5F9A10029DC98"
-               BuildableName = "ACConfig iOS Tests.xctest"
-               BlueprintName = "ACConfig iOS Tests"
-               ReferencedContainer = "container:ACConfig.xcodeproj">
+               BuildableName = "MissionControlTests.xctest"
+               BlueprintName = "MissionControl iOS Tests"
+               ReferencedContainer = "container:MissionControl.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
-            BuildableName = "ACConfig.framework"
-            BlueprintName = "ACConfig iOS"
-            ReferencedContainer = "container:ACConfig.xcodeproj">
+            BuildableName = "MissionControl.framework"
+            BlueprintName = "MissionControl iOS"
+            ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
-            BuildableName = "ACConfig.framework"
-            BlueprintName = "ACConfig iOS"
-            ReferencedContainer = "container:ACConfig.xcodeproj">
+            BuildableName = "MissionControl.framework"
+            BlueprintName = "MissionControl iOS"
+            ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -83,9 +84,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
-            BuildableName = "ACConfig.framework"
-            BlueprintName = "ACConfig iOS"
-            ReferencedContainer = "container:ACConfig.xcodeproj">
+            BuildableName = "MissionControl.framework"
+            BlueprintName = "MissionControl iOS"
+            ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

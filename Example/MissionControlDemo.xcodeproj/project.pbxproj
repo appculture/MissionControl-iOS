@@ -7,36 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B2A29D01CEA27FD00FAE67F /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */; };
+		8B2A29D11CEA27FD00FAE67F /* MissionControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B464DD01CE3742F00BAE834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */; };
 		8B464DD21CE3742F00BAE834 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B464DD11CE3742F00BAE834 /* ViewController.swift */; };
 		8B464DD51CE3742F00BAE834 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD31CE3742F00BAE834 /* Main.storyboard */; };
 		8B464DD71CE3742F00BAE834 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD61CE3742F00BAE834 /* Assets.xcassets */; };
 		8B464DDA1CE3742F00BAE834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */; };
-		8B6313A51CE5FC2D0029DC98 /* ACConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6313A11CE5FC060029DC98 /* ACConfig.framework */; };
-		8B6313A61CE5FC2D0029DC98 /* ACConfig.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6313A11CE5FC060029DC98 /* ACConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B6313A01CE5FC060029DC98 /* PBXContainerItemProxy */ = {
+		8B2A29CB1CEA27DF00FAE67F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B63137B1CE5F9A10029DC98;
-			remoteInfo = "ACConfig iOS";
+			remoteInfo = "MissionControl iOS";
 		};
-		8B6313A21CE5FC060029DC98 /* PBXContainerItemProxy */ = {
+		8B2A29CD1CEA27DF00FAE67F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B6313851CE5F9A10029DC98;
-			remoteInfo = "ACConfig iOS Tests";
+			remoteInfo = "MissionControl iOS Tests";
 		};
-		8B6313A71CE5FC2D0029DC98 /* PBXContainerItemProxy */ = {
+		8B2A29D21CEA27FD00FAE67F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8B63137A1CE5F9A10029DC98;
-			remoteInfo = "ACConfig iOS";
+			remoteInfo = "MissionControl iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -47,7 +47,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8B6313A61CE5FC2D0029DC98 /* ACConfig.framework in Embed Frameworks */,
+				8B2A29D11CEA27FD00FAE67F /* MissionControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,14 +55,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MissionControl.xcodeproj; path = ../MissionControl.xcodeproj; sourceTree = "<group>"; };
+		8B464DCC1CE3742F00BAE834 /* MissionControlDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MissionControlDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B464DD11CE3742F00BAE834 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8B464DD41CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B464DD61CE3742F00BAE834 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B464DD91CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B464DDB1CE3742F00BAE834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ACConfig.xcodeproj; path = ../ACConfig.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,38 +70,47 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B6313A51CE5FC2D0029DC98 /* ACConfig.framework in Frameworks */,
+				8B2A29D01CEA27FD00FAE67F /* MissionControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B2A29C71CEA27DF00FAE67F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */,
+				8B2A29CE1CEA27DF00FAE67F /* MissionControlTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8B464DC31CE3742F00BAE834 = {
 			isa = PBXGroup;
 			children = (
-				8B464DCE1CE3742F00BAE834 /* ACConfigDemo */,
+				8B464DCE1CE3742F00BAE834 /* MissionControlDemo */,
 				8B464DCD1CE3742F00BAE834 /* Products */,
-				8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */,
+				8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
 		8B464DCD1CE3742F00BAE834 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */,
+				8B464DCC1CE3742F00BAE834 /* MissionControlDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8B464DCE1CE3742F00BAE834 /* ACConfigDemo */ = {
+		8B464DCE1CE3742F00BAE834 /* MissionControlDemo */ = {
 			isa = PBXGroup;
 			children = (
 				8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */,
 				8B464DD11CE3742F00BAE834 /* ViewController.swift */,
 				8B63139A1CE5FB290029DC98 /* Supporting Files */,
 			);
-			path = ACConfigDemo;
+			path = MissionControlDemo;
 			sourceTree = "<group>";
 		};
 		8B63139A1CE5FB290029DC98 /* Supporting Files */ = {
@@ -115,21 +124,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8B63139C1CE5FC060029DC98 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B6313A11CE5FC060029DC98 /* ACConfig.framework */,
-				8B6313A31CE5FC060029DC98 /* ACConfig iOS Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8B464DCB1CE3742F00BAE834 /* ACConfigDemo */ = {
+		8B464DCB1CE3742F00BAE834 /* MissionControlDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACConfigDemo" */;
+			buildConfigurationList = 8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "MissionControlDemo" */;
 			buildPhases = (
 				8B464DC81CE3742F00BAE834 /* Sources */,
 				8B464DC91CE3742F00BAE834 /* Frameworks */,
@@ -139,11 +139,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				8B6313A81CE5FC2D0029DC98 /* PBXTargetDependency */,
+				8B2A29D31CEA27FD00FAE67F /* PBXTargetDependency */,
 			);
-			name = ACConfigDemo;
+			name = MissionControlDemo;
 			productName = ACCloudConfig;
-			productReference = 8B464DCC1CE3742F00BAE834 /* ACConfigDemo.app */;
+			productReference = 8B464DCC1CE3742F00BAE834 /* MissionControlDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -161,7 +161,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACConfigDemo" */;
+			buildConfigurationList = 8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "MissionControlDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -174,30 +174,30 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8B63139C1CE5FC060029DC98 /* Products */;
-					ProjectRef = 8B63139B1CE5FC060029DC98 /* ACConfig.xcodeproj */;
+					ProductGroup = 8B2A29C71CEA27DF00FAE67F /* Products */;
+					ProjectRef = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				8B464DCB1CE3742F00BAE834 /* ACConfigDemo */,
+				8B464DCB1CE3742F00BAE834 /* MissionControlDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8B6313A11CE5FC060029DC98 /* ACConfig.framework */ = {
+		8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = ACConfig.framework;
-			remoteRef = 8B6313A01CE5FC060029DC98 /* PBXContainerItemProxy */;
+			path = MissionControl.framework;
+			remoteRef = 8B2A29CB1CEA27DF00FAE67F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B6313A31CE5FC060029DC98 /* ACConfig iOS Tests.xctest */ = {
+		8B2A29CE1CEA27DF00FAE67F /* MissionControlTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "ACConfig iOS Tests.xctest";
-			remoteRef = 8B6313A21CE5FC060029DC98 /* PBXContainerItemProxy */;
+			path = MissionControlTests.xctest;
+			remoteRef = 8B2A29CD1CEA27DF00FAE67F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -228,10 +228,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B6313A81CE5FC2D0029DC98 /* PBXTargetDependency */ = {
+		8B2A29D31CEA27FD00FAE67F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "ACConfig iOS";
-			targetProxy = 8B6313A71CE5FC2D0029DC98 /* PBXContainerItemProxy */;
+			name = "MissionControl iOS";
+			targetProxy = 8B2A29D21CEA27FD00FAE67F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -345,10 +345,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				INFOPLIST_FILE = ACConfigDemo/Info.plist;
+				INFOPLIST_FILE = MissionControlDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigDemo;
-				PRODUCT_NAME = ACConfigDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlDemo;
+				PRODUCT_NAME = MissionControlDemo;
 			};
 			name = Debug;
 		};
@@ -357,17 +357,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				INFOPLIST_FILE = ACConfigDemo/Info.plist;
+				INFOPLIST_FILE = MissionControlDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.ACConfigDemo;
-				PRODUCT_NAME = ACConfigDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlDemo;
+				PRODUCT_NAME = MissionControlDemo;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "ACConfigDemo" */ = {
+		8B464DC71CE3742F00BAE834 /* Build configuration list for PBXProject "MissionControlDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B464DDC1CE3742F00BAE834 /* Debug */,
@@ -376,7 +376,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "ACConfigDemo" */ = {
+		8B464DDE1CE3742F00BAE834 /* Build configuration list for PBXNativeTarget "MissionControlDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B464DDF1CE3742F00BAE834 /* Debug */,
