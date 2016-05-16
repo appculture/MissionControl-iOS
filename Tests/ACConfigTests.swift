@@ -11,7 +11,7 @@ import XCTest
 
 class ACConfigTests: XCTestCase {
     
-    // MARK: - Set up / Tear Down / Helpers
+    // MARK: - Lifecycle
     
     override func setUp() {
         super.setUp()
@@ -25,18 +25,27 @@ class ACConfigTests: XCTestCase {
         super.tearDown()
     }
     
-    let localConfig: [String : AnyObject] = [
-        "LocalBool" : true,
-        "LocalInt" : 8,
-        "LocalDouble" : 0.21,
-        "LocalString" : "Local"
+    // MARK: - Helper Properties
+    
+    struct ConfigKey {
+        static let TestBool = "TestBool"
+        static let TestInt = "TestInt"
+        static let TestDouble = "TestDouble"
+        static let TestString = "TestString"
+    }
+    
+    let localTestConfig: [String : AnyObject] = [
+        ConfigKey.TestBool : false,
+        ConfigKey.TestInt : 21,
+        ConfigKey.TestDouble : 0.8,
+        ConfigKey.TestString : "Local"
     ]
     
-    let remoteConfig: [String : AnyObject] = [
-        "RemoteBool" : false,
-        "RemoteInt" : 21,
-        "RemoteDouble" : 0.8,
-        "RemoteString" : "Remote"
+    let remoteTestConfig: [String : AnyObject] = [
+        ConfigKey.TestBool : true,
+        ConfigKey.TestInt : 8,
+        ConfigKey.TestDouble : 2.1,
+        ConfigKey.TestString : "Remote"
     ]
     
     // MARK: - Test Properties
@@ -51,17 +60,50 @@ class ACConfigTests: XCTestCase {
         XCTAssertNil(date, "Initial last refresh date should be nil.")
     }
     
-    // MARK: - Test API
+    // MARK: - Test Accessors
+    
+    func testInitialAccessorsWithoutDefaultValues() {
+        let bool = ConfigBool(ConfigKey.TestBool)
+        XCTAssertEqual(bool, false, "Should default to false.")
+        
+        let int = ConfigInt(ConfigKey.TestInt)
+        XCTAssertEqual(int, 0, "Should default to 0.")
+        
+        let double = ConfigDouble(ConfigKey.TestDouble)
+        XCTAssertEqual(double, 0.0, "Should default to 0.0.")
+        
+        let string = ConfigString(ConfigKey.TestString)
+        XCTAssertEqual(string, String(), "Should default to empty string.")
+    }
+    
+    func testInitialAccessorsWithDefaultValues() {
+        let bool = ConfigBool(ConfigKey.TestBool, true)
+        XCTAssertEqual(bool, true, "Should default to given value.")
+        
+        let int = ConfigInt(ConfigKey.TestInt, 1984)
+        XCTAssertEqual(int, 1984, "Should default to given value.")
+        
+        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
+        XCTAssertEqual(double, 21.08, "Should default to given value.")
+        
+        let string = ConfigString(ConfigKey.TestString, "Hello")
+        XCTAssertEqual(string, "Hello", "Should default to given value.")
+    }
+    
+    // MARK: - Test API - Launch
     
     func testLaunchWithoutParameters() {
         Config.launch()
         
         testInitialSettings()
         testInitialLastRefreshDate()
+        
+        testInitialAccessorsWithDefaultValues()
+        testInitialAccessorsWithoutDefaultValues()
     }
     
     func testLaunchWithLocalConfig() {
-        Config.launch(localConfig: localConfig)
+        Config.launch(localConfig: localTestConfig)
 
         let settings = Config.settings
         XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
@@ -69,9 +111,39 @@ class ACConfigTests: XCTestCase {
         let date = Config.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
         
-        testAccessorsWithLocalConfigButWithoutDefaultValues()
-        testAccessorsWithLocalConfigAndDefaultValues()
+        checkLocalConfigAccessorsWithoutDefaultValues()
+        checkLocalConfigAccessorsWithDefaultValues()
     }
+    
+    func checkLocalConfigAccessorsWithoutDefaultValues() {
+        let bool = ConfigBool(ConfigKey.TestBool)
+        XCTAssertEqual(bool, false, "Should default to value in local test config.")
+        
+        let int = ConfigInt(ConfigKey.TestInt)
+        XCTAssertEqual(int, 21, "Should default to value in local test config.")
+        
+        let double = ConfigDouble(ConfigKey.TestDouble)
+        XCTAssertEqual(double, 0.8, "Should default to value in local test config.")
+        
+        let string = ConfigString(ConfigKey.TestString)
+        XCTAssertEqual(string, "Local", "Should default to value in local test config.")
+    }
+    
+    func checkLocalConfigAccessorsWithDefaultValues() {
+        let bool = ConfigBool(ConfigKey.TestBool, true)
+        XCTAssertEqual(bool, false, "Should default to value in local test config.")
+        
+        let int = ConfigInt(ConfigKey.TestInt, 1984)
+        XCTAssertEqual(int, 21, "Should default to value in local test config.")
+        
+        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
+        XCTAssertEqual(double, 0.8, "Should default to value in local test config.")
+        
+        let string = ConfigString(ConfigKey.TestString, "Default")
+        XCTAssertEqual(string, "Local", "Should default to value in local test config.")
+    }
+    
+    // MARK: - Test API - Refresh
     
     func testRefreshWithoutRemoteURL() {
         let message = "Should return NoRemoteURL error whene remoteURL is not set."
@@ -122,8 +194,6 @@ class ACConfigTests: XCTestCase {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    // MARK: - Test Accessors
-    
     func checkAccessorsWithRemoteConfigButWithoutDefaultValues() {
         let bool = ConfigBool("RemoteBool")
         XCTAssertEqual(bool, false, "Should default to value in remote config.")
@@ -136,66 +206,6 @@ class ACConfigTests: XCTestCase {
         
         let string = ConfigString("RemoteString")
         XCTAssertEqual(string, "Remote", "Should default to value in remote config.")
-    }
-    
-    func testAccessorsWithoutLocalConfigAndDefaultValues() {
-        let bool = ConfigBool("BoolKey")
-        XCTAssertEqual(bool, false, "Should default to false.")
-        
-        let int = ConfigInt("IntKey")
-        XCTAssertEqual(int, 0, "Should default to 0.")
-        
-        let double = ConfigDouble("DoubleKey")
-        XCTAssertEqual(double, 0.0, "Should default to 0.0.")
-        
-        let string = ConfigString("StringKey")
-        XCTAssertEqual(string, String(), "Should default to empty string.")
-    }
-    
-    func testAccessorsWithoutLocalConfigButWithDefaultValues() {
-        let bool = ConfigBool("BoolKey", true)
-        XCTAssertEqual(bool, true, "Should default to given value.")
-        
-        let int = ConfigInt("IntKey", 21)
-        XCTAssertEqual(int, 21, "Should default to given value.")
-        
-        let double = ConfigDouble("DoubleKey", 0.8)
-        XCTAssertEqual(double, 0.8, "Should default to given value.")
-        
-        let string = ConfigString("StringKey", "Hello")
-        XCTAssertEqual(string, "Hello", "Should default to given value.")
-    }
-    
-    func testAccessorsWithLocalConfigButWithoutDefaultValues() {
-        Config.launch(localConfig: localConfig)
-        
-        let bool = ConfigBool("LocalBool")
-        XCTAssertEqual(bool, true, "Should default to value in local config.")
-        
-        let int = ConfigInt("LocalInt")
-        XCTAssertEqual(int, 8, "Should default to value in local config.")
-        
-        let double = ConfigDouble("LocalDouble")
-        XCTAssertEqual(double, 0.21, "Should default to value in local config.")
-        
-        let string = ConfigString("LocalString")
-        XCTAssertEqual(string, "Local", "Should default to value in local config.")
-    }
-    
-    func testAccessorsWithLocalConfigAndDefaultValues() {
-        Config.launch(localConfig: localConfig)
-        
-        let bool = ConfigBool("LocalBool", false)
-        XCTAssertEqual(bool, true, "Should default to value in local config.")
-        
-        let int = ConfigInt("LocalInt", 123)
-        XCTAssertEqual(int, 8, "Should default to value in local config.")
-        
-        let double = ConfigDouble("LocalDouble", 12.3)
-        XCTAssertEqual(double, 0.21, "Should default to value in local config.")
-        
-        let string = ConfigString("LocalString", "Default")
-        XCTAssertEqual(string, "Local", "Should default to value in local config.")
     }
     
 }
