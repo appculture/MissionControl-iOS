@@ -58,12 +58,12 @@ class MissionControlTests: XCTestCase {
     // MARK: - Test Initial State
     
     func testInitialSettings() {
-        let settings = Config.settings
+        let settings = MissionControl.settings
         XCTAssertEqual(settings.count, 0, "Initial settings should be empty but not nil.")
     }
     
     func testInitialLastRefreshDate() {
-        let date = Config.lastRefreshDate
+        let date = MissionControl.lastRefreshDate
         XCTAssertNil(date, "Initial last refresh date should be nil.")
     }
     
@@ -98,7 +98,7 @@ class MissionControlTests: XCTestCase {
     // MARK: - Test Launch Without Parameters
     
     func testLaunchWithoutParameters() {
-        Config.launch()
+        MissionControl.launch()
         confirmInitialState()
     }
     
@@ -113,15 +113,15 @@ class MissionControlTests: XCTestCase {
     // MARK: - Test Launch With Local Config
     
     func testLaunchWithLocalConfig() {
-        Config.launch(localConfig: localTestConfig)
+        MissionControl.launch(localConfig: localTestConfig)
         confirmLocalConfigState()
     }
     
     func confirmLocalConfigState() {
-        let settings = Config.settings
+        let settings = MissionControl.settings
         XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
         
-        let date = Config.lastRefreshDate
+        let date = MissionControl.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
         
         confirmLocalConfigAccessorsWithoutDefaultValues()
@@ -167,36 +167,36 @@ class MissionControlTests: XCTestCase {
     // MARK: - Test Launch With Remote Config
     
     func testLaunchWithRemoteConfig() {
-        Config.launch(remoteConfigURL: URL.RemoteTestConfig)
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         confirmInitialState()
-        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigLoaded)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigLoaded)
     }
     
     // MARK: - Test Launch With Local & Remote Config
     
     func testLaunchWithLocalAndRemoteConfig() {
-        Config.launch(localConfig: localTestConfig, remoteConfigURL: URL.RemoteTestConfig)
+        MissionControl.launch(localConfig: localTestConfig, remoteConfigURL: URL.RemoteTestConfig)
         confirmLocalConfigState()
         
         /// - NOTE: ConfigLoaded notification was called during launch (by setting localConfig)
-        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigRefreshed)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigRefreshed)
     }
     
     // MARK: - Test Refresh
     
     func testFirstRefresh() {
-        Config.launch(remoteConfigURL: URL.RemoteTestConfig)
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         
         /// - NOTE: refresh is called automatically during launch
-        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigLoaded)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigLoaded)
     }
     
     func testManualRefresh() {
         testFirstRefresh()
-        Config.refresh()
+        MissionControl.refresh()
         
         /// - NOTE: ConfigLoaded notification was called in testFirstRefresh()
-        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigRefreshed)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigRefreshed)
     }
     
     func confirmRemoteConfigStateAfterNotification(notification: String) {
@@ -208,10 +208,10 @@ class MissionControlTests: XCTestCase {
     }
     
     func confirmRemoteConfigState() {
-        let settings = Config.settings
+        let settings = MissionControl.settings
         XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
         
-        let date = Config.lastRefreshDate
+        let date = MissionControl.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
         
         confirmRemoteConfigAccessorsWithDefaultValues()
@@ -257,18 +257,18 @@ class MissionControlTests: XCTestCase {
     // MARK: - Test Refresh Errors
     
     func testRefreshErrorNoRemoteURL() {
-        Config.launch()
+        MissionControl.launch()
         
         /// - NOTE: refresh is NOT called automatically during launch (remote URL missing)
         let asyncExpectation = expectationWithDescription("manual-refresh-without-url")
-        Config.refresh { (block) in
+        MissionControl.refresh { (block) in
             do {
                 let _ = try block()
                 XCTAssert(false, "Should fall through to catch block!")
                 asyncExpectation.fulfill()
             } catch {
                 let message = "Should return NoRemoteURL error whene remoteURL is not set."
-                XCTAssertEqual("\(error)", "\(Config.Error.NoRemoteURL)", message)
+                XCTAssertEqual("\(error)", "\(MissionControl.Error.NoRemoteURL)", message)
                 asyncExpectation.fulfill()
             }
         }
@@ -276,31 +276,31 @@ class MissionControlTests: XCTestCase {
     }
     
     func testRefreshErrorBadResponseCode() {
-        Config.launch(remoteConfigURL: URL.BadResponseConfig)
+        MissionControl.launch(remoteConfigURL: URL.BadResponseConfig)
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return BadResponseCode error when response is not 200 OK."
-        confirmConfigRefreshFailedNotification(Config.Error.BadResponseCode, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.Error.BadResponseCode, message: message)
     }
     
     func testRefreshErrorInvalidDataEmpty() {
-        Config.launch(remoteConfigURL: URL.EmptyDataConfig)
+        MissionControl.launch(remoteConfigURL: URL.EmptyDataConfig)
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is empty."
-        confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.Error.InvalidData, message: message)
     }
     
     func testRefreshErrorInvalidData() {
-        Config.launch(remoteConfigURL: URL.InvalidDataConfig)
+        MissionControl.launch(remoteConfigURL: URL.InvalidDataConfig)
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is not valid JSON."
-        confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.Error.InvalidData, message: message)
     }
     
-    func confirmConfigRefreshFailedNotification(error: Config.Error, message: String) {
-        let _ = expectationForNotification(Config.Notification.ConfigRefreshFailed, object: nil) { (notification) -> Bool in
+    func confirmConfigRefreshFailedNotification(error: MissionControl.Error, message: String) {
+        let _ = expectationForNotification(MissionControl.Notification.ConfigRefreshFailed, object: nil) { (notification) -> Bool in
             guard let errorInfo = notification.userInfo?["Error"] as? String else { return false }
             XCTAssertEqual("\(errorInfo)", "\(error)", message)
             self.confirmInitialState()

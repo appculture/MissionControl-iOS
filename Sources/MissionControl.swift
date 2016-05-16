@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Config
 
 /// Facade class for using MissionControl.
-public class Config {
+public class MissionControl {
     
     // MARK: Types
     
@@ -28,18 +28,18 @@ public class Config {
     /// Constants for keys of sent NSNotification objects.
     public struct Notification {
         /// This notification is sent only the first time when local config is refreshed from remote config.
-        static let ConfigLoaded = "ACConfig.Loaded"
+        static let ConfigLoaded = "MissionControl.ConfigLoaded"
         /// This notification is sent each time when local config is refreshed from remote config.
-        static let ConfigRefreshed = "ACConfig.Refreshed"
+        static let ConfigRefreshed = "MissionControl.ConfigRefreshed"
         /// This notification is sent when refreshing local config from remote config failed.
-        static let ConfigRefreshFailed = "ACConfig.RefreshFailed"
+        static let ConfigRefreshFailed = "MissionControl.ConfigRefreshFailed"
         
         /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
         struct UserInfo {
             /// Previous value of `settings` property (before refreshing config from remote)
-            static let OldSettingsKey = "ACConfig.Old"
+            static let OldSettingsKey = "MissionControl.OldConfig"
             /// Current value of `settings` property (after refreshing config from remote)
-            static let NewSettingsKey = "ACConfig.New"
+            static let NewSettingsKey = "MissionControl.NewConfig"
         }
     }
     
@@ -166,9 +166,9 @@ class ACMissionControl {
                 
                 let userInfo = userInfoWithSettings(old: oldValue, new: newSetings)
                 if oldValue == nil {
-                    sendNotification(Config.Notification.ConfigLoaded, userInfo: userInfo)
+                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
                 }
-                sendNotification(Config.Notification.ConfigRefreshed, userInfo: userInfo)
+                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
             }
         }
     }
@@ -199,7 +199,7 @@ class ACMissionControl {
                 completion?({ })
             } catch {
                 let userInfo = ["Error" : "\(error)"]
-                self.sendNotification(Config.Notification.ConfigRefreshFailed, userInfo: userInfo)
+                self.sendNotification(MissionControl.Notification.ConfigRefreshFailed, userInfo: userInfo)
                 completion?({ throw error })
             }
         }
@@ -219,10 +219,10 @@ class ACMissionControl {
         } else {
             var userInfo = [NSObject : AnyObject]()
             if let oldSettings = old {
-                userInfo[Config.Notification.UserInfo.OldSettingsKey] = oldSettings
+                userInfo[MissionControl.Notification.UserInfo.OldSettingsKey] = oldSettings
             }
             if let newSettings = new {
-                userInfo[Config.Notification.UserInfo.NewSettingsKey] = newSettings
+                userInfo[MissionControl.Notification.UserInfo.NewSettingsKey] = newSettings
             }
             return userInfo
         }
@@ -235,14 +235,14 @@ class ACMissionControl {
     
     private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw Config.Error.NoRemoteURL }); return }
+            else { completion(block: { throw MissionControl.Error.NoRemoteURL }); return }
     
         let request = NSURLRequest(URL: url)
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
             guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200
-            else { completion(block: { throw Config.Error.BadResponseCode }); return }
+            else { completion(block: { throw MissionControl.Error.BadResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         
@@ -251,15 +251,15 @@ class ACMissionControl {
     
     private func parseRemoteConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw Config.Error.InvalidData }); return }
+            else { completion(block: { throw MissionControl.Error.InvalidData }); return }
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw Config.Error.InvalidData }); return }
+                else { completion(block: { throw MissionControl.Error.InvalidData }); return }
             completion(block: { return config })
         } catch {
-            completion(block: { throw Config.Error.InvalidData })
+            completion(block: { throw MissionControl.Error.InvalidData })
         }
     }
     
