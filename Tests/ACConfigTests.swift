@@ -169,7 +169,7 @@ class ACConfigTests: XCTestCase {
     func testLaunchWithRemoteConfig() {
         Config.launch(remoteConfigURL: URL.RemoteTestConfig)
         confirmInitialState()
-        confirmDataAfterConfigRefreshedNotification()
+        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigLoaded)
     }
     
     // MARK: - Test Launch With Local & Remote Config
@@ -177,42 +177,45 @@ class ACConfigTests: XCTestCase {
     func testLaunchWithLocalAndRemoteConfig() {
         Config.launch(localConfig: localTestConfig, remoteConfigURL: URL.RemoteTestConfig)
         confirmLocalConfigState()
-        confirmDataAfterConfigRefreshedNotification()
+        
+        /// - NOTE: ConfigLoaded notification was called during launch (by setting localConfig)
+        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigRefreshed)
     }
     
-    func confirmDataAfterConfigRefreshedNotification() {
-        let _ = expectationForNotification(Config.Notification.ConfigRefreshed, object: nil) { (notification) -> Bool in
-            self.confirmRemoteConfigAccessorsWithDefaultValues()
-            self.confirmRemoteConfigAccessorsWithoutDefaultValues()
+    // MARK: - Test Refresh
+    
+    func testFirstRefresh() {
+        Config.launch(remoteConfigURL: URL.RemoteTestConfig)
+        
+        /// - NOTE: refresh is called automatically during launch
+        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigLoaded)
+    }
+    
+    func testManualRefresh() {
+        testFirstRefresh()
+        Config.refresh()
+        
+        /// - NOTE: ConfigLoaded notification was called in testFirstRefresh()
+        confirmRemoteConfigStateAfterNotification(Config.Notification.ConfigRefreshed)
+    }
+    
+    func confirmRemoteConfigStateAfterNotification(notification: String) {
+        let _ = expectationForNotification(notification, object: nil) { (notification) -> Bool in
+            self.confirmRemoteConfigState()
             return true
         }
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    // MARK: - Test Refresh
-    
-    func testRefreshWithRemoteConfig() {
-        performAsyncRefreshWithURL(URL.RemoteTestConfig)
-    }
-    
-    func performAsyncRefreshWithURL(url: NSURL) {
-        let asyncExpectation = expectationWithDescription("refresh-\(url.lastPathComponent)")
+    func confirmRemoteConfigState() {
+        let settings = Config.settings
+        XCTAssertEqual(settings.count, 4, "Initial settings should contain given local config.")
         
-        Config.launch(remoteConfigURL: url)
+        let date = Config.lastRefreshDate
+        XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
         
-        Config.refresh { (block) in
-            do {
-                let _ = try block()
-                self.confirmRemoteConfigAccessorsWithDefaultValues()
-                self.confirmRemoteConfigAccessorsWithoutDefaultValues()
-                asyncExpectation.fulfill()
-            } catch {
-                XCTAssert(false, "Should not fail to catch block.")
-                asyncExpectation.fulfill()
-            }
-        }
-        
-        waitForExpectationsWithTimeout(5, handler: nil)
+        confirmRemoteConfigAccessorsWithDefaultValues()
+        confirmRemoteConfigAccessorsWithoutDefaultValues()
     }
     
     func confirmRemoteConfigAccessorsWithDefaultValues() {
@@ -254,9 +257,10 @@ class ACConfigTests: XCTestCase {
     // MARK: - Test Refresh Errors
     
     func testRefreshErrorNoRemoteURL() {
-        Config.launch() /// - NOTE: refresh is NOT called automatically during launch
-
-        let asyncExpectation = expectationWithDescription("refresh-without-url")
+        Config.launch()
+        
+        /// - NOTE: refresh is NOT called automatically during launch (remote URL missing)
+        let asyncExpectation = expectationWithDescription("manual-refresh-without-url")
         Config.refresh { (block) in
             do {
                 let _ = try block()
@@ -272,21 +276,24 @@ class ACConfigTests: XCTestCase {
     }
     
     func testRefreshErrorBadResponseCode() {
-        Config.launch(remoteConfigURL: URL.BadResponseConfig) /// - NOTE: refresh is called automatically during launch
+        Config.launch(remoteConfigURL: URL.BadResponseConfig)
+        /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return BadResponseCode error when response is not 200 OK."
         confirmConfigRefreshFailedNotification(Config.Error.BadResponseCode, message: message)
     }
     
     func testRefreshErrorInvalidDataEmpty() {
-        Config.launch(remoteConfigURL: URL.EmptyDataConfig) /// - NOTE: refresh is called automatically during launch
+        Config.launch(remoteConfigURL: URL.EmptyDataConfig)
+        /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is empty."
         confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
     }
     
     func testRefreshErrorInvalidData() {
-        Config.launch(remoteConfigURL: URL.InvalidDataConfig) /// - NOTE: refresh is called automatically during launch
+        Config.launch(remoteConfigURL: URL.InvalidDataConfig)
+        /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is not valid JSON."
         confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
