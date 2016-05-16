@@ -124,11 +124,11 @@ class ACConfigTests: XCTestCase {
         let date = Config.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
         
-        checkLocalConfigAccessorsWithoutDefaultValues()
-        checkLocalConfigAccessorsWithDefaultValues()
+        confirmLocalConfigAccessorsWithoutDefaultValues()
+        confirmLocalConfigAccessorsWithDefaultValues()
     }
     
-    func checkLocalConfigAccessorsWithDefaultValues() {
+    func confirmLocalConfigAccessorsWithDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool, true)
         let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
         XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
@@ -146,7 +146,7 @@ class ACConfigTests: XCTestCase {
         XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
     }
     
-    func checkLocalConfigAccessorsWithoutDefaultValues() {
+    func confirmLocalConfigAccessorsWithoutDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
         let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
         XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
@@ -169,7 +169,7 @@ class ACConfigTests: XCTestCase {
     func testLaunchWithRemoteConfig() {
         Config.launch(remoteConfigURL: URL.RemoteTestConfig)
         confirmInitialState()
-        checkDataAfterConfigRefreshedNotification()
+        confirmDataAfterConfigRefreshedNotification()
     }
     
     // MARK: - Test Launch With Local & Remote Config
@@ -177,13 +177,13 @@ class ACConfigTests: XCTestCase {
     func testLaunchWithLocalAndRemoteConfig() {
         Config.launch(localConfig: localTestConfig, remoteConfigURL: URL.RemoteTestConfig)
         confirmLocalConfigState()
-        checkDataAfterConfigRefreshedNotification()
+        confirmDataAfterConfigRefreshedNotification()
     }
     
-    func checkDataAfterConfigRefreshedNotification() {
+    func confirmDataAfterConfigRefreshedNotification() {
         let _ = expectationForNotification(Config.Notification.ConfigRefreshed, object: nil) { (notification) -> Bool in
-            self.checkRemoteConfigAccessorsWithDefaultValues()
-            self.checkRemoteConfigAccessorsWithoutDefaultValues()
+            self.confirmRemoteConfigAccessorsWithDefaultValues()
+            self.confirmRemoteConfigAccessorsWithoutDefaultValues()
             return true
         }
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -203,8 +203,8 @@ class ACConfigTests: XCTestCase {
         Config.refresh { (block) in
             do {
                 let _ = try block()
-                self.checkRemoteConfigAccessorsWithDefaultValues()
-                self.checkRemoteConfigAccessorsWithoutDefaultValues()
+                self.confirmRemoteConfigAccessorsWithDefaultValues()
+                self.confirmRemoteConfigAccessorsWithoutDefaultValues()
                 asyncExpectation.fulfill()
             } catch {
                 XCTAssert(false, "Should not fail to catch block.")
@@ -215,7 +215,7 @@ class ACConfigTests: XCTestCase {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func checkRemoteConfigAccessorsWithDefaultValues() {
+    func confirmRemoteConfigAccessorsWithDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
         let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
         XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
@@ -233,7 +233,7 @@ class ACConfigTests: XCTestCase {
         XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
     }
     
-    func checkRemoteConfigAccessorsWithoutDefaultValues() {
+    func confirmRemoteConfigAccessorsWithoutDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
         let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
         XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
@@ -254,45 +254,51 @@ class ACConfigTests: XCTestCase {
     // MARK: - Test Refresh Errors
     
     func testRefreshErrorNoRemoteURL() {
-        let message = "Should return NoRemoteURL error whene remoteURL is not set."
-        performAsyncRefreshWithURL(nil, errorCode: Config.Error.NoRemoteURL, message: message)
-    }
-    
-    func testRefreshErrorBadResponseCode() {
-        let message = "Should return BadResponseCode error when response is not 200 OK."
-        performAsyncRefreshWithURL(URL.BadResponseConfig, errorCode: Config.Error.BadResponseCode, message: message)
-    }
-    
-    func testRefreshErrorInvalidDataEmpty() {
-        let message = "Should return InvalidData error when response data is empty."
-        performAsyncRefreshWithURL(URL.EmptyDataConfig, errorCode: Config.Error.InvalidData, message: message)
-    }
-    
-    func testRefreshErrorInvalidData() {
-        let message = "Should return InvalidData error when response data is not valid JSON."
-        performAsyncRefreshWithURL(URL.InvalidDataConfig, errorCode: Config.Error.InvalidData, message: message)
-    }
-    
-    func performAsyncRefreshWithURL(url: NSURL?, errorCode: Config.Error, message: String) {
-        let asyncExpectation = expectationWithDescription("refresh-\(url?.lastPathComponent)")
-        
-        if let remoteURL = url {
-            Config.launch(remoteConfigURL: remoteURL)
-        } else {
-            Config.launch()
-        }
-        
+        Config.launch() /// - NOTE: refresh is NOT called automatically during launch
+
+        let asyncExpectation = expectationWithDescription("refresh-without-url")
         Config.refresh { (block) in
             do {
                 let _ = try block()
-                XCTAssert(false, "Should fail to catch block (testing errors).")
+                XCTAssert(false, "Should fall through to catch block!")
                 asyncExpectation.fulfill()
             } catch {
-                XCTAssertEqual("\(error)", "\(errorCode)", message)
+                let message = "Should return NoRemoteURL error whene remoteURL is not set."
+                XCTAssertEqual("\(error)", "\(Config.Error.NoRemoteURL)", message)
                 asyncExpectation.fulfill()
             }
         }
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func testRefreshErrorBadResponseCode() {
+        Config.launch(remoteConfigURL: URL.BadResponseConfig) /// - NOTE: refresh is called automatically during launch
         
+        let message = "Should return BadResponseCode error when response is not 200 OK."
+        confirmConfigRefreshFailedNotification(Config.Error.BadResponseCode, message: message)
+    }
+    
+    func testRefreshErrorInvalidDataEmpty() {
+        Config.launch(remoteConfigURL: URL.EmptyDataConfig) /// - NOTE: refresh is called automatically during launch
+        
+        let message = "Should return InvalidData error when response data is empty."
+        confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
+    }
+    
+    func testRefreshErrorInvalidData() {
+        Config.launch(remoteConfigURL: URL.InvalidDataConfig) /// - NOTE: refresh is called automatically during launch
+        
+        let message = "Should return InvalidData error when response data is not valid JSON."
+        confirmConfigRefreshFailedNotification(Config.Error.InvalidData, message: message)
+    }
+    
+    func confirmConfigRefreshFailedNotification(error: Config.Error, message: String) {
+        let _ = expectationForNotification(Config.Notification.ConfigRefreshFailed, object: nil) { (notification) -> Bool in
+            guard let errorInfo = notification.userInfo?["Error"] as? String else { return false }
+            XCTAssertEqual("\(errorInfo)", "\(error)", message)
+            self.confirmInitialState()
+            return true
+        }
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
