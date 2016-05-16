@@ -117,30 +117,38 @@ class ACConfigTests: XCTestCase {
     
     func checkLocalConfigAccessorsWithDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool, true)
-        XCTAssertEqual(bool, false, "Should default to value in local test config.")
+        let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
         
         let int = ConfigInt(ConfigKey.TestInt, 1984)
-        XCTAssertEqual(int, 21, "Should default to value in local test config.")
+        let expectedInt = localTestConfig[ConfigKey.TestInt] as! Int
+        XCTAssertEqual(int, expectedInt, "Should default to value in local test config.")
         
         let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
-        XCTAssertEqual(double, 0.8, "Should default to value in local test config.")
+        let expectedDouble = localTestConfig[ConfigKey.TestDouble] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should default to value in local test config.")
         
         let string = ConfigString(ConfigKey.TestString, "Default")
-        XCTAssertEqual(string, "Local", "Should default to value in local test config.")
+        let expectedString = localTestConfig[ConfigKey.TestString] as! String
+        XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
     }
     
     func checkLocalConfigAccessorsWithoutDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
-        XCTAssertEqual(bool, false, "Should default to value in local test config.")
+        let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
         
         let int = ConfigInt(ConfigKey.TestInt)
-        XCTAssertEqual(int, 21, "Should default to value in local test config.")
+        let expectedInt = localTestConfig[ConfigKey.TestInt] as! Int
+        XCTAssertEqual(int, expectedInt, "Should default to value in local test config.")
         
         let double = ConfigDouble(ConfigKey.TestDouble)
-        XCTAssertEqual(double, 0.8, "Should default to value in local test config.")
+        let expectedDouble = localTestConfig[ConfigKey.TestDouble] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should default to value in local test config.")
         
         let string = ConfigString(ConfigKey.TestString)
-        XCTAssertEqual(string, "Local", "Should default to value in local test config.")
+        let expectedString = localTestConfig[ConfigKey.TestString] as! String
+        XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
     }
     
     // MARK: - Test API - Refresh Errors
@@ -220,30 +228,38 @@ class ACConfigTests: XCTestCase {
     
     func checkRemoteConfigAccessorsWithDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
-        XCTAssertEqual(bool, true, "Should default to value in remote test config.")
+        let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
         
         let int = ConfigInt(ConfigKey.TestInt)
-        XCTAssertEqual(int, 8, "Should default to value in remote test config.")
+        let expectedInt = remoteTestConfig[ConfigKey.TestInt] as! Int
+        XCTAssertEqual(int, expectedInt, "Should default to value in remote test config.")
         
         let double = ConfigDouble(ConfigKey.TestDouble)
-        XCTAssertEqual(double, 2.1, "Should default to value in remote test config.")
+        let expectedDouble = remoteTestConfig[ConfigKey.TestDouble] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should default to value in remote test config.")
         
         let string = ConfigString(ConfigKey.TestString)
-        XCTAssertEqual(string, "Remote", "Should default to value in remote test config.")
+        let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
+        XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
     }
 
     func checkRemoteConfigAccessorsWithoutDefaultValues() {
         let bool = ConfigBool(ConfigKey.TestBool)
-        XCTAssertEqual(bool, true, "Should default to value in remote test config.")
+        let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
         
         let int = ConfigInt(ConfigKey.TestInt)
-        XCTAssertEqual(int, 8, "Should default to value in remote test config.")
+        let expectedInt = remoteTestConfig[ConfigKey.TestInt] as! Int
+        XCTAssertEqual(int, expectedInt, "Should default to value in remote test config.")
         
         let double = ConfigDouble(ConfigKey.TestDouble)
-        XCTAssertEqual(double, 2.1, "Should default to value in remote test config.")
+        let expectedDouble = remoteTestConfig[ConfigKey.TestDouble] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should default to value in remote test config.")
         
         let string = ConfigString(ConfigKey.TestString)
-        XCTAssertEqual(string, "Remote", "Should default to value in remote test config.")
+        let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
+        XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
     }
     
 }
