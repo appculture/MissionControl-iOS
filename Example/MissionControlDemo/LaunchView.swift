@@ -22,6 +22,10 @@ class LaunchView: UIView {
     let statusLight = UIView()
     let countdown = UILabel()
     
+    // MARK: - Properties
+    
+    var padding: CGFloat = 24.0
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -39,7 +43,7 @@ class LaunchView: UIView {
         commonInit()
     }
     
-    private func commonInit() {
+    func commonInit() {
         configureOutlets()
         configureHierarchy()
         updateConstraints()
@@ -82,34 +86,30 @@ class LaunchView: UIView {
         button.layer.borderWidth = 10.0
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
-        button.titleLabel?.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 54.0, bottom: 0, right: 0)
         button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         button.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
-        button.setTitle("CONNECT", forState: .Normal)
+        button.setTitle("BUTTON", forState: .Normal)
     }
     
     private func configureStatus() {
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.setContentHuggingPriority(251.0, forAxis: .Vertical)
-        statusLabel.font = UIFont(name: "Nasa-Display", size: 40.0)
-        statusLabel.textColor = UIColor.whiteColor()
         statusLabel.textAlignment = .Center
-        statusLabel.text = "STATUS: OFFLINE"
+        statusLabel.textColor = UIColor.whiteColor()
+        statusLabel.text = "STATUS"
         
         statusLight.translatesAutoresizingMaskIntoConstraints = false
         statusLight.backgroundColor = UIColor.darkGrayColor()
         statusLight.layer.borderColor = UIColor.whiteColor().CGColor
-        statusLight.layer.borderWidth = 1.0
+        statusLight.layer.borderWidth = 2.0
         statusLight.layer.cornerRadius = 16.0
         statusLight.clipsToBounds = true
     }
     
     private func configureCountdown() {
         countdown.translatesAutoresizingMaskIntoConstraints = false
-        countdown.font = UIFont(name: "Nasa-Display", size: 256.0)
-        countdown.textColor = UIColor.whiteColor()
         countdown.textAlignment = .Center
+        countdown.textColor = UIColor.whiteColor()
         countdown.text = "00"
     }
     
@@ -151,9 +151,9 @@ class LaunchView: UIView {
     }
     
     private var buttonConstraints: [NSLayoutConstraint] {
-        let leading = button.leadingAnchor.constraintEqualToAnchor(leadingAnchor, constant: 24.0)
-        let trailing = button.trailingAnchor.constraintEqualToAnchor(trailingAnchor, constant: -24.0)
-        let bottom = button.bottomAnchor.constraintEqualToAnchor(bottomAnchor, constant: -24.0)
+        let leading = button.leadingAnchor.constraintEqualToAnchor(leadingAnchor, constant: padding)
+        let trailing = button.trailingAnchor.constraintEqualToAnchor(trailingAnchor, constant: -padding)
+        let bottom = button.bottomAnchor.constraintEqualToAnchor(bottomAnchor, constant: -padding)
         let height = button.heightAnchor.constraintEqualToConstant(90.0)
         return [leading, trailing, bottom, height]
     }
@@ -169,13 +169,13 @@ class LaunchView: UIView {
     private var statusLabelConstraints: [NSLayoutConstraint] {
         let leading = statusLabel.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor)
         let trailing = statusLabel.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor)
-        let bottom = statusLabel.bottomAnchor.constraintEqualToAnchor(button.topAnchor, constant: -24.0)
+        let bottom = statusLabel.bottomAnchor.constraintEqualToAnchor(button.topAnchor, constant: -padding)
         return [leading, trailing, bottom]
     }
     
     private var statusLightConstraints: [NSLayoutConstraint] {
         let centerX = statusLight.centerXAnchor.constraintEqualToAnchor(centerXAnchor)
-        let bottom = statusLight.bottomAnchor.constraintEqualToAnchor(statusLabel.topAnchor, constant: -24.0)
+        let bottom = statusLight.bottomAnchor.constraintEqualToAnchor(statusLabel.topAnchor, constant: -padding)
         let width = statusLight.widthAnchor.constraintEqualToConstant(32.0)
         let height = statusLight.heightAnchor.constraintEqualToConstant(32.0)
         return [centerX, bottom, width, height]

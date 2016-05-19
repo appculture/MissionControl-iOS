@@ -16,6 +16,7 @@
 		8B9B81D91CEDB04700E78198 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81D81CEDB04700E78198 /* LaunchView.swift */; };
 		8B9B81DD1CEDB4B800E78198 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */; };
 		8B9B81DF1CEDC58200E78198 /* NAS966.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 8B9B81DE1CEDC58200E78198 /* NAS966.TTF */; };
+		8B9B81E31CEDEB7600E78198 /* MCLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81E21CEDEB7600E78198 /* MCLaunchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		8B9B81D81CEDB04700E78198 /* LaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		8B9B81DE1CEDC58200E78198 /* NAS966.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = NAS966.TTF; sourceTree = "<group>"; };
+		8B9B81E21CEDEB7600E78198 /* MCLaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCLaunchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			children = (
 				8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */,
 				8B9B81D81CEDB04700E78198 /* LaunchView.swift */,
+				8B9B81E21CEDEB7600E78198 /* MCLaunchView.swift */,
 				8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */,
 				8B63139A1CE5FB290029DC98 /* Supporting Files */,
 			);
@@ -238,6 +241,7 @@
 				8B9B81D91CEDB04700E78198 /* LaunchView.swift in Sources */,
 				8B464DD01CE3742F00BAE834 /* AppDelegate.swift in Sources */,
 				8B9B81DD1CEDB4B800E78198 /* LaunchViewController.swift in Sources */,
+				8B9B81E31CEDEB7600E78198 /* MCLaunchView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
