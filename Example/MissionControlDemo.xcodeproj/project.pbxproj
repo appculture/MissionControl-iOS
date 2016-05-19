@@ -10,10 +10,11 @@
 		8B2A29D01CEA27FD00FAE67F /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */; };
 		8B2A29D11CEA27FD00FAE67F /* MissionControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B464DD01CE3742F00BAE834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */; };
-		8B464DD21CE3742F00BAE834 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B464DD11CE3742F00BAE834 /* ViewController.swift */; };
 		8B464DD51CE3742F00BAE834 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD31CE3742F00BAE834 /* Main.storyboard */; };
 		8B464DD71CE3742F00BAE834 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD61CE3742F00BAE834 /* Assets.xcassets */; };
 		8B464DDA1CE3742F00BAE834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */; };
+		8B9B81D91CEDB04700E78198 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81D81CEDB04700E78198 /* LaunchView.swift */; };
+		8B9B81DD1CEDB4B800E78198 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,11 +59,12 @@
 		8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MissionControl.xcodeproj; path = ../MissionControl.xcodeproj; sourceTree = "<group>"; };
 		8B464DCC1CE3742F00BAE834 /* MissionControlDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MissionControlDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8B464DD11CE3742F00BAE834 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8B464DD41CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B464DD61CE3742F00BAE834 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B464DD91CE3742F00BAE834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B464DDB1CE3742F00BAE834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B9B81D81CEDB04700E78198 /* LaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				8B464DCF1CE3742F00BAE834 /* AppDelegate.swift */,
-				8B464DD11CE3742F00BAE834 /* ViewController.swift */,
+				8B9B81D81CEDB04700E78198 /* LaunchView.swift */,
+				8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */,
 				8B63139A1CE5FB290029DC98 /* Supporting Files */,
 			);
 			path = MissionControlDemo;
@@ -116,12 +119,20 @@
 		8B63139A1CE5FB290029DC98 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B464DD31CE3742F00BAE834 /* Main.storyboard */,
-				8B464DD61CE3742F00BAE834 /* Assets.xcassets */,
 				8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */,
-				8B464DDB1CE3742F00BAE834 /* Info.plist */,
+				8B464DD31CE3742F00BAE834 /* Main.storyboard */,
+				8B9B81DB1CEDB49B00E78198 /* Resources */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B9B81DB1CEDB49B00E78198 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8B464DD61CE3742F00BAE834 /* Assets.xcassets */,
+				8B464DDB1CE3742F00BAE834 /* Info.plist */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,7 +165,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
-				ORGANIZATIONNAME = AE;
+				ORGANIZATIONNAME = appculture;
 				TargetAttributes = {
 					8B464DCB1CE3742F00BAE834 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -220,8 +231,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B464DD21CE3742F00BAE834 /* ViewController.swift in Sources */,
+				8B9B81D91CEDB04700E78198 /* LaunchView.swift in Sources */,
 				8B464DD01CE3742F00BAE834 /* AppDelegate.swift in Sources */,
+				8B9B81DD1CEDB4B800E78198 /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +304,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -332,7 +344,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
