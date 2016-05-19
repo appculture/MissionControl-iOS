@@ -15,6 +15,7 @@
 		8B464DDA1CE3742F00BAE834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B464DD81CE3742F00BAE834 /* LaunchScreen.storyboard */; };
 		8B9B81D91CEDB04700E78198 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81D81CEDB04700E78198 /* LaunchView.swift */; };
 		8B9B81DD1CEDB4B800E78198 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */; };
+		8B9B81DF1CEDC58200E78198 /* NAS966.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 8B9B81DE1CEDC58200E78198 /* NAS966.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		8B464DDB1CE3742F00BAE834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B9B81D81CEDB04700E78198 /* LaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		8B9B81DC1CEDB4B800E78198 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		8B9B81DE1CEDC58200E78198 /* NAS966.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = NAS966.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				8B464DD61CE3742F00BAE834 /* Assets.xcassets */,
+				8B9B81DE1CEDC58200E78198 /* NAS966.TTF */,
 				8B464DDB1CE3742F00BAE834 /* Info.plist */,
 			);
 			name = Resources;
@@ -219,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B464DDA1CE3742F00BAE834 /* LaunchScreen.storyboard in Resources */,
+				8B9B81DF1CEDC58200E78198 /* NAS966.TTF in Resources */,
 				8B464DD71CE3742F00BAE834 /* Assets.xcassets in Resources */,
 				8B464DD51CE3742F00BAE834 /* Main.storyboard in Resources */,
 			);
