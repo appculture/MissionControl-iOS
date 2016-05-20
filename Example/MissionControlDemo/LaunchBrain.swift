@@ -34,6 +34,14 @@ class LaunchBrain {
         }
     }
     
+    var seconds: Int = 0 {
+        didSet {
+            view.countdown.text = String(format: "%02d", seconds)
+        }
+    }
+    
+    var timer: NSTimer?
+    
     // MARK: - Init
     
     init(view: LaunchView, delegate: LaunchDelegate) {
@@ -47,32 +55,89 @@ class LaunchBrain {
         updateUIForState(.Offline)
     }
     
+    // MARK: - Actions
+    
     func didTapButton(sender: AnyObject) {
-        updateUIForState(.Ready)
+        switch state {
+        case .Offline:
+            state = .Ready
+        case .Ready:
+            state = .Countdown
+        case .Countdown:
+            state = .Aborted
+        case .Failed, .Aborted, .Launched:
+            state = .Offline
+        }
     }
     
-    func updateUIForState(state: LaunchState) {
+    // MARK: - UI
+    
+    private func updateUIForState(state: LaunchState) {
+        updateUIForAnyState(state)
+        
+        switch state {
+        case .Offline:
+            updateUIForOfflineState()
+        case .Ready:
+            updateUIForReadyState()
+        case .Countdown:
+            updateUIForCountdownState()
+        case .Launched:
+            updateUIForLaunchedState()
+        case .Failed:
+            updateUIForFailedState()
+        case .Aborted:
+            updateUIForAbortedState()
+        }
+    }
+    
+    private func updateUIForAnyState(state: LaunchState) {
         view.button.layer.borderColor = colorForState(state).CGColor
         view.buttonTitle.text = commandForState(state)
         
+        view.stopBlinkingStatusLight()
         view.statusTitle.text = "STATUS: \(state.rawValue.capitalizedString)"
         view.statusLightOnColor = colorForState(state)
         view.statusLightOn = true
         
         view.countdown.alpha = 1.0
-        
-        switch state {
-        case .Offline:
-            view.button.layer.borderColor = view.statusLightOffColor.CGColor
-            view.countdown.alpha = 0.1
-            view.countdown.text = "00"
-            view.startBlinkingStatusLight(timeInterval: 0.5)
-        case .Ready:
-            view.countdown.text = "10"
-            view.stopBlinkingStatusLight()
-        default:
-            break
-        }
+    }
+    
+    private func updateUIForOfflineState() {
+        view.stopRotatingButtonImage()
+        view.button.layer.borderColor = view.statusLightOffColor.CGColor
+        view.countdown.alpha = 0.1
+        seconds = 0
+        view.startBlinkingStatusLight(timeInterval: 0.5)
+    }
+    
+    private func updateUIForReadyState() {
+        seconds = 10
+    }
+    
+    private func updateUIForCountdownState() {
+        startCountdown()
+        view.rotateButtonImageWithDuration(2.0)
+        view.startBlinkingStatusLight(timeInterval: 0.25)
+    }
+    
+    private func updateUIForLaunchedState() {
+        view.stopRotatingButtonImage()
+        view.rotateButtonImageWithDuration(1.0)
+        view.countdown.text = "OK"
+    }
+    
+    private func updateUIForFailedState() {
+        stopCountdown()
+        view.countdown.text = "F"
+        view.startBlinkingStatusLight(timeInterval: 0.5)
+    }
+    
+    private func updateUIForAbortedState() {
+        stopCountdown()
+        view.stopRotatingButtonImage()
+        view.countdown.text = "A"
+        view.startBlinkingStatusLight(timeInterval: 0.25)
     }
     
     private func commandForState(state: LaunchState) -> String {
@@ -100,6 +165,29 @@ class LaunchBrain {
             return UIColor(hex: "#BD10E0")
         case .Failed, .Aborted:
             return UIColor(hex: "#D0021B")
+        }
+    }
+    
+    // MARK: - Countdown
+    
+    private func startCountdown() {
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+                                                       target: self,
+                                                       selector: #selector(timerTick(_:)),
+                                                       userInfo: nil, repeats: true)
+    }
+    
+    private func stopCountdown() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc func timerTick(sender: NSTimer) {
+        if seconds - 1 >= 0 {
+            seconds -= 1
+        } else {
+            stopCountdown()
+            state = .Launched
         }
     }
     

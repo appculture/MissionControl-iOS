@@ -18,11 +18,11 @@ class LaunchView: BaseLaunchView {
     var statusLightOn = false {
         didSet {
             if statusLightOn {
-                UIView.animateWithDuration(0.3) {
+                UIView.animateWithDuration(0.2) {
                     self.turnStatusLightOn()
                 }
             } else {
-                UIView.animateWithDuration(0.3) {
+                UIView.animateWithDuration(0.2) {
                     self.turnStatusLightOff()
                 }
             }
@@ -85,5 +85,38 @@ class LaunchView: BaseLaunchView {
         statusLightColor = statusLightOffColor
         statusLight.layer.shadowOpacity = 0.0
     }
+    
+    // MARK: - Rotation
+    
+    func rotateButtonImageWithDuration(duration: Double) {
+        buttonImage.rotate(withDuration: duration)
+    }
+    
+    func stopRotatingButtonImage() {
+        buttonImage.stopRotation()
+    }
 
+}
+
+private extension UIView {
+    
+    @nonobjc static let rotationKey = "AERotation"
+    
+    func rotate(withDuration duration: Double = 1.0) {
+        if layer.animationForKey(UIView.rotationKey) == nil {
+            let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
+            
+            rotationAnimation.fromValue = 0.0
+            rotationAnimation.toValue = Float(M_PI * 2.0)
+            rotationAnimation.duration = duration
+            rotationAnimation.repeatCount = Float.infinity
+            
+            layer.addAnimation(rotationAnimation, forKey: UIView.rotationKey)
+        }
+    }
+    
+    func stopRotation() {
+        layer.removeAnimationForKey(UIView.rotationKey)
+    }
+    
 }
