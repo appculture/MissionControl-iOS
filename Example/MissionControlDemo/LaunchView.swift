@@ -29,6 +29,37 @@ class LaunchView: UIView {
     
     var padding: CGFloat = 24.0
     
+    var buttonHighlightColor = UIColor.lightGrayColor()
+    var buttonColor = UIColor.whiteColor() {
+        didSet {
+            button.backgroundColor = buttonColor
+        }
+    }
+    var buttonTitleColor = UIColor.darkGrayColor() {
+        didSet {
+            buttonTitle.textColor = buttonTitleColor
+        }
+    }
+    
+    var statusColor = UIColor.darkGrayColor() {
+        didSet {
+            button.layer.borderColor = statusColor.CGColor
+            statusLight.backgroundColor = statusColor
+        }
+    }
+    var statusTextColor = UIColor.whiteColor() {
+        didSet {
+            statusLabel.textColor = statusTextColor
+            statusLight.layer.borderColor = statusTextColor.CGColor
+        }
+    }
+    
+    var countdownColor = UIColor.whiteColor() {
+        didSet {
+            countdown.textColor = countdownColor
+        }
+    }
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -91,15 +122,15 @@ class LaunchView: UIView {
     }
     
     private func highlightButton() {
-        UIView.animateWithDuration(0.2, animations: {
-            self.button.backgroundColor = UIColor.lightGrayColor()
+        UIView.animateWithDuration(0.2, animations: { [unowned self] in
+            self.button.backgroundColor = self.buttonHighlightColor
             self.buttonImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
         })
     }
     
     private func restoreButton() {
-        UIView.animateWithDuration(0.2, animations: {
-            self.button.backgroundColor = UIColor.whiteColor()
+        UIView.animateWithDuration(0.2, animations: { [unowned self] in
+            self.button.backgroundColor = self.buttonColor
             self.buttonImage.transform = CGAffineTransformIdentity
         })
     }
@@ -126,8 +157,8 @@ class LaunchView: UIView {
     
     private func configureButton() {
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.whiteColor()
-        button.layer.borderColor = UIColor.darkGrayColor().CGColor
+        button.backgroundColor = buttonColor
+        button.layer.borderColor = statusColor.CGColor
         button.layer.borderWidth = 10.0
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
@@ -139,7 +170,7 @@ class LaunchView: UIView {
         buttonTitle.translatesAutoresizingMaskIntoConstraints = false
         buttonTitle.adjustsFontSizeToFitWidth = true
         buttonTitle.textAlignment = .Center
-        buttonTitle.textColor = UIColor.darkGrayColor()
+        buttonTitle.textColor = buttonTitleColor
         buttonTitle.text = "BUTTON"
     }
     
@@ -148,22 +179,21 @@ class LaunchView: UIView {
         statusLabel.setContentHuggingPriority(251.0, forAxis: .Vertical)
         statusLabel.adjustsFontSizeToFitWidth = true
         statusLabel.textAlignment = .Center
-        statusLabel.textColor = UIColor.whiteColor()
+        statusLabel.textColor = statusTextColor
         statusLabel.text = "STATUS"
         
         statusLight.translatesAutoresizingMaskIntoConstraints = false
-        statusLight.backgroundColor = UIColor.darkGrayColor()
-        statusLight.layer.borderColor = UIColor.whiteColor().CGColor
+        statusLight.backgroundColor = statusColor
+        statusLight.layer.borderColor = statusTextColor.CGColor
         statusLight.layer.borderWidth = 2.0
         statusLight.layer.cornerRadius = 16.0
-        statusLight.clipsToBounds = true
     }
     
     private func configureCountdown() {
         countdown.translatesAutoresizingMaskIntoConstraints = false
         countdown.adjustsFontSizeToFitWidth = true
         countdown.textAlignment = .Center
-        countdown.textColor = UIColor.whiteColor()
+        countdown.textColor = countdownColor
         countdown.text = "00"
     }
     

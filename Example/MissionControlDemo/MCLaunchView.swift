@@ -18,36 +18,57 @@ enum LaunchState: String {
 }
 
 class MCLaunchView: LaunchView {
+    
+    // MARK: - Properties
+    
+    var state: LaunchState = .Offline {
+        didSet {
+            updateUIForState(state)
+        }
+    }
 
+    var blinkTimer: NSTimer?
+    var statusLightOffColor = UIColor(hex: "#4A4A4A")
+    var statusLightOn = false
+    
+    // MARK: - Lifecycle
+    
     override func commonInit() {
         super.commonInit()
         
         configureUI()
         updateUIForState(.Offline)
+        startBlinkingStatusLight()
     }
+    
+    // MARK: - UI
     
     private func configureUI() {
         padding = 24.0
         
-        gradientLayer.colors = [UIColor(hex: "000000").CGColor, UIColor(hex: "4A90E2").CGColor]
+        buttonColor = UIColor.whiteColor()
+        buttonHighlightColor = UIColor(hex: "#E4F6F6")
+        statusTextColor = UIColor.whiteColor()
+        countdownColor = UIColor.whiteColor()
         
-        button.backgroundColor = UIColor.whiteColor()
+        gradientLayer.colors = [UIColor(hex: "#000000").CGColor, UIColor(hex: "#4A90E2").CGColor]
+        
         buttonTitle.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
-        
         statusLabel.font = UIFont(name: "Nasa-Display", size: 40.0)
-        statusLabel.textColor = UIColor.whiteColor()
-        
         countdown.font = UIFont(name: "Nasa-Display", size: 256.0)
     }
     
     private func updateUIForState(state: LaunchState) {
-        button.layer.borderColor = colorForState(state).CGColor
-        buttonTitle.textColor = colorForState(state)
-        buttonTitle.text = commandForState(state)
+        statusColor = colorForState(state)
         
-        statusLight.backgroundColor = colorForState(state)
+        if state == .Offline {
+            statusLight.backgroundColor = statusLightOffColor
+            button.layer.borderColor = statusLightOffColor.CGColor
+        }
+        
+        buttonTitle.text = commandForState(state)
         statusLabel.text = "STATUS: \(state.rawValue.capitalizedString)"
-
+        
         countdown.alpha = state == .Offline ? 0.1 : 1.0
         countdown.text = "00"
     }
@@ -55,7 +76,7 @@ class MCLaunchView: LaunchView {
     private func colorForState(state: LaunchState) -> UIColor {
         switch state {
         case .Offline:
-            return UIColor(hex: "#4A4A4A")
+            return UIColor(hex: "#F8E71C")
         case .Ready:
             return UIColor(hex: "#7ED321")
         case .Countdown:
@@ -78,6 +99,49 @@ class MCLaunchView: LaunchView {
         case .Launched, .Failed, .Aborted:
             return "RETRY"
         }
+    }
+    
+    // MARK: - Blink
+    
+    func startBlinkingStatusLight() {
+        blinkTimer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+                                                            target: self,
+                                                            selector: #selector(blinkStatusLight),
+                                                            userInfo: nil, repeats: true)
+    }
+    
+    func stopBlinkingStatusLight() {
+        blinkTimer?.invalidate()
+        blinkTimer = nil
+    }
+    
+    @objc func blinkStatusLight() {
+        if statusLightOn {
+            statusLightOn = false
+            UIView.animateWithDuration(0.3) {
+                self.turnStatusLightOff()
+            }
+        } else {
+            statusLightOn = true
+            UIView.animateWithDuration(0.3) {
+                self.turnStatusLightOn()
+            }
+        }
+    }
+    
+    func turnStatusLightOn() {
+        let color = colorForState(state)
+        statusLight.backgroundColor = color
+        
+        statusLight.layer.shadowColor = color.CGColor
+        statusLight.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        statusLight.layer.shadowOpacity = 1.0
+        statusLight.layer.shadowRadius = 5.0
+    }
+    
+    func turnStatusLightOff() {
+        statusLight.backgroundColor = statusLightOffColor
+        statusLight.layer.shadowOpacity = 0.0
     }
 
 }
