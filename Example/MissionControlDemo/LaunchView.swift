@@ -16,10 +16,13 @@ class LaunchView: UIView {
     let gradient = UIView()
     let gradientLayer = CAGradientLayer()
 
-    let button = UIButton()
-    let logoImage = UIImageView()
+    let button = UIView()
+    let buttonImage = UIImageView()
+    let buttonTitle = UILabel()
+    
     let statusLabel = UILabel()
     let statusLight = UIView()
+    
     let countdown = UILabel()
     
     // MARK: - Properties
@@ -56,6 +59,51 @@ class LaunchView: UIView {
         gradientLayer.frame = gradient.bounds
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        
+        if touchesInsideView(touches, view: button) {
+            highlightButton()
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesMoved(touches, withEvent: event)
+        
+        if !touchesInsideView(touches, view: button) {
+            restoreButton()
+        }
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesEnded(touches, withEvent: event)
+        
+        if touchesInsideView(touches, view: button) {
+            restoreButton()
+        }
+    }
+    
+    private func touchesInsideView(touches: Set<UITouch>, view: UIView) -> Bool {
+        guard let touch = touches.first else { return false }
+        let location = touch.locationInView(view)
+        let insideView = CGRectContainsPoint(view.bounds, location)
+        return insideView
+    }
+    
+    private func highlightButton() {
+        UIView.animateWithDuration(0.2, animations: {
+            self.button.backgroundColor = UIColor.lightGrayColor()
+            self.buttonImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+        })
+    }
+    
+    private func restoreButton() {
+        UIView.animateWithDuration(0.2, animations: {
+            self.button.backgroundColor = UIColor.whiteColor()
+            self.buttonImage.transform = CGAffineTransformIdentity
+        })
+    }
+    
     // MARK: - Configure Outlets
     
     private func configureOutlets() {
@@ -77,23 +125,28 @@ class LaunchView: UIView {
     }
     
     private func configureButton() {
-        logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.image = UIImage(named: "appculture")
-        
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.whiteColor()
         button.layer.borderColor = UIColor.darkGrayColor().CGColor
         button.layer.borderWidth = 10.0
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
-        button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-        button.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
-        button.setTitle("BUTTON", forState: .Normal)
+
+        buttonImage.translatesAutoresizingMaskIntoConstraints = false
+        buttonImage.contentMode = .ScaleAspectFill
+        buttonImage.image = UIImage(named: "appculture")
+        
+        buttonTitle.translatesAutoresizingMaskIntoConstraints = false
+        buttonTitle.adjustsFontSizeToFitWidth = true
+        buttonTitle.textAlignment = .Center
+        buttonTitle.textColor = UIColor.darkGrayColor()
+        buttonTitle.text = "BUTTON"
     }
     
     private func configureStatus() {
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.setContentHuggingPriority(251.0, forAxis: .Vertical)
+        statusLabel.adjustsFontSizeToFitWidth = true
         statusLabel.textAlignment = .Center
         statusLabel.textColor = UIColor.whiteColor()
         statusLabel.text = "STATUS"
@@ -108,6 +161,7 @@ class LaunchView: UIView {
     
     private func configureCountdown() {
         countdown.translatesAutoresizingMaskIntoConstraints = false
+        countdown.adjustsFontSizeToFitWidth = true
         countdown.textAlignment = .Center
         countdown.textColor = UIColor.whiteColor()
         countdown.text = "00"
@@ -116,7 +170,8 @@ class LaunchView: UIView {
     // MARK: - Configure Layout
     
     private func configureHierarchy() {
-        button.addSubview(logoImage)
+        button.addSubview(buttonImage)
+        button.addSubview(buttonTitle)
         
         gradient.addSubview(button)
         gradient.addSubview(statusLabel)
@@ -127,8 +182,8 @@ class LaunchView: UIView {
     }
     
     override func updateConstraints() {
-        NSLayoutConstraint.deactivateConstraints(allConstraints)
-        NSLayoutConstraint.activateConstraints(allConstraints)
+        removeConstraints(constraints)
+        addConstraints(allConstraints)
         super.updateConstraints()
     }
     
@@ -136,7 +191,7 @@ class LaunchView: UIView {
     
     private var allConstraints: [NSLayoutConstraint] {
         var constraints = gradientConstraints
-        constraints += buttonConstraints + logoConstraints
+        constraints += buttonConstraints + buttonImageConstraints + buttonTitleConstraints
         constraints += statusLabelConstraints + statusLightConstraints
         constraints += countdownConstraints
         return constraints
@@ -158,12 +213,19 @@ class LaunchView: UIView {
         return [leading, trailing, bottom, height]
     }
     
-    private var logoConstraints: [NSLayoutConstraint] {
-        let leading = logoImage.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor, constant: 20.0)
-        let centerY = logoImage.centerYAnchor.constraintEqualToAnchor(button.centerYAnchor)
-        let width = logoImage.widthAnchor.constraintEqualToConstant(46.0)
-        let height = logoImage.heightAnchor.constraintEqualToConstant(49.0)
-        return [leading, centerY, width, height]
+    private var buttonImageConstraints: [NSLayoutConstraint] {
+        let leading = buttonImage.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor, constant: 20.0)
+        let top = buttonImage.topAnchor.constraintEqualToAnchor(button.topAnchor, constant: 22.0)
+        let bottom = buttonImage.bottomAnchor.constraintEqualToAnchor(button.bottomAnchor, constant: -22.0)
+        let width = buttonImage.widthAnchor.constraintEqualToAnchor(buttonImage.heightAnchor)
+        return [leading, top, bottom, width]
+    }
+    
+    private var buttonTitleConstraints: [NSLayoutConstraint] {
+        let leading = buttonTitle.leadingAnchor.constraintEqualToAnchor(buttonImage.trailingAnchor, constant: 12.0)
+        let trailing = buttonTitle.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor, constant: -22.0)
+        let centerY = buttonTitle.centerYAnchor.constraintEqualToAnchor(button.centerYAnchor)
+        return [leading, trailing, centerY]
     }
     
     private var statusLabelConstraints: [NSLayoutConstraint] {
@@ -182,8 +244,8 @@ class LaunchView: UIView {
     }
     
     private var countdownConstraints: [NSLayoutConstraint] {
-        let leading = countdown.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor)
-        let trailing = countdown.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor)
+        let leading = countdown.leadingAnchor.constraintEqualToAnchor(leadingAnchor)
+        let trailing = countdown.trailingAnchor.constraintEqualToAnchor(trailingAnchor)
         let top = countdown.topAnchor.constraintEqualToAnchor(topAnchor)
         let bottom = countdown.bottomAnchor.constraintEqualToAnchor(statusLight.topAnchor)
         return [leading, trailing, top, bottom]
@@ -194,7 +256,7 @@ class LaunchView: UIView {
     override func prepareForInterfaceBuilder() {
         let bundle = NSBundle(forClass: self.dynamicType)
         let image = UIImage(named: "appculture", inBundle: bundle, compatibleWithTraitCollection: traitCollection)
-        logoImage.image = image
+        buttonImage.image = image
     }
     
 }

@@ -27,13 +27,12 @@ class MCLaunchView: LaunchView {
     }
     
     private func configureUI() {
-        padding = 32.0
+        padding = 24.0
         
         gradientLayer.colors = [UIColor(hex: "000000").CGColor, UIColor(hex: "4A90E2").CGColor]
         
         button.backgroundColor = UIColor.whiteColor()
-        button.titleLabel?.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 54.0, bottom: 0, right: 0)
+        buttonTitle.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
         
         statusLabel.font = UIFont(name: "Nasa-Display", size: 40.0)
         statusLabel.textColor = UIColor.whiteColor()
@@ -43,9 +42,8 @@ class MCLaunchView: LaunchView {
     
     private func updateUIForState(state: LaunchState) {
         button.layer.borderColor = colorForState(state).CGColor
-        button.setTitleColor(colorForState(state), forState: .Normal)
-        button.setTitleColor(colorForState(state).colorWithAlphaComponent(0.5), forState: .Highlighted)
-        button.setTitle(commandForState(state), forState: .Normal)
+        buttonTitle.textColor = colorForState(state)
+        buttonTitle.text = commandForState(state)
         
         statusLight.backgroundColor = colorForState(state)
         statusLabel.text = "STATUS: \(state.rawValue.capitalizedString)"
