@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MissionControl
 
 protocol LaunchDelegate: class {
     
@@ -52,7 +53,16 @@ class LaunchBrain {
             self.didTapButton(sender)
         }
         
-        updateUIForState(.Offline)
+        updateUI()
+        
+        /// - TODO: implement delegate callbacks
+        let center = NSNotificationCenter.defaultCenter()
+        let notification = MissionControl.Notification.ConfigRefreshed
+        center.addObserver(self, selector: #selector(updateUI), name: notification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     // MARK: - Actions
@@ -60,7 +70,12 @@ class LaunchBrain {
     func didTapButton(sender: AnyObject) {
         switch state {
         case .Offline:
-            state = .Ready
+            /// - TODO: implement force sync parameter
+            if ConfigBool("Ready") {
+                state = .Ready
+            } else {
+                state = .Failed
+            }
         case .Ready:
             state = .Countdown
         case .Countdown:
@@ -71,6 +86,12 @@ class LaunchBrain {
     }
     
     // MARK: - UI
+    
+    @objc func updateUI() {
+        dispatch_async(dispatch_get_main_queue()) { 
+            self.updateUIForState(self.state)
+        }
+    }
     
     private func updateUIForState(state: LaunchState) {
         updateUIForAnyState(state)
@@ -112,18 +133,20 @@ class LaunchBrain {
     }
     
     private func updateUIForReadyState() {
-        seconds = 10
+        seconds = ConfigInt("CountdownDuration", 10)
     }
     
     private func updateUIForCountdownState() {
         startCountdown()
-        view.rotateButtonImageWithDuration(2.0)
+        let duration = ConfigDouble("CountdownRotationDuration", 2.0)
+        view.rotateButtonImageWithDuration(duration)
         view.startBlinkingStatusLight(timeInterval: 0.25)
     }
     
     private func updateUIForLaunchedState() {
         view.stopRotatingButtonImage()
-        view.rotateButtonImageWithDuration(1.0)
+        let duration = ConfigDouble("LaunchedRotationDuration", 1.0)
+        view.rotateButtonImageWithDuration(duration)
         view.countdown.text = "OK"
     }
     
@@ -154,17 +177,20 @@ class LaunchBrain {
     }
     
     private func colorForState(state: LaunchState) -> UIColor {
+        /// - TODO: implement persistance of latest settings
         switch state {
         case .Offline:
-            return UIColor(hex: "#F8E71C")
+            return UIColor(hex: ConfigString("OfflineColor", "#F8E71C"))
         case .Ready:
-            return UIColor(hex: "#7ED321")
+            return UIColor(hex: ConfigString("ReadyColor", "#7ED321"))
         case .Countdown:
-            return UIColor(hex: "#F5A623")
+            return UIColor(hex: ConfigString("CountdownColor", "#F5A623"))
         case .Launched:
-            return UIColor(hex: "#BD10E0")
-        case .Failed, .Aborted:
-            return UIColor(hex: "#D0021B")
+            return UIColor(hex: ConfigString("LaunchedColor", "#BD10E0"))
+        case .Failed:
+            return UIColor(hex: ConfigString("FailedColor", "#D0021B"))
+        case .Aborted:
+            return UIColor(hex: ConfigString("AbortedColor", "#D0021B"))
         }
     }
     
@@ -183,11 +209,16 @@ class LaunchBrain {
     }
     
     @objc func timerTick(sender: NSTimer) {
-        if seconds - 1 >= 0 {
-            seconds -= 1
+        /// - TODO: implement force sync parameter
+        if ConfigBool("Abort") {
+            state = .Aborted
         } else {
-            stopCountdown()
-            state = .Launched
+            if seconds - 1 >= 0 {
+                seconds -= 1
+            } else {
+                stopCountdown()
+                state = .Launched
+            }
         }
     }
     
