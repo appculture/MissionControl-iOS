@@ -28,18 +28,18 @@ public class MissionControl {
     /// Constants for keys of sent NSNotification objects.
     public struct Notification {
         /// This notification is sent only the first time when local config is refreshed from remote config.
-        static let ConfigLoaded = "MissionControl.ConfigLoaded"
+        public static let ConfigLoaded = "MissionControl.ConfigLoaded"
         /// This notification is sent each time when local config is refreshed from remote config.
-        static let ConfigRefreshed = "MissionControl.ConfigRefreshed"
+        public static let ConfigRefreshed = "MissionControl.ConfigRefreshed"
         /// This notification is sent when refreshing local config from remote config failed.
-        static let ConfigRefreshFailed = "MissionControl.ConfigRefreshFailed"
+        public static let ConfigRefreshFailed = "MissionControl.ConfigRefreshFailed"
         
         /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
-        struct UserInfo {
+        public struct UserInfo {
             /// Previous value of `config` property (before refreshing config from remote)
-            static let OldConfigKey = "MissionControl.OldConfig"
+            public static let OldConfigKey = "MissionControl.OldConfig"
             /// Current value of `config` property (after refreshing config from remote)
-            static let NewConfigKey = "MissionControl.NewConfig"
+            public static let NewConfigKey = "MissionControl.NewConfig"
         }
     }
     

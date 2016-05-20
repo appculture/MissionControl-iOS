@@ -15,7 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        MissionControl.launch()
+        
+        let url = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
+        MissionControl.launch(remoteConfigURL: url)
+        
         return true
     }
 
@@ -42,4 +45,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-
