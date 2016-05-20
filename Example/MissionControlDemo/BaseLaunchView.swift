@@ -20,12 +20,14 @@ class BaseLaunchView: UIView {
     let buttonImage = UIImageView()
     let buttonTitle = UILabel()
     
-    let statusLabel = UILabel()
+    let statusTitle = UILabel()
     let statusLight = UIView()
     
     let countdown = UILabel()
     
     // MARK: - Properties
+    
+    var didTapButtonAction: ((sender: AnyObject) -> Void)?
     
     var padding: CGFloat = 24.0
     
@@ -41,16 +43,15 @@ class BaseLaunchView: UIView {
         }
     }
     
-    var statusColor = UIColor.darkGrayColor() {
+    var statusLightColor = UIColor.darkGrayColor() {
         didSet {
-            button.layer.borderColor = statusColor.CGColor
-            statusLight.backgroundColor = statusColor
+            statusLight.backgroundColor = statusLightColor
         }
     }
-    var statusTextColor = UIColor.whiteColor() {
+    var statusTitleColor = UIColor.whiteColor() {
         didSet {
-            statusLabel.textColor = statusTextColor
-            statusLight.layer.borderColor = statusTextColor.CGColor
+            statusTitle.textColor = statusTitleColor
+            statusLight.layer.borderColor = statusTitleColor.CGColor
         }
     }
     
@@ -111,6 +112,9 @@ class BaseLaunchView: UIView {
         
         if touchesInsideView(touches, view: button) {
             restoreButton()
+            if let action = didTapButtonAction {
+                action(sender: button)
+            }
         }
     }
     
@@ -158,7 +162,7 @@ class BaseLaunchView: UIView {
     private func configureButton() {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = buttonColor
-        button.layer.borderColor = statusColor.CGColor
+        button.layer.borderColor = statusLightColor.CGColor
         button.layer.borderWidth = 10.0
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
@@ -175,16 +179,16 @@ class BaseLaunchView: UIView {
     }
     
     private func configureStatus() {
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        statusLabel.setContentHuggingPriority(251.0, forAxis: .Vertical)
-        statusLabel.adjustsFontSizeToFitWidth = true
-        statusLabel.textAlignment = .Center
-        statusLabel.textColor = statusTextColor
-        statusLabel.text = "STATUS"
+        statusTitle.translatesAutoresizingMaskIntoConstraints = false
+        statusTitle.setContentHuggingPriority(251.0, forAxis: .Vertical)
+        statusTitle.adjustsFontSizeToFitWidth = true
+        statusTitle.textAlignment = .Center
+        statusTitle.textColor = statusTitleColor
+        statusTitle.text = "STATUS"
         
         statusLight.translatesAutoresizingMaskIntoConstraints = false
-        statusLight.backgroundColor = statusColor
-        statusLight.layer.borderColor = statusTextColor.CGColor
+        statusLight.backgroundColor = statusLightColor
+        statusLight.layer.borderColor = statusTitleColor.CGColor
         statusLight.layer.borderWidth = 2.0
         statusLight.layer.cornerRadius = 16.0
     }
@@ -204,7 +208,7 @@ class BaseLaunchView: UIView {
         button.addSubview(buttonTitle)
         
         gradient.addSubview(button)
-        gradient.addSubview(statusLabel)
+        gradient.addSubview(statusTitle)
         gradient.addSubview(statusLight)
         gradient.addSubview(countdown)
         
@@ -222,7 +226,7 @@ class BaseLaunchView: UIView {
     private var allConstraints: [NSLayoutConstraint] {
         var constraints = gradientConstraints
         constraints += buttonConstraints + buttonImageConstraints + buttonTitleConstraints
-        constraints += statusLabelConstraints + statusLightConstraints
+        constraints += statusTitleConstraints + statusLightConstraints
         constraints += countdownConstraints
         return constraints
     }
@@ -258,16 +262,16 @@ class BaseLaunchView: UIView {
         return [leading, trailing, centerY]
     }
     
-    private var statusLabelConstraints: [NSLayoutConstraint] {
-        let leading = statusLabel.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor)
-        let trailing = statusLabel.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor)
-        let bottom = statusLabel.bottomAnchor.constraintEqualToAnchor(button.topAnchor, constant: -padding)
+    private var statusTitleConstraints: [NSLayoutConstraint] {
+        let leading = statusTitle.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor)
+        let trailing = statusTitle.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor)
+        let bottom = statusTitle.bottomAnchor.constraintEqualToAnchor(button.topAnchor, constant: -padding)
         return [leading, trailing, bottom]
     }
     
     private var statusLightConstraints: [NSLayoutConstraint] {
         let centerX = statusLight.centerXAnchor.constraintEqualToAnchor(centerXAnchor)
-        let bottom = statusLight.bottomAnchor.constraintEqualToAnchor(statusLabel.topAnchor, constant: -padding)
+        let bottom = statusLight.bottomAnchor.constraintEqualToAnchor(statusTitle.topAnchor, constant: -padding)
         let width = statusLight.widthAnchor.constraintEqualToConstant(32.0)
         let height = statusLight.heightAnchor.constraintEqualToConstant(32.0)
         return [centerX, bottom, width, height]
