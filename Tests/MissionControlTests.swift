@@ -209,7 +209,7 @@ class MissionControlTests: XCTestCase {
     
     func confirmRemoteConfigState() {
         let config = MissionControl.config
-        XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
+        XCTAssertEqual(config.count, 4, "Config should contain all settings from remote config.")
         
         let date = MissionControl.lastRefreshDate
         XCTAssertNotNil(date, "Initial last refresh date should not be nil.")

@@ -107,6 +107,8 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Bool {
         return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Bool {
+        return cachedValue
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Bool {
         return localValue
     } else {
@@ -125,6 +127,8 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
 public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Int {
         return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Int {
+        return cachedValue
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Int {
         return localValue
     } else {
@@ -143,6 +147,8 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Double {
         return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Double {
+        return cachedValue
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Double {
         return localValue
     } else {
@@ -161,6 +167,8 @@ public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
 public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? String {
         return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? String {
+        return cachedValue
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? String {
         return localValue
     } else {
@@ -180,11 +188,27 @@ class ACMissionControl {
     
     var localConfig: [String : AnyObject]?
     
+    var cachedConfig: [String : AnyObject]? {
+        get {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let key = String(self.dynamicType)
+            let config = userDefaults.objectForKey(key) as? [String : AnyObject]
+            return config
+        }
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let key = String(self.dynamicType)
+            userDefaults.setObject(newValue, forKey: key)
+            userDefaults.synchronize()
+        }
+    }
+    
     var remoteConfig: [String : AnyObject]? {
         didSet {
             if let newConfig = remoteConfig {
+                cachedConfig = newConfig
                 lastRefreshDate = NSDate()
-                
+
                 let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
                 if oldValue == nil {
                     sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
@@ -230,9 +254,10 @@ class ACMissionControl {
     
     func reset() {
         localConfig = nil
+        cachedConfig = nil
         remoteConfig = nil
-        remoteURL = nil
         lastRefreshDate = nil
+        remoteURL = nil
     }
     
     private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
