@@ -122,7 +122,7 @@ class MissionControlTests: XCTestCase {
         XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
         
         let date = MissionControl.lastRefreshDate
-        XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
+        XCTAssertNil(date, "Initial last refresh date should be nil.")
         
         confirmLocalConfigAccessorsWithoutDefaultValues()
         confirmLocalConfigAccessorsWithDefaultValues()
