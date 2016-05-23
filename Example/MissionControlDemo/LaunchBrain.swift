@@ -125,7 +125,9 @@ class LaunchBrain {
     }
     
     private func updateUIForOfflineState() {
+        view.stopAnimatingGradient()
         view.stopRotatingButtonImage()
+        
         view.button.layer.borderColor = view.statusLightOffColor.CGColor
         view.countdown.alpha = 0.1
         seconds = 0
@@ -144,10 +146,13 @@ class LaunchBrain {
     }
     
     private func updateUIForLaunchedState() {
+        view.countdown.text = "OK"
+        
+        view.animateGradientWithDuration(4.0)
+        
         view.stopRotatingButtonImage()
         let duration = ConfigDouble("LaunchedRotationDuration", 1.0)
         view.rotateButtonImageWithDuration(duration)
-        view.countdown.text = "OK"
     }
     
     private func updateUIForFailedState() {
