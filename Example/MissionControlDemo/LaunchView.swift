@@ -34,12 +34,12 @@ class LaunchView: BaseLaunchView {
     override func commonInit() {
         super.commonInit()
         
-        configureUI()
+        configureDefaultUI()
     }
     
     // MARK: - UI
     
-    private func configureUI() {
+    private func configureDefaultUI() {
         padding = 24.0
         
         gradientLayer.colors = [UIColor(hex: "#000000").CGColor, UIColor(hex: "#4A90E2").CGColor]

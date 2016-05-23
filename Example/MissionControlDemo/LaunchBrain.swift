@@ -113,6 +113,10 @@ class LaunchBrain {
     }
     
     private func updateUIForAnyState(state: LaunchState) {
+        let color1 = UIColor(hex: ConfigString("TopColor", "#000000"))
+        let color2 = UIColor(hex: ConfigString("BottomColor", "#4A90E2"))
+        view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
+        
         view.button.layer.borderColor = colorForState(state).CGColor
         view.buttonTitle.text = commandForState(state)
         
