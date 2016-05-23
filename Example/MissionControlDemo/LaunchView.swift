@@ -34,15 +34,16 @@ class LaunchView: BaseLaunchView {
     override func commonInit() {
         super.commonInit()
         
-        configureUI()
+        configureDefaultUI()
     }
     
     // MARK: - UI
     
-    private func configureUI() {
+    private func configureDefaultUI() {
         padding = 24.0
         
         gradientLayer.colors = [UIColor(hex: "#000000").CGColor, UIColor(hex: "#4A90E2").CGColor]
+        gradientLayer.locations = [0.0, 1.0]
         
         buttonColor = UIColor.whiteColor()
         buttonHighlightColor = UIColor(hex: "#E4F6F6")
@@ -86,7 +87,7 @@ class LaunchView: BaseLaunchView {
         statusLight.layer.shadowOpacity = 0.0
     }
     
-    // MARK: - Rotation
+    // MARK: - Button Image Rotation
     
     func rotateButtonImageWithDuration(duration: Double) {
         buttonImage.rotate(withDuration: duration)
@@ -94,6 +95,16 @@ class LaunchView: BaseLaunchView {
     
     func stopRotatingButtonImage() {
         buttonImage.stopRotation()
+    }
+    
+    // MARK: - Gradient Animation
+    
+    func animateGradientWithDuration(duration: Double) {
+        animateGradientLayer(gradientLayer, withDuration: duration)
+    }
+    
+    func stopAnimatingGradient() {
+        stopGradientAnimation(gradientLayer)
     }
 
 }
@@ -117,6 +128,69 @@ private extension UIView {
     
     func stopRotation() {
         layer.removeAnimationForKey(UIView.rotationKey)
+    }
+    
+    @nonobjc static let gradientKey = "AEGradientAnimation"
+    
+    func animateGradientLayer(gradientLayer: CAGradientLayer, withDuration duration: Double = 2.0) {
+        if gradientLayer.animationForKey(UIView.gradientKey) == nil {
+            
+            let sequenceDuration = duration / 4.0
+            let currentLocations = [0.0, 1.0]
+            let newLocations = [1.0, 1.0]
+            
+            let color1 = gradientLayer.colors![0]
+            let color2 = gradientLayer.colors![1]
+            
+            // 1 / 4
+            
+            let locationAnimation1 = CABasicAnimation(keyPath: "locations")
+            locationAnimation1.fromValue = currentLocations
+            locationAnimation1.toValue = newLocations
+            locationAnimation1.duration = sequenceDuration
+            locationAnimation1.beginTime = 0.0
+            
+            // 2 / 4
+            
+            let colorAnimation1 = CABasicAnimation(keyPath: "colors")
+            colorAnimation1.fromValue = [color1, color1]
+            colorAnimation1.toValue = gradientLayer.colors?.reverse()
+            colorAnimation1.duration = sequenceDuration
+            colorAnimation1.removedOnCompletion = false
+            colorAnimation1.fillMode = kCAFillModeForwards
+            colorAnimation1.beginTime = sequenceDuration
+            
+            // 3 / 4
+            
+            let locationAnimation2 = CABasicAnimation(keyPath: "locations")
+            locationAnimation2.fromValue = currentLocations
+            locationAnimation2.toValue = newLocations
+            locationAnimation2.duration = sequenceDuration
+            locationAnimation2.beginTime = 2 * sequenceDuration
+            
+            // 4 / 4
+            
+            let colorAnimation2 = CABasicAnimation(keyPath: "colors")
+            colorAnimation2.fromValue = [color2, color2]
+            colorAnimation2.toValue = gradientLayer.colors
+            colorAnimation2.duration = sequenceDuration
+            colorAnimation2.removedOnCompletion = false
+            colorAnimation2.fillMode = kCAFillModeForwards
+            colorAnimation2.beginTime = 3 * sequenceDuration
+            
+            // Group
+            
+            let group = CAAnimationGroup()
+            group.duration = duration
+            group.animations = [locationAnimation1, colorAnimation1, locationAnimation2, colorAnimation2]
+            group.repeatCount = Float.infinity
+
+            gradientLayer.addAnimation(group, forKey: UIView.gradientKey)
+        }
+    }
+    
+    func stopGradientAnimation(gradientLayer: CAGradientLayer) {
+        gradientLayer.removeAnimationForKey(UIView.gradientKey)
     }
     
 }

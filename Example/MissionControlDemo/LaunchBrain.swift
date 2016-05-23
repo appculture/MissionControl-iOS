@@ -113,6 +113,10 @@ class LaunchBrain {
     }
     
     private func updateUIForAnyState(state: LaunchState) {
+        let color1 = UIColor(hex: ConfigString("TopColor", "#000000"))
+        let color2 = UIColor(hex: ConfigString("BottomColor", "#4A90E2"))
+        view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
+        
         view.button.layer.borderColor = colorForState(state).CGColor
         view.buttonTitle.text = commandForState(state)
         
@@ -125,7 +129,9 @@ class LaunchBrain {
     }
     
     private func updateUIForOfflineState() {
+        view.stopAnimatingGradient()
         view.stopRotatingButtonImage()
+        
         view.button.layer.borderColor = view.statusLightOffColor.CGColor
         view.countdown.alpha = 0.1
         seconds = 0
@@ -144,10 +150,13 @@ class LaunchBrain {
     }
     
     private func updateUIForLaunchedState() {
+        view.countdown.text = "OK"
+        
+        view.animateGradientWithDuration(4.0)
+        
         view.stopRotatingButtonImage()
         let duration = ConfigDouble("LaunchedRotationDuration", 1.0)
         view.rotateButtonImageWithDuration(duration)
-        view.countdown.text = "OK"
     }
     
     private func updateUIForFailedState() {
