@@ -43,6 +43,10 @@ class LaunchBrain {
     
     var timer: NSTimer?
     
+    private var launchForce: Double {
+        return 1.0 - ConfigDouble("LaunchForce", 0.5)
+    }
+    
     // MARK: - Init
     
     init(view: LaunchView, delegate: LaunchDelegate) {
@@ -144,18 +148,18 @@ class LaunchBrain {
     
     private func updateUIForCountdownState() {
         startCountdown()
-        let duration = ConfigDouble("CountdownRotationDuration", 2.0)
+        let duration = launchForce * 4
         view.rotateButtonImageWithDuration(duration)
         view.startBlinkingStatusLight(timeInterval: 0.25)
     }
     
     private func updateUIForLaunchedState() {
         view.countdown.text = "OK"
-        
-        view.animateGradientWithDuration(4.0)
+
+        view.animateGradientWithDuration(launchForce * 8)
         
         view.stopRotatingButtonImage()
-        let duration = ConfigDouble("LaunchedRotationDuration", 1.0)
+        let duration = launchForce * 2
         view.rotateButtonImageWithDuration(duration)
     }
     
