@@ -64,12 +64,12 @@ class LaunchBrain: MissionControlDelegate {
     
     // MARK: - MissionControlDelegate
     
-    func missionControlDidRefreshConfigFromRemote(old old: [String : AnyObject]?, new: [String : AnyObject]) {
+    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject]) {
         print("missionControlDidRefreshConfig")
         updateUIForState(state)
     }
     
-    func missionControlDidFailRefreshingConfigFromRemote(error error: ErrorType) {
+    func missionControlDidFailRefreshingConfig(error error: ErrorType) {
         print("missionControlDidFailRefreshingConfig")
     }
     
