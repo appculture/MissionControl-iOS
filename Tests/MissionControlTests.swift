@@ -95,16 +95,16 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     }
     
     func testInitialAccessorsWithDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool, true)
+        let bool = ConfigBool(ConfigKey.TestBool, fallback: true)
         XCTAssertEqual(bool, true, "Should default to given value.")
         
-        let int = ConfigInt(ConfigKey.TestInt, 1984)
+        let int = ConfigInt(ConfigKey.TestInt, fallback: 1984)
         XCTAssertEqual(int, 1984, "Should default to given value.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
+        let double = ConfigDouble(ConfigKey.TestDouble, fallback: 21.08)
         XCTAssertEqual(double, 21.08, "Should default to given value.")
         
-        let string = ConfigString(ConfigKey.TestString, "Hello")
+        let string = ConfigString(ConfigKey.TestString, fallback: "Hello")
         XCTAssertEqual(string, "Hello", "Should default to given value.")
     }
     
@@ -142,19 +142,19 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     }
     
     func confirmLocalConfigAccessorsWithDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool, true)
+        let bool = ConfigBool(ConfigKey.TestBool, fallback: true)
         let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
         XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
         
-        let int = ConfigInt(ConfigKey.TestInt, 1984)
+        let int = ConfigInt(ConfigKey.TestInt, fallback: 1984)
         let expectedInt = localTestConfig[ConfigKey.TestInt] as! Int
         XCTAssertEqual(int, expectedInt, "Should default to value in local test config.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
+        let double = ConfigDouble(ConfigKey.TestDouble, fallback: 21.08)
         let expectedDouble = localTestConfig[ConfigKey.TestDouble] as! Double
         XCTAssertEqual(double, expectedDouble, "Should default to value in local test config.")
         
-        let string = ConfigString(ConfigKey.TestString, "Default")
+        let string = ConfigString(ConfigKey.TestString, fallback: "Default")
         let expectedString = localTestConfig[ConfigKey.TestString] as! String
         XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
     }

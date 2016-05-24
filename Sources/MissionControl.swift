@@ -132,14 +132,21 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 // MARK: - Accessors
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
+    Accessor for retreiving `Bool` setting for the given key.
+ 
+    It will get to proper setting by following this order:
+    1. Remote setting from memory (from last refresh).
+    2. Remote setting from disk cache (if not online).
+    3. Local setting from disk (if provided in `localConfig`).
+    4. Given fallback value (if provided).
+    5. Default fallback value (false)
 
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to false.
+    - parameter fallback: Default value for this setting if not available from configs. Defaults to false.
 
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+    - returns: `Bool` setting for the given key.
 */
-public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
+public func ConfigBool(key: String, fallback: Bool = false) -> Bool {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Bool {
         return remoteValue
     } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Bool {
@@ -147,7 +154,7 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Bool {
         return localValue
     } else {
-        return defaultValue
+        return fallback
     }
 }
 
@@ -155,7 +162,7 @@ public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: B
     MissionControl.refresh({ (innerBlock) in
         do {
             let _ = try innerBlock()
-            completion(forced: ConfigBool(key, fallback))
+            completion(forced: ConfigBool(key, fallback: fallback))
         } catch {
            completion(forced: fallback)
         }
@@ -163,14 +170,21 @@ public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: B
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
-    
-    - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to 0.
- 
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+     Accessor for retreiving `Int` setting for the given key.
+     
+     It will get to proper setting by following this order:
+     1. Remote setting from memory (from last refresh).
+     2. Remote setting from disk cache (if not online).
+     3. Local setting from disk (if provided in `localConfig`).
+     4. Given fallback value (if provided).
+     5. Default fallback value (0)
+     
+     - parameter key: Key for the setting.
+     - parameter fallback: Default value for this setting if not available from configs. Defaults to 0.
+     
+     - returns: `Int` setting for the given key.
 */
-public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
+public func ConfigInt(key: String, fallback: Int = 0) -> Int {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Int {
         return remoteValue
     } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Int {
@@ -178,19 +192,26 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Int {
         return localValue
     } else {
-        return defaultValue
+        return fallback
     }
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
-
-    - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to 0.0.
-
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+     Accessor for retreiving `Double` setting for the given key.
+     
+     It will get to proper setting by following this order:
+     1. Remote setting from memory (from last refresh).
+     2. Remote setting from disk cache (if not online).
+     3. Local setting from disk (if provided in `localConfig`).
+     4. Given fallback value (if provided).
+     5. Default fallback value (0.0)
+     
+     - parameter key: Key for the setting.
+     - parameter fallback: Default value for this setting if not available from configs. Defaults to 0.0.
+     
+     - returns: `Double` setting for the given key.
 */
-public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
+public func ConfigDouble(key: String, fallback: Double = 0.0) -> Double {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Double {
         return remoteValue
     } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Double {
@@ -198,19 +219,26 @@ public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Double {
         return localValue
     } else {
-        return defaultValue
+        return fallback
     }
 }
 
 /**
-    Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
+    Accessor for retreiving `String` setting for the given key.
+
+    It will get to proper setting by following this order:
+    1. Remote setting from memory (from last refresh).
+    2. Remote setting from disk cache (if not online).
+    3. Local setting from disk (if provided in `localConfig`).
+    4. Given fallback value (if provided).
+    5. Default fallback value ("")
 
     - parameter key: Key for the setting.
-    - parameter defaultValue: Default value for the setting. Defaults to "".
+    - parameter fallback: Default value for this setting if not available from configs. Defaults to empty string.
 
-    - returns: Latest cached value for given key, or provided default value if remote config is not available.
+    - returns: `String` setting for the given key.
 */
-public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
+public func ConfigString(key: String, fallback: String = String()) -> String {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? String {
         return remoteValue
     } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? String {
@@ -218,7 +246,7 @@ public func ConfigString(key: String, _ defaultValue: String = String()) -> Stri
     } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? String {
         return localValue
     } else {
-        return defaultValue
+        return fallback
     }
 }
 

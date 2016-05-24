@@ -44,7 +44,7 @@ class LaunchBrain: MissionControlDelegate {
     var timer: NSTimer?
     
     private var launchForce: Double {
-        return 1.0 - ConfigDouble("LaunchForce", 0.5)
+        return 1.0 - ConfigDouble("LaunchForce", fallback: 0.5)
     }
     
     // MARK: - Init
@@ -131,8 +131,8 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForAnyState(state: LaunchState) {
-        let color1 = UIColor(hex: ConfigString("TopColor", "#000000"))
-        let color2 = UIColor(hex: ConfigString("BottomColor", "#4A90E2"))
+        let color1 = UIColor(hex: ConfigString("TopColor", fallback: "#000000"))
+        let color2 = UIColor(hex: ConfigString("BottomColor", fallback: "#4A90E2"))
         view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
         
         view.button.layer.borderColor = colorForState(state).CGColor
@@ -157,7 +157,7 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForReadyState() {
-        seconds = ConfigInt("CountdownDuration", 10)
+        seconds = ConfigInt("CountdownDuration", fallback: 10)
     }
     
     private func updateUIForCountdownState() {
@@ -203,17 +203,17 @@ class LaunchBrain: MissionControlDelegate {
     private func colorForState(state: LaunchState) -> UIColor {
         switch state {
         case .Offline:
-            return UIColor(hex: ConfigString("OfflineColor", "#F8E71C"))
+            return UIColor(hex: ConfigString("OfflineColor", fallback: "#F8E71C"))
         case .Ready:
-            return UIColor(hex: ConfigString("ReadyColor", "#7ED321"))
+            return UIColor(hex: ConfigString("ReadyColor", fallback: "#7ED321"))
         case .Countdown:
-            return UIColor(hex: ConfigString("CountdownColor", "#F5A623"))
+            return UIColor(hex: ConfigString("CountdownColor", fallback: "#F5A623"))
         case .Launched:
-            return UIColor(hex: ConfigString("LaunchedColor", "#BD10E0"))
+            return UIColor(hex: ConfigString("LaunchedColor", fallback: "#BD10E0"))
         case .Failed:
-            return UIColor(hex: ConfigString("FailedColor", "#D0021B"))
+            return UIColor(hex: ConfigString("FailedColor", fallback: "#D0021B"))
         case .Aborted:
-            return UIColor(hex: ConfigString("AbortedColor", "#D0021B"))
+            return UIColor(hex: ConfigString("AbortedColor", fallback: "#D0021B"))
         }
     }
     
