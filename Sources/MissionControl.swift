@@ -47,12 +47,22 @@ public class MissionControl {
     
     /// The latest version of config dictionary, directly accessible, if needed.
     public class var config: [String : AnyObject] {
-        return ACMissionControl.sharedInstance.config ?? [String : AnyObject]()
+        let remoteConfig = ACMissionControl.sharedInstance.remoteConfig
+        let cachedConfig = ACMissionControl.sharedInstance.cachedConfig
+        let localConfig = ACMissionControl.sharedInstance.localConfig
+        let emptyConfig = [String : AnyObject]()
+        let relevantConfig = remoteConfig ?? cachedConfig ?? localConfig ?? emptyConfig
+        return relevantConfig
     }
     
-    /// Date of last successful refresh of local config from remote config.
-    public class var lastRefreshDate: NSDate? {
-        return ACMissionControl.sharedInstance.lastRefreshDate
+    /// Date of last successful refresh from remote.
+    public class var refreshDate: NSDate? {
+        return ACMissionControl.sharedInstance.refreshDate
+    }
+    
+    /// Date of last cached remote config.
+    public class var cacheDate: NSDate? {
+        return ACMissionControl.sharedInstance.cacheDate
     }
     
     // MARK: API
@@ -66,7 +76,7 @@ public class MissionControl {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
-        ACMissionControl.sharedInstance.config = localConfig
+        ACMissionControl.sharedInstance.localConfig = localConfig
         ACMissionControl.sharedInstance.remoteURL = url
     }
     
@@ -102,9 +112,15 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
-    guard let value = ACMissionControl.sharedInstance.config?[key] as? Bool
-        else { return defaultValue }
-    return value
+    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Bool {
+        return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Bool {
+        return cachedValue
+    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Bool {
+        return localValue
+    } else {
+        return defaultValue
+    }
 }
 
 /**
@@ -116,9 +132,15 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
-    guard let value = ACMissionControl.sharedInstance.config?[key] as? Int
-        else { return defaultValue }
-    return value
+    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Int {
+        return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Int {
+        return cachedValue
+    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Int {
+        return localValue
+    } else {
+        return defaultValue
+    }
 }
 
 /**
@@ -130,9 +152,15 @@ public func ConfigInt(key: String, _ defaultValue: Int = 0) -> Int {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
-    guard let value = ACMissionControl.sharedInstance.config?[key] as? Double
-        else { return defaultValue }
-    return value
+    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Double {
+        return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Double {
+        return cachedValue
+    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Double {
+        return localValue
+    } else {
+        return defaultValue
+    }
 }
 
 /**
@@ -144,9 +172,15 @@ public func ConfigDouble(key: String, _ defaultValue: Double = 0.0) -> Double {
     - returns: Latest cached value for given key, or provided default value if remote config is not available.
 */
 public func ConfigString(key: String, _ defaultValue: String = String()) -> String {
-    guard let value = ACMissionControl.sharedInstance.config?[key] as? String
-        else { return defaultValue }
-    return value
+    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? String {
+        return remoteValue
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? String {
+        return cachedValue
+    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? String {
+        return localValue
+    } else {
+        return defaultValue
+    }
 }
 
 // MARK: - ACMissionControl
@@ -159,19 +193,7 @@ class ACMissionControl {
     
     // MARK: Properties
     
-    var config: [String : AnyObject]? {
-        didSet {
-            if let newConfig = config {
-                lastRefreshDate = NSDate()
-                
-                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
-                if oldValue == nil {
-                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
-                }
-                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
-            }
-        }
-    }
+    var localConfig: [String : AnyObject]?
     
     var remoteURL: NSURL? {
         didSet {
@@ -187,7 +209,55 @@ class ACMissionControl {
         }
     }
     
-    var lastRefreshDate: NSDate?
+    var remoteConfig: [String : AnyObject]? {
+        didSet {
+            if let newConfig = remoteConfig {
+                refreshDate = NSDate()
+                
+                cachedConfig = newConfig
+                cacheDate = refreshDate
+                
+                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
+                if oldValue == nil {
+                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
+                }
+                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
+            }
+        }
+    }
+    
+    var refreshDate: NSDate?
+    
+    private struct Cache {
+        static let Config = "ACMissionControl.CachedConfig"
+        static let Date = "ACMissionControl.CacheDate"
+    }
+    
+    var cachedConfig: [String : AnyObject]? {
+        get {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let config = userDefaults.objectForKey(Cache.Config) as? [String : AnyObject]
+            return config
+        }
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            userDefaults.setObject(newValue, forKey: Cache.Config)
+            userDefaults.synchronize()
+        }
+    }
+    
+    var cacheDate: NSDate? {
+        get {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let config = userDefaults.objectForKey(Cache.Date) as? NSDate
+            return config
+        }
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            userDefaults.setObject(newValue, forKey: Cache.Date)
+            userDefaults.synchronize()
+        }
+    }
     
     // MARK: API
     
@@ -195,7 +265,7 @@ class ACMissionControl {
         getRemoteConfig { [unowned self] (block) in
             do {
                 let remoteConfig = try block()
-                self.config = remoteConfig
+                self.remoteConfig = remoteConfig
                 completion?({ })
             } catch {
                 let userInfo = ["Error" : "\(error)"]
@@ -207,10 +277,17 @@ class ACMissionControl {
     
     // MARK: Helpers
     
-    func reset() {
-        config = nil
+    func resetAll() {
+        localConfig = nil
+        cachedConfig = nil
+        remoteConfig = nil
+        refreshDate = nil
         remoteURL = nil
-        lastRefreshDate = nil
+    }
+    
+    func resetRemote() {
+        remoteConfig = nil
+        refreshDate = nil
     }
     
     private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
