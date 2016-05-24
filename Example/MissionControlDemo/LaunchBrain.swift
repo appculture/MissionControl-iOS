@@ -109,6 +109,7 @@ class LaunchBrain: MissionControlDelegate {
             updateUIForReadyState()
         case .Countdown:
             updateUIForCountdownState()
+            startCountdown()
         case .Launched:
             updateUIForLaunchedState()
         case .Failed:
@@ -149,7 +150,6 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForCountdownState() {
-        startCountdown()
         let duration = launchForce * 4
         view.rotateButtonImageWithDuration(duration)
         view.startBlinkingStatusLight(timeInterval: 0.25)
@@ -166,13 +166,11 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForFailedState() {
-        stopCountdown()
         view.countdown.text = "F"
         view.startBlinkingStatusLight(timeInterval: 0.5)
     }
     
     private func updateUIForAbortedState() {
-        stopCountdown()
         view.stopRotatingButtonImage()
         view.countdown.text = "A"
         view.startBlinkingStatusLight(timeInterval: 0.25)
@@ -211,10 +209,12 @@ class LaunchBrain: MissionControlDelegate {
     // MARK: - Countdown
     
     private func startCountdown() {
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
-                                                       target: self,
-                                                       selector: #selector(timerTick(_:)),
-                                                       userInfo: nil, repeats: true)
+        if timer == nil {
+            timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+                                                           target: self,
+                                                           selector: #selector(timerTick(_:)),
+                                                           userInfo: nil, repeats: true)
+        }
     }
     
     private func stopCountdown() {
@@ -225,6 +225,7 @@ class LaunchBrain: MissionControlDelegate {
     @objc func timerTick(sender: NSTimer) {
         /// - TODO: implement force sync parameter
         if ConfigBool("Abort") {
+            stopCountdown()
             state = .Aborted
         } else {
             if seconds - 1 >= 0 {
