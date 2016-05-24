@@ -71,6 +71,15 @@ class LaunchBrain: MissionControlDelegate {
     
     func missionControlDidFailRefreshingConfig(error error: ErrorType) {
         print("missionControlDidFailRefreshingConfig")
+        
+        stopCountdown()
+
+        switch state {
+        case .Countdown:
+            state = .Failed
+        default:
+            state = .Offline
+        }
     }
     
     // MARK: - Actions

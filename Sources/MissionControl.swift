@@ -265,10 +265,8 @@ class ACMissionControl {
     
     private func informListeners(oldConfig oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
         let userInfo = userInfoWithConfig(old: oldConfig, new: newConfig)
-        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-            self.delegate?.missionControlDidRefreshConfig(old: oldConfig, new: newConfig)
-            self.sendNotification(MissionControl.Notification.DidRefreshConfig, userInfo: userInfo)
-        }
+        delegate?.missionControlDidRefreshConfig(old: oldConfig, new: newConfig)
+        sendNotification(MissionControl.Notification.DidRefreshConfig, userInfo: userInfo)
     }
     
     var refreshDate: NSDate?
@@ -322,11 +320,9 @@ class ACMissionControl {
     }
     
     private func informListeners(error: ErrorType) {
-        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-            self.delegate?.missionControlDidFailRefreshingConfig(error: error)
-            let userInfo = ["Error" : "\(error)"]
-            self.sendNotification(MissionControl.Notification.DidFailRefreshingConfig, userInfo: userInfo)
-        }
+        delegate?.missionControlDidFailRefreshingConfig(error: error)
+        let userInfo = ["Error" : "\(error)"]
+        sendNotification(MissionControl.Notification.DidFailRefreshingConfig, userInfo: userInfo)
     }
     
     // MARK: Helpers
@@ -361,10 +357,8 @@ class ACMissionControl {
     }
     
     private func sendNotification(name: String, userInfo: [NSObject : AnyObject]? = nil) {
-        dispatch_async(dispatch_get_main_queue()) { 
-            let center = NSNotificationCenter.defaultCenter()
-            center.postNotificationName(name, object: self, userInfo: userInfo)
-        }
+        let center = NSNotificationCenter.defaultCenter()
+        center.postNotificationName(name, object: self, userInfo: userInfo)
     }
     
     private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
