@@ -22,7 +22,7 @@ enum LaunchState: String {
     case Aborted
 }
 
-class LaunchBrain {
+class LaunchBrain: MissionControlDelegate {
     
     // MARK: - Properties
     
@@ -53,20 +53,24 @@ class LaunchBrain {
         self.view = view
         self.delegate = delegate
         
+        MissionControl.delegate = self
+        
         self.view.didTapButtonAction = { sender in
             self.didTapButton(sender)
         }
         
         updateUI()
-        
-        /// - TODO: implement delegate callbacks
-        let center = NSNotificationCenter.defaultCenter()
-        let notification = MissionControl.Notification.ConfigRefreshed
-        center.addObserver(self, selector: #selector(updateUI), name: notification, object: nil)
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    // MARK: - MissionControlDelegate
+    
+    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject]) {
+        print("missionControlDidRefreshConfig")
+        updateUIForState(state)
+    }
+    
+    func missionControlDidFailRefreshingConfig(error error: ErrorType) {
+        print("missionControlDidFailRefreshingConfig")
     }
     
     // MARK: - Actions
@@ -91,8 +95,8 @@ class LaunchBrain {
     
     // MARK: - UI
     
-    @objc func updateUI() {
-        updateUIForState(self.state)
+    func updateUI() {
+        updateUIForState(state)
     }
     
     private func updateUIForState(state: LaunchState) {
@@ -188,7 +192,6 @@ class LaunchBrain {
     }
     
     private func colorForState(state: LaunchState) -> UIColor {
-        /// - TODO: implement persistance of latest settings
         switch state {
         case .Offline:
             return UIColor(hex: ConfigString("OfflineColor", "#F8E71C"))

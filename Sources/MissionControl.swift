@@ -27,14 +27,12 @@ public class MissionControl {
     
     /// Constants for keys of sent NSNotification objects.
     public struct Notification {
-        /// This notification is sent only the first time when local config is refreshed from remote config.
-        public static let ConfigLoaded = "MissionControl.ConfigLoaded"
-        /// This notification is sent each time when local config is refreshed from remote config.
-        public static let ConfigRefreshed = "MissionControl.ConfigRefreshed"
-        /// This notification is sent when refreshing local config from remote config failed.
-        public static let ConfigRefreshFailed = "MissionControl.ConfigRefreshFailed"
+        /// This notification is sent each time when config is refreshed from remote.
+        public static let DidRefreshConfig = "MissionControl.DidRefreshConfig"
+        /// This notification is sent when refreshing config from remote fails.
+        public static let DidFailRefreshingConfig = "MissionControl.DidFailRefreshingConfig"
         
-        /// Constants for keys of `userInfo` dictionary of sent NSNotification objects.
+        /// Constants for keys of `userInfo` dictionary inside sent `ConfigRefreshed` NSNotification objects.
         public struct UserInfo {
             /// Previous value of `config` property (before refreshing config from remote)
             public static let OldConfigKey = "MissionControl.OldConfig"
@@ -44,6 +42,12 @@ public class MissionControl {
     }
     
     // MARK: Properties
+    
+    /// Delegate for Mission Control.
+    public class var delegate: MissionControlDelegate? {
+        get { return ACMissionControl.sharedInstance.delegate }
+        set { ACMissionControl.sharedInstance.delegate = newValue }
+    }
     
     /// The latest version of config dictionary, directly accessible, if needed.
     public class var config: [String : AnyObject] {
@@ -91,6 +95,30 @@ public class MissionControl {
         ACMissionControl.sharedInstance.refresh(completion)
     }
     
+}
+
+// MARK: - MissionControlDelegate
+
+/**
+    Delegate for Mission Control.
+ 
+    All NSNotification events are also sent via this delegate.
+*/
+public protocol MissionControlDelegate: class {
+    /**
+        Called each time when config is refreshed from remote.
+     
+        - parameter old: Previous config (nil if it's the first refresh)
+        - parameter new: Current config
+    */
+    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject])
+    
+    /**
+        Called when refreshing config from remote fails.
+     
+        - parameter error: Error which happened during config refresh from remote.
+    */
+    func missionControlDidFailRefreshingConfig(error error: ErrorType)
 }
 
 // MARK: - Custom Types
@@ -193,6 +221,8 @@ class ACMissionControl {
     
     // MARK: Properties
     
+    weak var delegate: MissionControlDelegate?
+    
     var localConfig: [String : AnyObject]?
     
     var remoteURL: NSURL? {
@@ -216,13 +246,17 @@ class ACMissionControl {
                 
                 cachedConfig = newConfig
                 cacheDate = refreshDate
-                
-                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
-                if oldValue == nil {
-                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
-                }
-                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
+
+                informListeners(oldConfig: oldValue, newConfig: newConfig)
             }
+        }
+    }
+    
+    private func informListeners(oldConfig oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
+        let userInfo = userInfoWithConfig(old: oldConfig, new: newConfig)
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            self.delegate?.missionControlDidRefreshConfig(old: oldConfig, new: newConfig)
+            self.sendNotification(MissionControl.Notification.DidRefreshConfig, userInfo: userInfo)
         }
     }
     
@@ -268,10 +302,17 @@ class ACMissionControl {
                 self.remoteConfig = remoteConfig
                 completion?({ })
             } catch {
-                let userInfo = ["Error" : "\(error)"]
-                self.sendNotification(MissionControl.Notification.ConfigRefreshFailed, userInfo: userInfo)
+                self.informListeners(error)
                 completion?({ throw error })
             }
+        }
+    }
+    
+    private func informListeners(error: ErrorType) {
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            self.delegate?.missionControlDidFailRefreshingConfig(error: error)
+            let userInfo = ["Error" : "\(error)"]
+            self.sendNotification(MissionControl.Notification.DidFailRefreshingConfig, userInfo: userInfo)
         }
     }
     
@@ -283,6 +324,7 @@ class ACMissionControl {
         remoteConfig = nil
         refreshDate = nil
         remoteURL = nil
+        delegate = nil
     }
     
     func resetRemote() {
