@@ -48,7 +48,7 @@ public class MissionControl {
     /// Delegate for Mission Control.
     public class var delegate: MissionControlDelegate? {
         get { return ACMissionControl.sharedInstance.delegate }
-        set { ACMissionControl.sharedInstance.delegate = delegate }
+        set { ACMissionControl.sharedInstance.delegate = newValue }
     }
     
     /// The latest version of config dictionary, directly accessible, if needed.
@@ -115,6 +115,13 @@ public protocol MissionControlDelegate: class {
     
     /// Called when refreshing local config from remote fails. (Notification.ConfigRefreshFailed)
     func missionControlDidFailRefreshingConfig(error: ErrorType)
+}
+
+/// Making all methods in MissionControlDelegate optional (empty implementation).
+public extension MissionControlDelegate {
+    func missionControlDidLoadConfig(config: [String : AnyObject]) { }
+    func missionControlDidRefreshConfig(oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) { }
+    func missionControlDidFailRefreshingConfig(error: ErrorType) { }
 }
 
 // MARK: - Custom Types
@@ -242,17 +249,22 @@ class ACMissionControl {
                 
                 cachedConfig = newConfig
                 cacheDate = refreshDate
-                
-                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
-                
-                if oldValue == nil {
-                    delegate?.missionControlDidLoadConfig(newConfig)
-                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
-                }
-                
-                delegate?.missionControlDidRefreshConfig(oldValue, newConfig: newConfig)
-                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
+
+                informListeners(oldConfig: oldValue, newConfig: newConfig)
             }
+        }
+    }
+    
+    private func informListeners(oldConfig oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
+        let userInfo = userInfoWithConfig(old: oldConfig, new: newConfig)
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            if oldConfig == nil {
+                self.delegate?.missionControlDidLoadConfig(newConfig)
+                self.sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
+            }
+            
+            self.delegate?.missionControlDidRefreshConfig(oldConfig, newConfig: newConfig)
+            self.sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
         }
     }
     
@@ -298,11 +310,17 @@ class ACMissionControl {
                 self.remoteConfig = remoteConfig
                 completion?({ })
             } catch {
-                let userInfo = ["Error" : "\(error)"]
-                self.delegate?.missionControlDidFailRefreshingConfig(error)
-                self.sendNotification(MissionControl.Notification.ConfigRefreshFailed, userInfo: userInfo)
+                self.informListeners(error)
                 completion?({ throw error })
             }
+        }
+    }
+    
+    private func informListeners(error: ErrorType) {
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            self.delegate?.missionControlDidFailRefreshingConfig(error)
+            let userInfo = ["Error" : "\(error)"]
+            self.sendNotification(MissionControl.Notification.ConfigRefreshFailed, userInfo: userInfo)
         }
     }
     

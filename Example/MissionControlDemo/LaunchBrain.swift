@@ -22,7 +22,7 @@ enum LaunchState: String {
     case Aborted
 }
 
-class LaunchBrain {
+class LaunchBrain: MissionControlDelegate {
     
     // MARK: - Properties
     
@@ -53,20 +53,28 @@ class LaunchBrain {
         self.view = view
         self.delegate = delegate
         
+        MissionControl.delegate = self
+        
         self.view.didTapButtonAction = { sender in
             self.didTapButton(sender)
         }
         
         updateUI()
-        
-        /// - TODO: implement delegate callbacks
-        let center = NSNotificationCenter.defaultCenter()
-        let notification = MissionControl.Notification.ConfigRefreshed
-        center.addObserver(self, selector: #selector(updateUI), name: notification, object: nil)
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    // MARK: - MissionControlDelegate
+    
+    func missionControlDidLoadConfig(config: [String : AnyObject]) {
+        print("missionControlDidLoadConfig")
+    }
+    
+    func missionControlDidRefreshConfig(oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
+        print("missionControlDidRefreshConfig")
+        updateUIForState(state)
+    }
+    
+    func missionControlDidFailRefreshingConfig(error: ErrorType) {
+        print("missionControlDidFailRefreshingConfig")
     }
     
     // MARK: - Actions
@@ -91,8 +99,8 @@ class LaunchBrain {
     
     // MARK: - UI
     
-    @objc func updateUI() {
-        updateUIForState(self.state)
+    func updateUI() {
+        updateUIForState(state)
     }
     
     private func updateUIForState(state: LaunchState) {
