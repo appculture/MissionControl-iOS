@@ -151,6 +151,17 @@ public func ConfigBool(key: String, _ defaultValue: Bool = false) -> Bool {
     }
 }
 
+public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: Bool) -> Void)) {
+    MissionControl.refresh({ (innerBlock) in
+        do {
+            let _ = try innerBlock()
+            completion(forced: ConfigBool(key, fallback))
+        } catch {
+           completion(forced: fallback)
+        }
+    })
+}
+
 /**
     Accessor for retreiving the setting of `Int` type from the latest cache of remote config.
     
@@ -297,13 +308,15 @@ class ACMissionControl {
     
     func refresh(completion: ThrowWithInnerBlock? = nil) {
         getRemoteConfig { [unowned self] (block) in
-            do {
-                let remoteConfig = try block()
-                self.remoteConfig = remoteConfig
-                completion?({ })
-            } catch {
-                self.informListeners(error)
-                completion?({ throw error })
+            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                do {
+                    let remoteConfig = try block()
+                    self.remoteConfig = remoteConfig
+                    completion?({ })
+                } catch {
+                    self.informListeners(error)
+                    completion?({ throw error })
+                }
             }
         }
     }

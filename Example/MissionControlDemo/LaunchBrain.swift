@@ -78,12 +78,13 @@ class LaunchBrain: MissionControlDelegate {
     func didTapButton(sender: AnyObject) {
         switch state {
         case .Offline:
-            /// - TODO: implement force sync parameter
-            if ConfigBool("Ready") {
-                state = .Ready
-            } else {
-                state = .Failed
-            }
+            ConfigBoolForce("Ready", fallback: false, completion: { (forced) in
+                if forced {
+                    self.state = .Ready
+                } else {
+                    self.state = .Failed
+                }
+            })
         case .Ready:
             state = .Countdown
         case .Countdown:
@@ -115,6 +116,7 @@ class LaunchBrain: MissionControlDelegate {
         case .Failed:
             updateUIForFailedState()
         case .Aborted:
+            stopCountdown()
             updateUIForAbortedState()
         }
     }
