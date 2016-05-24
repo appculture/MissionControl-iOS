@@ -92,9 +92,7 @@ class LaunchBrain {
     // MARK: - UI
     
     @objc func updateUI() {
-        dispatch_async(dispatch_get_main_queue()) { 
-            self.updateUIForState(self.state)
-        }
+        updateUIForState(self.state)
     }
     
     private func updateUIForState(state: LaunchState) {

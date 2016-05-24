@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: - Config
+// MARK: - MissionControl
 
 /// Facade class for using MissionControl.
 public class MissionControl {
@@ -306,8 +306,10 @@ class ACMissionControl {
     }
     
     private func sendNotification(name: String, userInfo: [NSObject : AnyObject]? = nil) {
-        let center = NSNotificationCenter.defaultCenter()
-        center.postNotificationName(name, object: self, userInfo: userInfo)
+        dispatch_async(dispatch_get_main_queue()) { 
+            let center = NSNotificationCenter.defaultCenter()
+            center.postNotificationName(name, object: self, userInfo: userInfo)
+        }
     }
     
     private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
