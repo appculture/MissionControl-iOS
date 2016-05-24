@@ -64,16 +64,12 @@ class LaunchBrain: MissionControlDelegate {
     
     // MARK: - MissionControlDelegate
     
-    func missionControlDidLoadConfig(config: [String : AnyObject]) {
-        print("missionControlDidLoadConfig")
-    }
-    
-    func missionControlDidRefreshConfig(oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
+    func missionControlDidRefreshConfigFromRemote(old old: [String : AnyObject]?, new: [String : AnyObject]) {
         print("missionControlDidRefreshConfig")
         updateUIForState(state)
     }
     
-    func missionControlDidFailRefreshingConfig(error: ErrorType) {
+    func missionControlDidFailRefreshingConfigFromRemote(error error: ErrorType) {
         print("missionControlDidFailRefreshingConfig")
     }
     
@@ -196,7 +192,6 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func colorForState(state: LaunchState) -> UIColor {
-        /// - TODO: implement persistance of latest settings
         switch state {
         case .Offline:
             return UIColor(hex: ConfigString("OfflineColor", "#F8E71C"))
