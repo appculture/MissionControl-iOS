@@ -47,15 +47,22 @@ public class MissionControl {
     
     /// The latest version of config dictionary, directly accessible, if needed.
     public class var config: [String : AnyObject] {
-        let localConfig = ACMissionControl.sharedInstance.localConfig
         let remoteConfig = ACMissionControl.sharedInstance.remoteConfig
+        let cachedConfig = ACMissionControl.sharedInstance.cachedConfig
+        let localConfig = ACMissionControl.sharedInstance.localConfig
         let emptyConfig = [String : AnyObject]()
-        return localConfig ?? remoteConfig ?? emptyConfig
+        let relevantConfig = remoteConfig ?? cachedConfig ?? localConfig ?? emptyConfig
+        return relevantConfig
     }
     
-    /// Date of last successful refresh of local config from remote config.
-    public class var lastRefreshDate: NSDate? {
-        return ACMissionControl.sharedInstance.lastRefreshDate
+    /// Date of last successful refresh from remote.
+    public class var refreshDate: NSDate? {
+        return ACMissionControl.sharedInstance.refreshDate
+    }
+    
+    /// Date of last cached remote config.
+    public class var cacheDate: NSDate? {
+        return ACMissionControl.sharedInstance.cacheDate
     }
     
     // MARK: API
@@ -188,36 +195,6 @@ class ACMissionControl {
     
     var localConfig: [String : AnyObject]?
     
-    var cachedConfig: [String : AnyObject]? {
-        get {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            let key = String(self.dynamicType)
-            let config = userDefaults.objectForKey(key) as? [String : AnyObject]
-            return config
-        }
-        set {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            let key = String(self.dynamicType)
-            userDefaults.setObject(newValue, forKey: key)
-            userDefaults.synchronize()
-        }
-    }
-    
-    var remoteConfig: [String : AnyObject]? {
-        didSet {
-            if let newConfig = remoteConfig {
-                cachedConfig = newConfig
-                lastRefreshDate = NSDate()
-
-                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
-                if oldValue == nil {
-                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
-                }
-                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
-            }
-        }
-    }
-    
     var remoteURL: NSURL? {
         didSet {
             if let _ = remoteURL {
@@ -232,7 +209,55 @@ class ACMissionControl {
         }
     }
     
-    var lastRefreshDate: NSDate?
+    var remoteConfig: [String : AnyObject]? {
+        didSet {
+            if let newConfig = remoteConfig {
+                refreshDate = NSDate()
+                
+                cachedConfig = newConfig
+                cacheDate = refreshDate
+                
+                let userInfo = userInfoWithConfig(old: oldValue, new: newConfig)
+                if oldValue == nil {
+                    sendNotification(MissionControl.Notification.ConfigLoaded, userInfo: userInfo)
+                }
+                sendNotification(MissionControl.Notification.ConfigRefreshed, userInfo: userInfo)
+            }
+        }
+    }
+    
+    var refreshDate: NSDate?
+    
+    private struct Cache {
+        static let Config = "ACMissionControl.CachedConfig"
+        static let Date = "ACMissionControl.CacheDate"
+    }
+    
+    var cachedConfig: [String : AnyObject]? {
+        get {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let config = userDefaults.objectForKey(Cache.Config) as? [String : AnyObject]
+            return config
+        }
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            userDefaults.setObject(newValue, forKey: Cache.Config)
+            userDefaults.synchronize()
+        }
+    }
+    
+    var cacheDate: NSDate? {
+        get {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let config = userDefaults.objectForKey(Cache.Date) as? NSDate
+            return config
+        }
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            userDefaults.setObject(newValue, forKey: Cache.Date)
+            userDefaults.synchronize()
+        }
+    }
     
     // MARK: API
     
@@ -252,12 +277,17 @@ class ACMissionControl {
     
     // MARK: Helpers
     
-    func reset() {
+    func resetAll() {
         localConfig = nil
         cachedConfig = nil
         remoteConfig = nil
-        lastRefreshDate = nil
+        refreshDate = nil
         remoteURL = nil
+    }
+    
+    func resetRemote() {
+        remoteConfig = nil
+        refreshDate = nil
     }
     
     private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {

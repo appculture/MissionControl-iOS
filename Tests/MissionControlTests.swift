@@ -20,7 +20,7 @@ class MissionControlTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        ACMissionControl.sharedInstance.reset()
+        ACMissionControl.sharedInstance.resetAll()
         
         super.tearDown()
     }
@@ -62,9 +62,9 @@ class MissionControlTests: XCTestCase {
         XCTAssertEqual(config.count, 0, "Initial config should be empty but not nil.")
     }
     
-    func testInitialLastRefreshDate() {
-        let date = MissionControl.lastRefreshDate
-        XCTAssertNil(date, "Initial last refresh date should be nil.")
+    func testInitialRefreshDate() {
+        let date = MissionControl.refreshDate
+        XCTAssertNil(date, "Initial refresh date should be nil.")
     }
     
     func testInitialAccessorsWithoutDefaultValues() {
@@ -104,7 +104,7 @@ class MissionControlTests: XCTestCase {
     
     func confirmInitialState() {
         testInitialConfig()
-        testInitialLastRefreshDate()
+        testInitialRefreshDate()
         
         testInitialAccessorsWithDefaultValues()
         testInitialAccessorsWithoutDefaultValues()
@@ -121,8 +121,8 @@ class MissionControlTests: XCTestCase {
         let config = MissionControl.config
         XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
         
-        let date = MissionControl.lastRefreshDate
-        XCTAssertNil(date, "Initial last refresh date should be nil.")
+        let date = MissionControl.refreshDate
+        XCTAssertNil(date, "Initial refresh date should be nil.")
         
         confirmLocalConfigAccessorsWithoutDefaultValues()
         confirmLocalConfigAccessorsWithDefaultValues()
@@ -211,8 +211,8 @@ class MissionControlTests: XCTestCase {
         let config = MissionControl.config
         XCTAssertEqual(config.count, 4, "Config should contain all settings from remote config.")
         
-        let date = MissionControl.lastRefreshDate
-        XCTAssertNotNil(date, "Initial last refresh date should not be nil.")
+        let date = MissionControl.refreshDate
+        XCTAssertNotNil(date, "Initial refresh date should not be nil.")
         
         confirmRemoteConfigAccessorsWithDefaultValues()
         confirmRemoteConfigAccessorsWithoutDefaultValues()
@@ -252,6 +252,31 @@ class MissionControlTests: XCTestCase {
         let string = ConfigString(ConfigKey.TestString)
         let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
         XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
+    }
+    
+    // MARK: - Test Cache
+    
+    func testCache() {
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
+        
+        let notification = MissionControl.Notification.ConfigRefreshed
+        let _ = expectationForNotification(notification, object: nil) { (notification) -> Bool in
+            ACMissionControl.sharedInstance.resetRemote()
+            self.confirmCachedConfigState()
+            return true
+        }
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func confirmCachedConfigState() {
+        let config = MissionControl.config
+        XCTAssertEqual(config.count, 4, "Cached config should contain all settings from Remote config.")
+        
+        let date = MissionControl.cacheDate
+        XCTAssertNotNil(date, "Cache date should not be nil.")
+        
+        confirmRemoteConfigAccessorsWithDefaultValues()
+        confirmRemoteConfigAccessorsWithoutDefaultValues()
     }
     
     // MARK: - Test Refresh Errors
