@@ -169,7 +169,7 @@ class MissionControlTests: XCTestCase {
     func testLaunchWithRemoteConfig() {
         MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         confirmInitialState()
-        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigLoaded)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfigFromRemote)
     }
     
     // MARK: - Test Launch With Local & Remote Config
@@ -177,26 +177,22 @@ class MissionControlTests: XCTestCase {
     func testLaunchWithLocalAndRemoteConfig() {
         MissionControl.launch(localConfig: localTestConfig, remoteConfigURL: URL.RemoteTestConfig)
         confirmLocalConfigState()
-        
-        /// - NOTE: ConfigLoaded notification was called during launch (by setting localConfig)
-        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigRefreshed)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfigFromRemote)
     }
     
     // MARK: - Test Refresh
     
-    func testFirstRefresh() {
-        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
-        
+    func testAutomaticRefresh() {
         /// - NOTE: refresh is called automatically during launch
-        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigLoaded)
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfigFromRemote)
     }
     
     func testManualRefresh() {
-        testFirstRefresh()
-        MissionControl.refresh()
+        testAutomaticRefresh()
         
-        /// - NOTE: ConfigLoaded notification was called in testFirstRefresh()
-        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.ConfigRefreshed)
+        MissionControl.refresh()
+        confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfigFromRemote)
     }
     
     func confirmRemoteConfigStateAfterNotification(notification: String) {
@@ -259,7 +255,7 @@ class MissionControlTests: XCTestCase {
     func testCache() {
         MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         
-        let notification = MissionControl.Notification.ConfigRefreshed
+        let notification = MissionControl.Notification.DidRefreshConfigFromRemote
         let _ = expectationForNotification(notification, object: nil) { (notification) -> Bool in
             ACMissionControl.sharedInstance.resetRemote()
             self.confirmCachedConfigState()
@@ -325,7 +321,8 @@ class MissionControlTests: XCTestCase {
     }
     
     func confirmConfigRefreshFailedNotification(error: MissionControl.Error, message: String) {
-        let _ = expectationForNotification(MissionControl.Notification.ConfigRefreshFailed, object: nil) { (notification) -> Bool in
+        let notification = MissionControl.Notification.DidFailRefreshingConfigFromRemote
+        let _ = expectationForNotification(notification, object: nil) { (notification) -> Bool in
             guard let errorInfo = notification.userInfo?["Error"] as? String else { return false }
             XCTAssertEqual("\(errorInfo)", "\(error)", message)
             self.confirmInitialState()
