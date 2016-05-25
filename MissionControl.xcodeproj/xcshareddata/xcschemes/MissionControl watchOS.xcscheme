@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
+               BlueprintIdentifier = "8B03C1DF1CF5E10500B09B48"
                BuildableName = "MissionControl.framework"
-               BlueprintName = "MissionControl iOS"
+               BlueprintName = "MissionControl watchOS"
                ReferencedContainer = "container:MissionControl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,29 +26,9 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B6313841CE5F9A10029DC98"
-               BuildableName = "MissionControl iOS Tests.xctest"
-               BlueprintName = "MissionControl iOS Tests"
-               ReferencedContainer = "container:MissionControl.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
-            BuildableName = "MissionControl.framework"
-            BlueprintName = "MissionControl iOS"
-            ReferencedContainer = "container:MissionControl.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -65,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
+            BlueprintIdentifier = "8B03C1DF1CF5E10500B09B48"
             BuildableName = "MissionControl.framework"
-            BlueprintName = "MissionControl iOS"
+            BlueprintName = "MissionControl watchOS"
             ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -83,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B63137A1CE5F9A10029DC98"
+            BlueprintIdentifier = "8B03C1DF1CF5E10500B09B48"
             BuildableName = "MissionControl.framework"
-            BlueprintName = "MissionControl iOS"
+            BlueprintName = "MissionControl watchOS"
             ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
