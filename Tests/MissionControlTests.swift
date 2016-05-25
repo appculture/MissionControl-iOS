@@ -34,25 +34,32 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         static let RemoteTestConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/test-config")!
     }
     
-    struct ConfigKey {
-        static let TestBool = "TestBool"
-        static let TestInt = "TestInt"
-        static let TestDouble = "TestDouble"
-        static let TestString = "TestString"
+    struct Key {
+        static let Bool = "BoolSetting"
+        static let Int = "IntSetting"
+        static let Double = "DoubleSetting"
+        static let String = "StringSetting"
     }
     
     let localTestConfig: [String : AnyObject] = [
-        ConfigKey.TestBool : false,
-        ConfigKey.TestInt : 21,
-        ConfigKey.TestDouble : 0.8,
-        ConfigKey.TestString : "Local"
+        Key.Bool : false,
+        Key.Int : 21,
+        Key.Double : 0.8,
+        Key.String : "Local"
     ]
     
     let remoteTestConfig: [String : AnyObject] = [
-        ConfigKey.TestBool : true,
-        ConfigKey.TestInt : 8,
-        ConfigKey.TestDouble : 2.1,
-        ConfigKey.TestString : "Remote"
+        Key.Bool : true,
+        Key.Int : 8,
+        Key.Double : 2.1,
+        Key.String : "Remote"
+    ]
+    
+    let fallbackTestConfig: [String : AnyObject] = [
+        Key.Bool : false,
+        Key.Int : 1984,
+        Key.Double : 21.08,
+        Key.String : "Fallback"
     ]
     
     var didRefreshConfigExpectation: XCTestExpectation?
@@ -80,32 +87,37 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         XCTAssertNil(date, "Initial refresh date should be nil.")
     }
     
-    func testInitialAccessorsWithoutDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool)
+    func testInitialAccessorsWithoutFallbackValues() {
+        let bool = ConfigBool(Key.Bool)
         XCTAssertEqual(bool, false, "Should default to false.")
         
-        let int = ConfigInt(ConfigKey.TestInt)
+        let int = ConfigInt(Key.Int)
         XCTAssertEqual(int, 0, "Should default to 0.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble)
+        let double = ConfigDouble(Key.Double)
         XCTAssertEqual(double, 0.0, "Should default to 0.0.")
         
-        let string = ConfigString(ConfigKey.TestString)
+        let string = ConfigString(Key.String)
         XCTAssertEqual(string, String(), "Should default to empty string.")
     }
     
-    func testInitialAccessorsWithDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool, true)
-        XCTAssertEqual(bool, true, "Should default to given value.")
+    func testInitialAccessorsWithFallbackValues() {
+        let fallbackBool = fallbackTestConfig[Key.Bool] as! Bool
+        let fallbackInt = fallbackTestConfig[Key.Int] as! Int
+        let fallbackDouble = fallbackTestConfig[Key.Double] as! Double
+        let fallbackString = fallbackTestConfig[Key.String] as! String
         
-        let int = ConfigInt(ConfigKey.TestInt, 1984)
-        XCTAssertEqual(int, 1984, "Should default to given value.")
+        let bool = ConfigBool(Key.Bool, fallback: fallbackBool)
+        XCTAssertEqual(bool, fallbackBool, "Should resolve to fallback value.")
+
+        let int = ConfigInt(Key.Int, fallback: fallbackInt)
+        XCTAssertEqual(int, fallbackInt, "Should resolve to fallback value.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
-        XCTAssertEqual(double, 21.08, "Should default to given value.")
+        let double = ConfigDouble(Key.Double, fallback: fallbackDouble)
+        XCTAssertEqual(double, fallbackDouble, "Should resolve to fallback value.")
         
-        let string = ConfigString(ConfigKey.TestString, "Hello")
-        XCTAssertEqual(string, "Hello", "Should default to given value.")
+        let string = ConfigString(Key.String, fallback: fallbackString)
+        XCTAssertEqual(string, fallbackString, "Should resolve to fallback value.")
     }
     
     // MARK: - Test Launch Without Parameters
@@ -119,8 +131,8 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         testInitialConfig()
         testInitialRefreshDate()
         
-        testInitialAccessorsWithDefaultValues()
-        testInitialAccessorsWithoutDefaultValues()
+        testInitialAccessorsWithFallbackValues()
+        testInitialAccessorsWithoutFallbackValues()
     }
     
     // MARK: - Test Launch With Local Config
@@ -132,7 +144,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     func confirmLocalConfigState() {
         let config = MissionControl.config
-        XCTAssertEqual(config.count, 4, "Initial config should contain given local config.")
+        XCTAssertEqual(config.count, localTestConfig.count, "Initial config should contain given local config.")
         
         let date = MissionControl.refreshDate
         XCTAssertNil(date, "Initial refresh date should be nil.")
@@ -142,39 +154,39 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     }
     
     func confirmLocalConfigAccessorsWithDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool, true)
-        let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
-        XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
+        let bool = ConfigBool(Key.Bool, fallback: true)
+        let expectedBool = localTestConfig[Key.Bool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should resolve to value in local test config.")
         
-        let int = ConfigInt(ConfigKey.TestInt, 1984)
-        let expectedInt = localTestConfig[ConfigKey.TestInt] as! Int
-        XCTAssertEqual(int, expectedInt, "Should default to value in local test config.")
+        let int = ConfigInt(Key.Int, fallback: 1984)
+        let expectedInt = localTestConfig[Key.Int] as! Int
+        XCTAssertEqual(int, expectedInt, "Should resolve to value in local test config.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble, 21.08)
-        let expectedDouble = localTestConfig[ConfigKey.TestDouble] as! Double
-        XCTAssertEqual(double, expectedDouble, "Should default to value in local test config.")
+        let double = ConfigDouble(Key.Double, fallback: 21.08)
+        let expectedDouble = localTestConfig[Key.Double] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should resolve to value in local test config.")
         
-        let string = ConfigString(ConfigKey.TestString, "Default")
-        let expectedString = localTestConfig[ConfigKey.TestString] as! String
-        XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
+        let string = ConfigString(Key.String, fallback: "Default")
+        let expectedString = localTestConfig[Key.String] as! String
+        XCTAssertEqual(string, expectedString, "Should resolve to value in local test config.")
     }
     
     func confirmLocalConfigAccessorsWithoutDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool)
-        let expectedBool = localTestConfig[ConfigKey.TestBool] as! Bool
-        XCTAssertEqual(bool, expectedBool, "Should default to value in local test config.")
+        let bool = ConfigBool(Key.Bool)
+        let expectedBool = localTestConfig[Key.Bool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should resolve to value in local test config.")
         
-        let int = ConfigInt(ConfigKey.TestInt)
-        let expectedInt = localTestConfig[ConfigKey.TestInt] as! Int
-        XCTAssertEqual(int, expectedInt, "Should default to value in local test config.")
+        let int = ConfigInt(Key.Int)
+        let expectedInt = localTestConfig[Key.Int] as! Int
+        XCTAssertEqual(int, expectedInt, "Should resolve to value in local test config.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble)
-        let expectedDouble = localTestConfig[ConfigKey.TestDouble] as! Double
-        XCTAssertEqual(double, expectedDouble, "Should default to value in local test config.")
+        let double = ConfigDouble(Key.Double)
+        let expectedDouble = localTestConfig[Key.Double] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should resolve to value in local test config.")
         
-        let string = ConfigString(ConfigKey.TestString)
-        let expectedString = localTestConfig[ConfigKey.TestString] as! String
-        XCTAssertEqual(string, expectedString, "Should default to value in local test config.")
+        let string = ConfigString(Key.String)
+        let expectedString = localTestConfig[Key.String] as! String
+        XCTAssertEqual(string, expectedString, "Should resolve to value in local test config.")
     }
     
     // MARK: - Test Launch With Remote Config
@@ -208,6 +220,8 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfig)
     }
     
+    // MARK: - Test Remote Accessors
+    
     func confirmRemoteConfigStateAfterNotification(notification: String) {
         confirmDidRefreshConfigDelegateCallback()
         
@@ -225,7 +239,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     func confirmRemoteConfigState() {
         let config = MissionControl.config
-        XCTAssertEqual(config.count, 4, "Config should contain all settings from remote config.")
+        XCTAssertEqual(config.count, remoteTestConfig.count, "Config should contain all settings from remote config.")
         
         let date = MissionControl.refreshDate
         XCTAssertNotNil(date, "Initial refresh date should not be nil.")
@@ -235,39 +249,111 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     }
     
     func confirmRemoteConfigAccessorsWithDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool)
-        let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
-        XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
+        let bool = ConfigBool(Key.Bool)
+        let expectedBool = remoteTestConfig[Key.Bool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should resolve to value in remote test config.")
         
-        let int = ConfigInt(ConfigKey.TestInt)
-        let expectedInt = remoteTestConfig[ConfigKey.TestInt] as! Int
-        XCTAssertEqual(int, expectedInt, "Should default to value in remote test config.")
+        let int = ConfigInt(Key.Int)
+        let expectedInt = remoteTestConfig[Key.Int] as! Int
+        XCTAssertEqual(int, expectedInt, "Should resolve to value in remote test config.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble)
-        let expectedDouble = remoteTestConfig[ConfigKey.TestDouble] as! Double
-        XCTAssertEqual(double, expectedDouble, "Should default to value in remote test config.")
+        let double = ConfigDouble(Key.Double)
+        let expectedDouble = remoteTestConfig[Key.Double] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should resolve to value in remote test config.")
         
-        let string = ConfigString(ConfigKey.TestString)
-        let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
-        XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
+        let string = ConfigString(Key.String)
+        let expectedString = remoteTestConfig[Key.String] as! String
+        XCTAssertEqual(string, expectedString, "Should resolve to value in remote test config.")
     }
     
     func confirmRemoteConfigAccessorsWithoutDefaultValues() {
-        let bool = ConfigBool(ConfigKey.TestBool)
-        let expectedBool = remoteTestConfig[ConfigKey.TestBool] as! Bool
-        XCTAssertEqual(bool, expectedBool, "Should default to value in remote test config.")
+        let bool = ConfigBool(Key.Bool)
+        let expectedBool = remoteTestConfig[Key.Bool] as! Bool
+        XCTAssertEqual(bool, expectedBool, "Should resolve to value in remote test config.")
         
-        let int = ConfigInt(ConfigKey.TestInt)
-        let expectedInt = remoteTestConfig[ConfigKey.TestInt] as! Int
-        XCTAssertEqual(int, expectedInt, "Should default to value in remote test config.")
+        let int = ConfigInt(Key.Int)
+        let expectedInt = remoteTestConfig[Key.Int] as! Int
+        XCTAssertEqual(int, expectedInt, "Should resolve to value in remote test config.")
         
-        let double = ConfigDouble(ConfigKey.TestDouble)
-        let expectedDouble = remoteTestConfig[ConfigKey.TestDouble] as! Double
-        XCTAssertEqual(double, expectedDouble, "Should default to value in remote test config.")
+        let double = ConfigDouble(Key.Double)
+        let expectedDouble = remoteTestConfig[Key.Double] as! Double
+        XCTAssertEqual(double, expectedDouble, "Should resolve to value in remote test config.")
         
-        let string = ConfigString(ConfigKey.TestString)
-        let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
-        XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
+        let string = ConfigString(Key.String)
+        let expectedString = remoteTestConfig[Key.String] as! String
+        XCTAssertEqual(string, expectedString, "Should resolve to value in remote test config.")
+    }
+    
+    // MARK: - Test Force Remote Accessors
+    
+    func testForceRemoteAccessors() {
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
+        
+        let boolExpectation = expectationWithDescription("ConfigBoolForce")
+        let intExpectation = expectationWithDescription("ConfigIntForce")
+        let doubleExpectation = expectationWithDescription("ConfigDoubleForce")
+        let stringExpectation = expectationWithDescription("ConfigStringForce")
+        
+        let fallbackBool = fallbackTestConfig[Key.Bool] as! Bool
+        let fallbackInt = fallbackTestConfig[Key.Int] as! Int
+        let fallbackDouble = fallbackTestConfig[Key.Double] as! Double
+        let fallbackString = fallbackTestConfig[Key.String] as! String
+        
+        ConfigBoolForce(Key.Bool, fallback: fallbackBool) { (forced) in
+            let expectedBool = self.remoteTestConfig[Key.Bool] as! Bool
+            XCTAssertEqual(forced, expectedBool, "Should resolve to value in remote test config.")
+            boolExpectation.fulfill()
+        }
+        ConfigIntForce(Key.Int, fallback: fallbackInt) { (forced) in
+            let expectedInt = self.remoteTestConfig[Key.Int] as! Int
+            XCTAssertEqual(forced, expectedInt, "Should resolve to value in remote test config.")
+            intExpectation.fulfill()
+        }
+        ConfigDoubleForce(Key.Double, fallback: fallbackDouble) { (forced) in
+            let expectedDouble = self.remoteTestConfig[Key.Double] as! Double
+            XCTAssertEqual(forced, expectedDouble, "Should resolve to value in remote test config.")
+            doubleExpectation.fulfill()
+        }
+        ConfigStringForce(Key.String, fallback: fallbackString) { (forced) in
+            let expectedString = self.remoteTestConfig[Key.String] as! String
+            XCTAssertEqual(forced, expectedString, "Should resolve to value in remote test config.")
+            stringExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(10.0, handler: nil)
+    }
+    
+    func testForceRemoteAccessorsFallback() {
+        MissionControl.launch(remoteConfigURL: URL.BadResponseConfig)
+        
+        let boolExpectation = expectationWithDescription("ConfigBoolForceFallback")
+        let intExpectation = expectationWithDescription("ConfigIntForceFallback")
+        let doubleExpectation = expectationWithDescription("ConfigDoubleForceFallback")
+        let stringExpectation = expectationWithDescription("ConfigStringForceFallback")
+        
+        let fallbackBool = fallbackTestConfig[Key.Bool] as! Bool
+        let fallbackInt = fallbackTestConfig[Key.Int] as! Int
+        let fallbackDouble = fallbackTestConfig[Key.Double] as! Double
+        let fallbackString = fallbackTestConfig[Key.String] as! String
+        
+        ConfigBoolForce(Key.Bool, fallback: fallbackBool) { (forced) in
+            XCTAssertEqual(forced, fallbackBool, "Should resolve to fallback value.")
+            boolExpectation.fulfill()
+        }
+        ConfigIntForce(Key.Int, fallback: fallbackInt) { (forced) in
+            XCTAssertEqual(forced, fallbackInt, "Should resolve to fallback value.")
+            intExpectation.fulfill()
+        }
+        ConfigDoubleForce(Key.Double, fallback: fallbackDouble) { (forced) in
+            XCTAssertEqual(forced, fallbackDouble, "Should resolve to fallback value.")
+            doubleExpectation.fulfill()
+        }
+        ConfigStringForce(Key.String, fallback: fallbackString) { (forced) in
+            XCTAssertEqual(forced, fallbackString, "Should resolve to fallback value.")
+            stringExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(10.0, handler: nil)
     }
     
     // MARK: - Test Cache
@@ -286,7 +372,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     func confirmCachedConfigState() {
         let config = MissionControl.config
-        XCTAssertEqual(config.count, 4, "Cached config should contain all settings from Remote config.")
+        XCTAssertEqual(config.count, remoteTestConfig.count, "Cached config should contain all settings from Remote config.")
         
         let date = MissionControl.cacheDate
         XCTAssertNotNil(date, "Cache date should not be nil.")
@@ -301,7 +387,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         MissionControl.launch()
         
         /// - NOTE: refresh is NOT called automatically during launch (remote URL missing)
-        let asyncExpectation = expectationWithDescription("manual-refresh-without-url")
+        let asyncExpectation = expectationWithDescription("ManualRefreshWithoutURL")
         MissionControl.refresh { (block) in
             do {
                 let _ = try block()

@@ -44,7 +44,7 @@ class LaunchBrain: MissionControlDelegate {
     var timer: NSTimer?
     
     private var launchForce: Double {
-        return 1.0 - ConfigDouble("LaunchForce", 0.5)
+        return 1.0 - ConfigDouble("LaunchForce", fallback: 0.5)
     }
     
     // MARK: - Init
@@ -71,6 +71,15 @@ class LaunchBrain: MissionControlDelegate {
     
     func missionControlDidFailRefreshingConfig(error error: ErrorType) {
         print("missionControlDidFailRefreshingConfig")
+        
+        stopCountdown()
+
+        switch state {
+        case .Countdown:
+            state = .Failed
+        default:
+            state = .Offline
+        }
     }
     
     // MARK: - Actions
@@ -78,12 +87,13 @@ class LaunchBrain: MissionControlDelegate {
     func didTapButton(sender: AnyObject) {
         switch state {
         case .Offline:
-            /// - TODO: implement force sync parameter
-            if ConfigBool("Ready") {
-                state = .Ready
-            } else {
-                state = .Failed
-            }
+            ConfigBoolForce("Ready", fallback: false, completion: { (forced) in
+                if forced {
+                    self.state = .Ready
+                } else {
+                    self.state = .Failed
+                }
+            })
         case .Ready:
             state = .Countdown
         case .Countdown:
@@ -109,18 +119,20 @@ class LaunchBrain: MissionControlDelegate {
             updateUIForReadyState()
         case .Countdown:
             updateUIForCountdownState()
+            startCountdown()
         case .Launched:
             updateUIForLaunchedState()
         case .Failed:
             updateUIForFailedState()
         case .Aborted:
+            stopCountdown()
             updateUIForAbortedState()
         }
     }
     
     private func updateUIForAnyState(state: LaunchState) {
-        let color1 = UIColor(hex: ConfigString("TopColor", "#000000"))
-        let color2 = UIColor(hex: ConfigString("BottomColor", "#4A90E2"))
+        let color1 = UIColor(hex: ConfigString("TopColor", fallback: "#000000"))
+        let color2 = UIColor(hex: ConfigString("BottomColor", fallback: "#4A90E2"))
         view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
         
         view.button.layer.borderColor = colorForState(state).CGColor
@@ -145,11 +157,10 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForReadyState() {
-        seconds = ConfigInt("CountdownDuration", 10)
+        seconds = ConfigInt("CountdownDuration", fallback: 10)
     }
     
     private func updateUIForCountdownState() {
-        startCountdown()
         let duration = launchForce * 4
         view.rotateButtonImageWithDuration(duration)
         view.startBlinkingStatusLight(timeInterval: 0.25)
@@ -166,13 +177,11 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     private func updateUIForFailedState() {
-        stopCountdown()
         view.countdown.text = "F"
         view.startBlinkingStatusLight(timeInterval: 0.5)
     }
     
     private func updateUIForAbortedState() {
-        stopCountdown()
         view.stopRotatingButtonImage()
         view.countdown.text = "A"
         view.startBlinkingStatusLight(timeInterval: 0.25)
@@ -194,27 +203,29 @@ class LaunchBrain: MissionControlDelegate {
     private func colorForState(state: LaunchState) -> UIColor {
         switch state {
         case .Offline:
-            return UIColor(hex: ConfigString("OfflineColor", "#F8E71C"))
+            return UIColor(hex: ConfigString("OfflineColor", fallback: "#F8E71C"))
         case .Ready:
-            return UIColor(hex: ConfigString("ReadyColor", "#7ED321"))
+            return UIColor(hex: ConfigString("ReadyColor", fallback: "#7ED321"))
         case .Countdown:
-            return UIColor(hex: ConfigString("CountdownColor", "#F5A623"))
+            return UIColor(hex: ConfigString("CountdownColor", fallback: "#F5A623"))
         case .Launched:
-            return UIColor(hex: ConfigString("LaunchedColor", "#BD10E0"))
+            return UIColor(hex: ConfigString("LaunchedColor", fallback: "#BD10E0"))
         case .Failed:
-            return UIColor(hex: ConfigString("FailedColor", "#D0021B"))
+            return UIColor(hex: ConfigString("FailedColor", fallback: "#D0021B"))
         case .Aborted:
-            return UIColor(hex: ConfigString("AbortedColor", "#D0021B"))
+            return UIColor(hex: ConfigString("AbortedColor", fallback: "#D0021B"))
         }
     }
     
     // MARK: - Countdown
     
     private func startCountdown() {
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
-                                                       target: self,
-                                                       selector: #selector(timerTick(_:)),
-                                                       userInfo: nil, repeats: true)
+        if timer == nil {
+            timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+                                                           target: self,
+                                                           selector: #selector(timerTick(_:)),
+                                                           userInfo: nil, repeats: true)
+        }
     }
     
     private func stopCountdown() {
@@ -223,16 +234,18 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     @objc func timerTick(sender: NSTimer) {
-        /// - TODO: implement force sync parameter
-        if ConfigBool("Abort") {
-            state = .Aborted
-        } else {
-            if seconds - 1 >= 0 {
-                seconds -= 1
-            } else {
-                stopCountdown()
-                state = .Launched
+        ConfigBoolForce("Abort", fallback: true) { (forced) in
+            if forced {
+                self.stopCountdown()
+                self.state = .Aborted
             }
+        }
+
+        if seconds - 1 >= 0 {
+            seconds -= 1
+        } else {
+            stopCountdown()
+            state = .Launched
         }
     }
     
