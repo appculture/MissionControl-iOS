@@ -208,6 +208,8 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         confirmRemoteConfigStateAfterNotification(MissionControl.Notification.DidRefreshConfig)
     }
     
+    // MARK: - Test Remote Accessors
+    
     func confirmRemoteConfigStateAfterNotification(notification: String) {
         confirmDidRefreshConfigDelegateCallback()
         
@@ -268,6 +270,73 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         let string = ConfigString(ConfigKey.TestString)
         let expectedString = remoteTestConfig[ConfigKey.TestString] as! String
         XCTAssertEqual(string, expectedString, "Should default to value in remote test config.")
+    }
+    
+    // MARK: - Test Force Remote Accessors
+    
+    func testForceRemoteAccessors() {
+        MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
+        
+        let boolExpectation = expectationWithDescription("ConfigBoolForce")
+        let intExpectation = expectationWithDescription("ConfigIntForce")
+        let doubleExpectation = expectationWithDescription("ConfigDoubleForce")
+        let stringExpectation = expectationWithDescription("ConfigStringForce")
+        
+        ConfigBoolForce(ConfigKey.TestBool, fallback: false) { (forced) in
+            let expectedBool = self.remoteTestConfig[ConfigKey.TestBool] as! Bool
+            XCTAssertEqual(forced, expectedBool, "Should resolve to value in remote test config.")
+            boolExpectation.fulfill()
+        }
+        ConfigIntForce(ConfigKey.TestInt, fallback: 1984) { (forced) in
+            let expectedInt = self.remoteTestConfig[ConfigKey.TestInt] as! Int
+            XCTAssertEqual(forced, expectedInt, "Should resolve to value in remote test config.")
+            intExpectation.fulfill()
+        }
+        ConfigDoubleForce(ConfigKey.TestDouble, fallback: 21.08) { (forced) in
+            let expectedDouble = self.remoteTestConfig[ConfigKey.TestDouble] as! Double
+            XCTAssertEqual(forced, expectedDouble, "Should resolve to value in remote test config.")
+            doubleExpectation.fulfill()
+        }
+        ConfigStringForce(ConfigKey.TestString, fallback: "Fallback") { (forced) in
+            let expectedString = self.remoteTestConfig[ConfigKey.TestString] as! String
+            XCTAssertEqual(forced, expectedString, "Should resolve to value in remote test config.")
+            stringExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(10.0, handler: nil)
+    }
+    
+    func testForceRemoteAccessorsFallback() {
+        MissionControl.launch(remoteConfigURL: URL.BadResponseConfig)
+        
+        let boolExpectation = expectationWithDescription("ConfigBoolForce")
+        let intExpectation = expectationWithDescription("ConfigIntForce")
+        let doubleExpectation = expectationWithDescription("ConfigDoubleForce")
+        let stringExpectation = expectationWithDescription("ConfigStringForce")
+        
+        let boolFallback = false
+        let intFallback = 1984
+        let doubleFallback = 21.08
+        let stringFallback = "Fallback"
+        
+        ConfigBoolForce(ConfigKey.TestBool, fallback: boolFallback) { (forced) in
+            XCTAssertEqual(forced, boolFallback, "Should resolve to fallback value.")
+            boolExpectation.fulfill()
+        }
+        ConfigIntForce(ConfigKey.TestInt, fallback: intFallback) { (forced) in
+            XCTAssertEqual(forced, intFallback, "Should resolve to fallback value.")
+            intExpectation.fulfill()
+        }
+        ConfigDoubleForce(ConfigKey.TestDouble, fallback: doubleFallback) { (forced) in
+            XCTAssertEqual(forced, doubleFallback, "Should resolve to fallback value.")
+            doubleExpectation.fulfill()
+        }
+        ConfigStringForce(ConfigKey.TestString, fallback: stringFallback) { (forced) in
+            XCTAssertEqual(forced, stringFallback, "Should resolve to fallback value.")
+            stringExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(10.0, handler: nil)
     }
     
     // MARK: - Test Cache
