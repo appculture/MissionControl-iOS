@@ -55,8 +55,8 @@ public class MissionControl {
         let cachedConfig = ACMissionControl.sharedInstance.cachedConfig
         let localConfig = ACMissionControl.sharedInstance.localConfig
         let emptyConfig = [String : AnyObject]()
-        let relevantConfig = remoteConfig ?? cachedConfig ?? localConfig ?? emptyConfig
-        return relevantConfig
+        let resolvedConfig = remoteConfig ?? cachedConfig ?? localConfig ?? emptyConfig
+        return resolvedConfig
     }
     
     /// Date of last successful refresh from remote.
@@ -132,26 +132,25 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 // MARK: - Accessors
 
 /**
-    Accessor for retreiving `Bool` setting for the given key.
- 
-    It will get to proper setting by following this order:
-    1. Remote setting from memory (from last refresh).
-    2. Remote setting from disk cache (if not online).
-    3. Local setting from disk (if provided in `localConfig`).
-    4. Given fallback value (if provided).
-    5. Default fallback value (false)
+    Accessor for retreiving setting of generic type `T` for given key.
+
+    This method will resolve to proper setting by following this priority order:
+    1. Remote setting from memory (received in the last refresh).
+    2. Remote setting from disk cache (if never refreshed in current app session (ex. offline)).
+    3. Local setting from disk (defaults provided in `localConfig` on MissionControl `launch`).
+    4. Provided fallback value (if provided)
 
     - parameter key: Key for the setting.
-    - parameter fallback: Default value for this setting if not available from configs. Defaults to false.
+    - parameter fallback: Fallback value if setting is not available in any config.
 
-    - returns: `Bool` setting for the given key.
+    - returns: Resolved setting of generic type `T` for given key.
 */
-public func ConfigBool(key: String, fallback: Bool = false) -> Bool {
-    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Bool {
+public func ConfigGeneric<T>(key: String, fallback: T) -> T {
+    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? T {
         return remoteValue
-    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Bool {
+    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? T {
         return cachedValue
-    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Bool {
+    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? T {
         return localValue
     } else {
         return fallback
@@ -159,176 +158,123 @@ public func ConfigBool(key: String, fallback: Bool = false) -> Bool {
 }
 
 /**
-    Async "Force Remote" Accessor for retreiving latest `Bool` setting for the given key.
+    Async "Force Remote" Accessor for retreiving the latest setting of generic type `T` for given key.
  
-    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
-    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
-    If `refresh` fails it will return `fallback` value in `completion` block.
+    This method will first call `refresh` method after which it will evaluate its success.
  
-    - parameter key: Key for the settings.
-    - parameter fallback: Default value for this setting if refresh not successful.
+    If `refresh` was successful, it will call normal accessor of generic type `T` for given key,
+    which will by its priority order resolve to the latest remote value as a parameter inside `completion` handler.
  
-    - returns: Latest `Bool` setting after successful refresh, otherwise provided `fallback` value.
+    If `refresh` fails, it will return provided `fallback` value as a parameter inside `completion` block.
+
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value of generic type `T` if refresh is not successful.
+*/
+public func ConfigGenericForce<T>(key: String, fallback: T, completion: ((forced: T) -> Void)) {
+    MissionControl.refresh({ (innerBlock) in
+        do {
+            let _ = try innerBlock()
+            completion(forced: ConfigGeneric(key, fallback: fallback))
+        } catch {
+            completion(forced: fallback)
+        }
+    })
+}
+
+/**
+    Accessor helper for retreiving setting of type `Bool` for given key.
+    It will call `ConfigGeneric<T>` with `Bool` type.
+
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if setting not available in any config. Defaults to `Bool()`.
+
+    - returns: Resolved setting of type `Bool` for given key.
+*/
+public func ConfigBool(key: String, fallback: Bool = Bool()) -> Bool {
+    return ConfigGeneric(key, fallback: fallback)
+}
+
+/**
+    Async "Force Remote" Accessor helper for retreiving the latest setting of type `Bool` for given key.
+    It will call `ConfigGenericForce<T>` with `Bool` type.
+ 
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if refresh was not successful.
 */
 public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: Bool) -> Void)) {
-    MissionControl.refresh({ (innerBlock) in
-        do {
-            let _ = try innerBlock()
-            completion(forced: ConfigBool(key, fallback: fallback))
-        } catch {
-           completion(forced: fallback)
-        }
-    })
+    ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
 /**
-     Accessor for retreiving `Int` setting for the given key.
-     
-     It will get to proper setting by following this order:
-     1. Remote setting from memory (from last refresh).
-     2. Remote setting from disk cache (if not online).
-     3. Local setting from disk (if provided in `localConfig`).
-     4. Given fallback value (if provided).
-     5. Default fallback value (0)
-     
-     - parameter key: Key for the setting.
-     - parameter fallback: Default value for this setting if not available from configs. Defaults to 0.
-     
-     - returns: `Int` setting for the given key.
-*/
-public func ConfigInt(key: String, fallback: Int = 0) -> Int {
-    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Int {
-        return remoteValue
-    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Int {
-        return cachedValue
-    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Int {
-        return localValue
-    } else {
-        return fallback
-    }
-}
-
-/**
-    Async "Force Remote" Accessor for retreiving latest `Int` setting for the given key.
-
-    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
-    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
-    If `refresh` fails it will return `fallback` value in `completion` block.
-
-    - parameter key: Key for the settings.
-    - parameter fallback: Default value for this setting if refresh not successful.
-
-    - returns: Latest `Int` setting after successful refresh, otherwise provided `fallback` value.
-*/
-public func ConfigIntForce(key: String, fallback: Int, completion: ((forced: Int) -> Void)) {
-    MissionControl.refresh({ (innerBlock) in
-        do {
-            let _ = try innerBlock()
-            completion(forced: ConfigInt(key, fallback: fallback))
-        } catch {
-            completion(forced: fallback)
-        }
-    })
-}
-
-/**
-     Accessor for retreiving `Double` setting for the given key.
-     
-     It will get to proper setting by following this order:
-     1. Remote setting from memory (from last refresh).
-     2. Remote setting from disk cache (if not online).
-     3. Local setting from disk (if provided in `localConfig`).
-     4. Given fallback value (if provided).
-     5. Default fallback value (0.0)
-     
-     - parameter key: Key for the setting.
-     - parameter fallback: Default value for this setting if not available from configs. Defaults to 0.0.
-     
-     - returns: `Double` setting for the given key.
-*/
-public func ConfigDouble(key: String, fallback: Double = 0.0) -> Double {
-    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? Double {
-        return remoteValue
-    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? Double {
-        return cachedValue
-    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? Double {
-        return localValue
-    } else {
-        return fallback
-    }
-}
-
-/**
-    Async "Force Remote" Accessor for retreiving latest `Double` setting for the given key.
-
-    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
-    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
-    If `refresh` fails it will return `fallback` value in `completion` block.
-
-    - parameter key: Key for the settings.
-    - parameter fallback: Default value for this setting if refresh not successful.
-
-    - returns: Latest `Double` setting after successful refresh, otherwise provided `fallback` value.
-*/
-public func ConfigDoubleForce(key: String, fallback: Double, completion: ((forced: Double) -> Void)) {
-    MissionControl.refresh({ (innerBlock) in
-        do {
-            let _ = try innerBlock()
-            completion(forced: ConfigDouble(key, fallback: fallback))
-        } catch {
-            completion(forced: fallback)
-        }
-    })
-}
-
-/**
-    Accessor for retreiving `String` setting for the given key.
-
-    It will get to proper setting by following this order:
-    1. Remote setting from memory (from last refresh).
-    2. Remote setting from disk cache (if not online).
-    3. Local setting from disk (if provided in `localConfig`).
-    4. Given fallback value (if provided).
-    5. Default fallback value ("")
+    Accessor helper for retreiving setting of type `Int` for given key.
+    It will call `ConfigGeneric<T>` with `Int` type.
 
     - parameter key: Key for the setting.
-    - parameter fallback: Default value for this setting if not available from configs. Defaults to empty string.
+    - parameter fallback: Fallback value if setting not available in any config. Defaults to `Int()`.
 
-    - returns: `String` setting for the given key.
+    - returns: Resolved setting of type `Int` for given key.
 */
-public func ConfigString(key: String, fallback: String = String()) -> String {
-    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? String {
-        return remoteValue
-    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? String {
-        return cachedValue
-    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? String {
-        return localValue
-    } else {
-        return fallback
-    }
+public func ConfigInt(key: String, fallback: Int = Int()) -> Int {
+    return ConfigGeneric(key, fallback: fallback)
 }
 
 /**
-    Async "Force Remote" Accessor for retreiving latest `String` setting for the given key.
+    Async "Force Remote" Accessor helper for retreiving the latest setting of type `Int` for given key.
+    It will call `ConfigGenericForce<T>` with `Int` type.
 
-    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
-    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
-    If `refresh` fails it will return `fallback` value in `completion` block.
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if refresh was not successful.
+*/
+public func ConfigIntForce(key: String, fallback: Int, completion: ((forced: Int) -> Void)) {
+    ConfigGenericForce(key, fallback: fallback, completion: completion)
+}
 
-    - parameter key: Key for the settings.
-    - parameter fallback: Default value for this setting if refresh not successful.
+/**
+    Accessor helper for retreiving setting of type `Double` for given key.
+    It will call `ConfigGeneric<T>` with `Double` type.
 
-    - returns: Latest `String` setting after successful refresh, otherwise provided `fallback` value.
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if setting not available in any config. Defaults to `Double()`.
+
+    - returns: Resolved setting of type `Double` for given key.
+*/
+public func ConfigDouble(key: String, fallback: Double = Double()) -> Double {
+    return ConfigGeneric(key, fallback: fallback)
+}
+
+/**
+    Async "Force Remote" Accessor helper for retreiving the latest setting of type `Double` for given key.
+    It will call `ConfigGenericForce<T>` with `Double` type.
+
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if refresh was not successful.
+*/
+public func ConfigDoubleForce(key: String, fallback: Double, completion: ((forced: Double) -> Void)) {
+    ConfigGenericForce(key, fallback: fallback, completion: completion)
+}
+
+/**
+    Accessor helper for retreiving setting of type `String` for given key.
+    It will call `ConfigGeneric<T>` with `String` type.
+
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if setting not available in any config. Defaults to `String()`.
+
+    - returns: Resolved setting of type `String` for given key.
+*/
+public func ConfigString(key: String, fallback: String = String()) -> String {
+    return ConfigGeneric(key, fallback: fallback)
+}
+
+/**
+    Async "Force Remote" Accessor helper for retreiving the latest setting of type `String` for given key.
+    It will call `ConfigGenericForce<T>` with `String` type.
+
+    - parameter key: Key for the setting.
+    - parameter fallback: Fallback value if refresh was not successful.
 */
 public func ConfigStringForce(key: String, fallback: String, completion: ((forced: String) -> Void)) {
-    MissionControl.refresh({ (innerBlock) in
-        do {
-            let _ = try innerBlock()
-            completion(forced: ConfigString(key, fallback: fallback))
-        } catch {
-            completion(forced: fallback)
-        }
-    })
+    ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
 // MARK: - ACMissionControl
