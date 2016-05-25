@@ -25,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		8B03C1D11CF5DC7C00B09B48 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8B03C1DA1CF5DF1300B09B48 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		8B63137B1CE5F9A10029DC98 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63137E1CE5F9A10029DC98 /* MissionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MissionControl.h; sourceTree = "<group>"; };
 		8B6313801CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				8B03C1D11CF5DC7C00B09B48 /* LICENSE */,
+				8B03C1DA1CF5DF1300B09B48 /* Package.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
