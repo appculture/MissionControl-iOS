@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B03C1E81CF5E17F00B09B48 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* MissionControl.swift */; };
+		8B03C1E91CF5E18300B09B48 /* MissionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* MissionControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B03C1F91CF5E1DD00B09B48 /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B03C1EF1CF5E1DD00B09B48 /* MissionControl.framework */; };
+		8B03C2061CF5E22E00B09B48 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* MissionControl.swift */; };
+		8B03C2071CF5E23200B09B48 /* MissionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* MissionControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B03C2081CF5E24500B09B48 /* MissionControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */; };
+		8B03C2181CF5E28C00B09B48 /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B03C20E1CF5E28C00B09B48 /* MissionControl.framework */; };
+		8B03C2251CF5E2B800B09B48 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* MissionControl.swift */; };
+		8B03C2261CF5E2C600B09B48 /* MissionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* MissionControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B03C2271CF5E2D200B09B48 /* MissionControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */; };
 		8B63137F1CE5F9A10029DC98 /* MissionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B63137E1CE5F9A10029DC98 /* MissionControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B6313861CE5F9A10029DC98 /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B63137B1CE5F9A10029DC98 /* MissionControl.framework */; };
 		8B63138B1CE5F9A10029DC98 /* MissionControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */; };
@@ -14,6 +24,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8B03C1FA1CF5E1DD00B09B48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6313721CE5F9A10029DC98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B03C1EE1CF5E1DD00B09B48;
+			remoteInfo = "MissionControl tvOS";
+		};
+		8B03C2191CF5E28C00B09B48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6313721CE5F9A10029DC98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B03C20D1CF5E28C00B09B48;
+			remoteInfo = "MissionControl OSX";
+		};
 		8B6313871CE5F9A10029DC98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B6313721CE5F9A10029DC98 /* Project object */;
@@ -26,16 +50,58 @@
 /* Begin PBXFileReference section */
 		8B03C1D11CF5DC7C00B09B48 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8B03C1DA1CF5DF1300B09B48 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		8B03C1E01CF5E10500B09B48 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B03C1EF1CF5E1DD00B09B48 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B03C1F81CF5E1DD00B09B48 /* MissionControl tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MissionControl tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B03C20E1CF5E28C00B09B48 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B03C2171CF5E28C00B09B48 /* MissionControl OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MissionControl OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63137B1CE5F9A10029DC98 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63137E1CE5F9A10029DC98 /* MissionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MissionControl.h; sourceTree = "<group>"; };
 		8B6313801CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MissionControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B6313851CE5F9A10029DC98 /* MissionControl iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MissionControl iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlTests.swift; sourceTree = "<group>"; };
 		8B63138C1CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B6313951CE5FA2B0029DC98 /* MissionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8B03C1DC1CF5E10500B09B48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1EB1CF5E1DD00B09B48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1F51CF5E1DD00B09B48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C1F91CF5E1DD00B09B48 /* MissionControl.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C20A1CF5E28C00B09B48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C2141CF5E28C00B09B48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2181CF5E28C00B09B48 /* MissionControl.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B6313771CE5F9A10029DC98 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -77,7 +143,12 @@
 			isa = PBXGroup;
 			children = (
 				8B63137B1CE5F9A10029DC98 /* MissionControl.framework */,
-				8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */,
+				8B6313851CE5F9A10029DC98 /* MissionControl iOS Tests.xctest */,
+				8B03C1E01CF5E10500B09B48 /* MissionControl.framework */,
+				8B03C1EF1CF5E1DD00B09B48 /* MissionControl.framework */,
+				8B03C1F81CF5E1DD00B09B48 /* MissionControl tvOS Tests.xctest */,
+				8B03C20E1CF5E28C00B09B48 /* MissionControl.framework */,
+				8B03C2171CF5E28C00B09B48 /* MissionControl OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,6 +191,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		8B03C1DD1CF5E10500B09B48 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C1E91CF5E18300B09B48 /* MissionControl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1EC1CF5E1DD00B09B48 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2071CF5E23200B09B48 /* MissionControl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C20B1CF5E28C00B09B48 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2261CF5E2C600B09B48 /* MissionControl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B6313781CE5F9A10029DC98 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,6 +226,96 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		8B03C1DF1CF5E10500B09B48 /* MissionControl watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B03C1E71CF5E10500B09B48 /* Build configuration list for PBXNativeTarget "MissionControl watchOS" */;
+			buildPhases = (
+				8B03C1DB1CF5E10500B09B48 /* Sources */,
+				8B03C1DC1CF5E10500B09B48 /* Frameworks */,
+				8B03C1DD1CF5E10500B09B48 /* Headers */,
+				8B03C1DE1CF5E10500B09B48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MissionControl watchOS";
+			productName = "MissionControl watchOS";
+			productReference = 8B03C1E01CF5E10500B09B48 /* MissionControl.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8B03C1EE1CF5E1DD00B09B48 /* MissionControl tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B03C2001CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS" */;
+			buildPhases = (
+				8B03C1EA1CF5E1DD00B09B48 /* Sources */,
+				8B03C1EB1CF5E1DD00B09B48 /* Frameworks */,
+				8B03C1EC1CF5E1DD00B09B48 /* Headers */,
+				8B03C1ED1CF5E1DD00B09B48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MissionControl tvOS";
+			productName = "MissionControl tvOS";
+			productReference = 8B03C1EF1CF5E1DD00B09B48 /* MissionControl.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8B03C1F71CF5E1DD00B09B48 /* MissionControl tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B03C2031CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS Tests" */;
+			buildPhases = (
+				8B03C1F41CF5E1DD00B09B48 /* Sources */,
+				8B03C1F51CF5E1DD00B09B48 /* Frameworks */,
+				8B03C1F61CF5E1DD00B09B48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B03C1FB1CF5E1DD00B09B48 /* PBXTargetDependency */,
+			);
+			name = "MissionControl tvOS Tests";
+			productName = "MissionControl tvOSTests";
+			productReference = 8B03C1F81CF5E1DD00B09B48 /* MissionControl tvOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8B03C20D1CF5E28C00B09B48 /* MissionControl OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B03C21F1CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX" */;
+			buildPhases = (
+				8B03C2091CF5E28C00B09B48 /* Sources */,
+				8B03C20A1CF5E28C00B09B48 /* Frameworks */,
+				8B03C20B1CF5E28C00B09B48 /* Headers */,
+				8B03C20C1CF5E28C00B09B48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MissionControl OSX";
+			productName = "MissionControl OSX";
+			productReference = 8B03C20E1CF5E28C00B09B48 /* MissionControl.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8B03C2161CF5E28C00B09B48 /* MissionControl OSX Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B03C2221CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX Tests" */;
+			buildPhases = (
+				8B03C2131CF5E28C00B09B48 /* Sources */,
+				8B03C2141CF5E28C00B09B48 /* Frameworks */,
+				8B03C2151CF5E28C00B09B48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B03C21A1CF5E28C00B09B48 /* PBXTargetDependency */,
+			);
+			name = "MissionControl OSX Tests";
+			productName = "MissionControl OSXTests";
+			productReference = 8B03C2171CF5E28C00B09B48 /* MissionControl OSX Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8B63137A1CE5F9A10029DC98 /* MissionControl iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B63138F1CE5F9A10029DC98 /* Build configuration list for PBXNativeTarget "MissionControl iOS" */;
@@ -164,7 +349,7 @@
 			);
 			name = "MissionControl iOS Tests";
 			productName = ACConfigTests;
-			productReference = 8B6313851CE5F9A10029DC98 /* MissionControlTests.xctest */;
+			productReference = 8B6313851CE5F9A10029DC98 /* MissionControl iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -177,6 +362,21 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = appculture;
 				TargetAttributes = {
+					8B03C1DF1CF5E10500B09B48 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8B03C1EE1CF5E1DD00B09B48 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8B03C1F71CF5E1DD00B09B48 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8B03C20D1CF5E28C00B09B48 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8B03C2161CF5E28C00B09B48 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					8B63137A1CE5F9A10029DC98 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -199,11 +399,51 @@
 			targets = (
 				8B63137A1CE5F9A10029DC98 /* MissionControl iOS */,
 				8B6313841CE5F9A10029DC98 /* MissionControl iOS Tests */,
+				8B03C1DF1CF5E10500B09B48 /* MissionControl watchOS */,
+				8B03C1EE1CF5E1DD00B09B48 /* MissionControl tvOS */,
+				8B03C1F71CF5E1DD00B09B48 /* MissionControl tvOS Tests */,
+				8B03C20D1CF5E28C00B09B48 /* MissionControl OSX */,
+				8B03C2161CF5E28C00B09B48 /* MissionControl OSX Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8B03C1DE1CF5E10500B09B48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1ED1CF5E1DD00B09B48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1F61CF5E1DD00B09B48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C20C1CF5E28C00B09B48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C2151CF5E28C00B09B48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B6313791CE5F9A10029DC98 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -221,6 +461,46 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8B03C1DB1CF5E10500B09B48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C1E81CF5E17F00B09B48 /* MissionControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1EA1CF5E1DD00B09B48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2061CF5E22E00B09B48 /* MissionControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C1F41CF5E1DD00B09B48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2081CF5E24500B09B48 /* MissionControlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C2091CF5E28C00B09B48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2251CF5E2B800B09B48 /* MissionControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B03C2131CF5E28C00B09B48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B03C2271CF5E2D200B09B48 /* MissionControlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B6313761CE5F9A10029DC98 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,6 +520,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8B03C1FB1CF5E1DD00B09B48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B03C1EE1CF5E1DD00B09B48 /* MissionControl tvOS */;
+			targetProxy = 8B03C1FA1CF5E1DD00B09B48 /* PBXContainerItemProxy */;
+		};
+		8B03C21A1CF5E28C00B09B48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B03C20D1CF5E28C00B09B48 /* MissionControl OSX */;
+			targetProxy = 8B03C2191CF5E28C00B09B48 /* PBXContainerItemProxy */;
+		};
 		8B6313881CE5F9A10029DC98 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B63137A1CE5F9A10029DC98 /* MissionControl iOS */;
@@ -248,6 +538,178 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		8B03C1E51CF5E10500B09B48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-watchOS";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		8B03C1E61CF5E10500B09B48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-watchOS";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		8B03C2011CF5E1DD00B09B48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOS";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		8B03C2021CF5E1DD00B09B48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOS";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Release;
+		};
+		8B03C2041CF5E1DD00B09B48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		8B03C2051CF5E1DD00B09B48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Release;
+		};
+		8B03C2201CF5E28C00B09B48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSX";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8B03C2211CF5E28C00B09B48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSX";
+				PRODUCT_NAME = MissionControl;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8B03C2231CF5E28C00B09B48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSXTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8B03C2241CF5E28C00B09B48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSXTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		8B63138D1CE5F9A10029DC98 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -350,7 +812,7 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControl;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-iOSTests";
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -368,7 +830,7 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControl;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-iOSTests";
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 			};
@@ -380,7 +842,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
-				PRODUCT_NAME = MissionControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
@@ -390,13 +852,53 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
-				PRODUCT_NAME = MissionControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8B03C1E71CF5E10500B09B48 /* Build configuration list for PBXNativeTarget "MissionControl watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B03C1E51CF5E10500B09B48 /* Debug */,
+				8B03C1E61CF5E10500B09B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8B03C2001CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B03C2011CF5E1DD00B09B48 /* Debug */,
+				8B03C2021CF5E1DD00B09B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8B03C2031CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B03C2041CF5E1DD00B09B48 /* Debug */,
+				8B03C2051CF5E1DD00B09B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8B03C21F1CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B03C2201CF5E28C00B09B48 /* Debug */,
+				8B03C2211CF5E28C00B09B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8B03C2221CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B03C2231CF5E28C00B09B48 /* Debug */,
+				8B03C2241CF5E28C00B09B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "MissionControl" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
