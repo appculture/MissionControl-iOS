@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B03C1D11CF5DC7C00B09B48 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8B63137B1CE5F9A10029DC98 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63137E1CE5F9A10029DC98 /* MissionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MissionControl.h; sourceTree = "<group>"; };
 		8B6313801CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,12 +53,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B03C1D61CF5DC9B00B09B48 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8B03C1D11CF5DC7C00B09B48 /* LICENSE */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		8B6313711CE5F9A10029DC98 = {
 			isa = PBXGroup;
 			children = (
 				8B63137D1CE5F9A10029DC98 /* Sources */,
 				8B6313891CE5F9A10029DC98 /* Tests */,
 				8B63137C1CE5F9A10029DC98 /* Products */,
+				8B03C1D61CF5DC9B00B09B48 /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
