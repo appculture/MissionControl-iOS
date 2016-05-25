@@ -1,5 +1,5 @@
 //
-// AppDelegate.swift
+// LaunchViewController.swift
 // MissionControlDemo
 //
 // Copyright (c) 2016 appculture <dev@appculture.com> http://appculture.com
@@ -24,27 +24,24 @@
 //
 
 import UIKit
-import MissionControl
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class LaunchViewController: UIViewController, LaunchDelegate {
+    
+    // MARK: - Properties
 
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    var launch: LaunchBrain!
+    @IBOutlet var launchView: LaunchView!
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        let url = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
-        MissionControl.launch(remoteConfigURL: url)
-        
+        launch = LaunchBrain(view: launchView, delegate: self)
+    }
+
+    override func prefersStatusBarHidden() -> Bool {
         return true
-    }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        MissionControl.refresh()
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        MissionControl.refresh()
     }
 
 }

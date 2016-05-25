@@ -1,6 +1,5 @@
 //
-// AppDelegate.swift
-// MissionControlDemo
+// Package.swift
 //
 // Copyright (c) 2016 appculture <dev@appculture.com> http://appculture.com
 //
@@ -23,28 +22,8 @@
 // SOFTWARE.
 //
 
-import UIKit
-import MissionControl
+import PackageDescription
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        let url = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
-        MissionControl.launch(remoteConfigURL: url)
-        
-        return true
-    }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        MissionControl.refresh()
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        MissionControl.refresh()
-    }
-
-}
+let package = Package(
+    name: "MissionControl"
+)
