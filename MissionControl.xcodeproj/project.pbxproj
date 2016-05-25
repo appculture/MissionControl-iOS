@@ -55,6 +55,7 @@
 		8B03C1F81CF5E1DD00B09B48 /* MissionControl tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MissionControl tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B03C20E1CF5E28C00B09B48 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B03C2171CF5E28C00B09B48 /* MissionControl OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MissionControl OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B03C2281CF5E83900B09B48 /* MissionControl.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MissionControl.podspec; sourceTree = "<group>"; };
 		8B63137B1CE5F9A10029DC98 /* MissionControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MissionControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B63137E1CE5F9A10029DC98 /* MissionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MissionControl.h; sourceTree = "<group>"; };
 		8B6313801CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				8B03C1D11CF5DC7C00B09B48 /* LICENSE */,
+				8B03C2281CF5E83900B09B48 /* MissionControl.podspec */,
 				8B03C1DA1CF5DF1300B09B48 /* Package.swift */,
 			);
 			name = "Supporting Files";
