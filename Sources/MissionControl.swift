@@ -158,6 +158,18 @@ public func ConfigBool(key: String, fallback: Bool = false) -> Bool {
     }
 }
 
+/**
+    Async "Force Remote" Accessor for retreiving latest `Bool` setting for the given key.
+ 
+    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
+    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
+    If `refresh` fails it will return `fallback` value in `completion` block.
+ 
+    - parameter key: Key for the settings.
+    - parameter fallback: Default value for this setting if refresh not successful.
+ 
+    - returns: Latest `Bool` setting after successful refresh, otherwise provided `fallback` value.
+*/
 public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: Bool) -> Void)) {
     MissionControl.refresh({ (innerBlock) in
         do {
@@ -197,6 +209,29 @@ public func ConfigInt(key: String, fallback: Int = 0) -> Int {
 }
 
 /**
+    Async "Force Remote" Accessor for retreiving latest `Int` setting for the given key.
+
+    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
+    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
+    If `refresh` fails it will return `fallback` value in `completion` block.
+
+    - parameter key: Key for the settings.
+    - parameter fallback: Default value for this setting if refresh not successful.
+
+    - returns: Latest `Int` setting after successful refresh, otherwise provided `fallback` value.
+*/
+public func ConfigIntForce(key: String, fallback: Int, completion: ((forced: Int) -> Void)) {
+    MissionControl.refresh({ (innerBlock) in
+        do {
+            let _ = try innerBlock()
+            completion(forced: ConfigInt(key, fallback: fallback))
+        } catch {
+            completion(forced: fallback)
+        }
+    })
+}
+
+/**
      Accessor for retreiving `Double` setting for the given key.
      
      It will get to proper setting by following this order:
@@ -224,6 +259,29 @@ public func ConfigDouble(key: String, fallback: Double = 0.0) -> Double {
 }
 
 /**
+    Async "Force Remote" Accessor for retreiving latest `Double` setting for the given key.
+
+    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
+    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
+    If `refresh` fails it will return `fallback` value in `completion` block.
+
+    - parameter key: Key for the settings.
+    - parameter fallback: Default value for this setting if refresh not successful.
+
+    - returns: Latest `Double` setting after successful refresh, otherwise provided `fallback` value.
+*/
+public func ConfigDoubleForce(key: String, fallback: Double, completion: ((forced: Double) -> Void)) {
+    MissionControl.refresh({ (innerBlock) in
+        do {
+            let _ = try innerBlock()
+            completion(forced: ConfigDouble(key, fallback: fallback))
+        } catch {
+            completion(forced: fallback)
+        }
+    })
+}
+
+/**
     Accessor for retreiving `String` setting for the given key.
 
     It will get to proper setting by following this order:
@@ -248,6 +306,29 @@ public func ConfigString(key: String, fallback: String = String()) -> String {
     } else {
         return fallback
     }
+}
+
+/**
+    Async "Force Remote" Accessor for retreiving latest `String` setting for the given key.
+
+    Calls `refresh`, then if successful `completion` block with the latest remote value will be called.
+    If there is no value for given key on remote it works same as normal accessors (cache, local, fallback).
+    If `refresh` fails it will return `fallback` value in `completion` block.
+
+    - parameter key: Key for the settings.
+    - parameter fallback: Default value for this setting if refresh not successful.
+
+    - returns: Latest `String` setting after successful refresh, otherwise provided `fallback` value.
+*/
+public func ConfigStringForce(key: String, fallback: String, completion: ((forced: String) -> Void)) {
+    MissionControl.refresh({ (innerBlock) in
+        do {
+            let _ = try innerBlock()
+            completion(forced: ConfigString(key, fallback: fallback))
+        } catch {
+            completion(forced: fallback)
+        }
+    })
 }
 
 // MARK: - ACMissionControl
