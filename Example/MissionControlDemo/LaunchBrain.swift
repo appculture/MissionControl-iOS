@@ -234,17 +234,18 @@ class LaunchBrain: MissionControlDelegate {
     }
     
     @objc func timerTick(sender: NSTimer) {
-        /// - TODO: implement force sync parameter
-        if ConfigBool("Abort") {
-            stopCountdown()
-            state = .Aborted
-        } else {
-            if seconds - 1 >= 0 {
-                seconds -= 1
-            } else {
-                stopCountdown()
-                state = .Launched
+        ConfigBoolForce("Abort", fallback: true) { (forced) in
+            if forced {
+                self.stopCountdown()
+                self.state = .Aborted
             }
+        }
+
+        if seconds - 1 >= 0 {
+            seconds -= 1
+        } else {
+            stopCountdown()
+            state = .Launched
         }
     }
     
