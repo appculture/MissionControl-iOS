@@ -34,7 +34,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B6313841CE5F9A10029DC98"
-               BuildableName = "MissionControlTests.xctest"
+               BuildableName = "MissionControl iOS Tests.xctest"
                BlueprintName = "MissionControl iOS Tests"
                ReferencedContainer = "container:MissionControl.xcodeproj">
             </BuildableReference>

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B03C20D1CF5E28C00B09B48"
-               BuildableName = "MissionControl OSX.framework"
+               BuildableName = "MissionControl.framework"
                BlueprintName = "MissionControl OSX"
                ReferencedContainer = "container:MissionControl.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B03C20D1CF5E28C00B09B48"
-            BuildableName = "MissionControl OSX.framework"
+            BuildableName = "MissionControl.framework"
             BlueprintName = "MissionControl OSX"
             ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B03C20D1CF5E28C00B09B48"
-            BuildableName = "MissionControl OSX.framework"
+            BuildableName = "MissionControl.framework"
             BlueprintName = "MissionControl OSX"
             ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B03C20D1CF5E28C00B09B48"
-            BuildableName = "MissionControl OSX.framework"
+            BuildableName = "MissionControl.framework"
             BlueprintName = "MissionControl OSX"
             ReferencedContainer = "container:MissionControl.xcodeproj">
          </BuildableReference>
