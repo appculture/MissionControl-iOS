@@ -1,5 +1,5 @@
 # Mission Control
-**Super powerfull remote config utility written in Swift (iOS, watchOS, tvOS, OSX)**
+**Super powerful remote config utility written in Swift (iOS, watchOS, tvOS, OSX)**
 
 [![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
 [![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
