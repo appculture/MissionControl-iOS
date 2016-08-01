@@ -150,7 +150,7 @@ class LaunchBrain: MissionControlDelegate {
     private func updateUIForAnyState(_ state: LaunchState) {
         let color1 = UIColor(hex: ConfigString("TopColor", fallback: "#000000"))
         let color2 = UIColor(hex: ConfigString("BottomColor", fallback: "#4A90E2"))
-        view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
+        view.gradientLayer.colors = [color1.cgColor, color2.cgColor]
         
         view.button.layer.borderColor = colorForState(state).cgColor
         view.buttonTitle.text = commandForState(state)

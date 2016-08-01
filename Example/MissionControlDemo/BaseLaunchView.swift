@@ -104,7 +104,7 @@ class BaseLaunchView: UIView {
     // MARK: - Override
     
     override func layoutSublayers(of layer: CALayer) {
-        super.layoutSublayersOfLayer(layer)
+        super.layoutSublayers(of: layer)
         gradientLayer.frame = gradient.bounds
     }
     
