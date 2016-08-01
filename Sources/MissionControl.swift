@@ -440,7 +440,7 @@ class ACMissionControl {
         let session = URLSession.shared
         
         let task = session.dataTask(with: request) { [unowned self] (data, response, error) in
-            guard let httpResponse = response as? HTTPURLResponse where httpResponse.statusCode == 200
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
             else { completion(block: { throw MissionControl.Error.badResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
