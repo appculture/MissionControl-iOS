@@ -31,19 +31,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        let url = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
+        let url = URL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
         MissionControl.launch(remoteConfigURL: url)
         
         return true
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         MissionControl.refresh()
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         MissionControl.refresh()
     }
 

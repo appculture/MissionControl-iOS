@@ -32,13 +32,13 @@ public class MissionControl {
     // MARK: Types
     
     /// Errors types which can be throwed when refreshing local config from remote.
-    public enum Error: ErrorType {
+    public enum Error: ErrorProtocol {
         /// Property `remoteConfigURL` is not set on launch.
-        case NoRemoteURL
+        case noRemoteURL
         /// Server returned response code other then 200 OK.
-        case BadResponseCode
+        case badResponseCode
         /// Server returned data with invalid format.
-        case InvalidData
+        case invalidData
     }
     
     /// Constants for keys of sent NSNotification objects.
@@ -76,12 +76,12 @@ public class MissionControl {
     }
     
     /// Date of last successful refresh from remote.
-    public class var refreshDate: NSDate? {
+    public class var refreshDate: Date? {
         return ACMissionControl.sharedInstance.refreshDate
     }
     
     /// Date of last cached remote config.
-    public class var cacheDate: NSDate? {
+    public class var cacheDate: Date? {
         return ACMissionControl.sharedInstance.cacheDate
     }
     
@@ -95,7 +95,7 @@ public class MissionControl {
         - parameter localConfig: Default local config which can be used until remote config is fetched.
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
-    public class func launch(localConfig localConfig: [String : AnyObject]? = nil, remoteConfigURL url: NSURL? = nil) {
+    public class func launch(localConfig: [String : AnyObject]? = nil, remoteConfigURL url: URL? = nil) {
         ACMissionControl.sharedInstance.localConfig = localConfig
         ACMissionControl.sharedInstance.remoteURL = url
     }
@@ -107,7 +107,7 @@ public class MissionControl {
      
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
-    public class func refresh(completion: ThrowWithInnerBlock? = nil) {
+    public class func refresh(_ completion: ThrowWithInnerBlock? = nil) {
         ACMissionControl.sharedInstance.refresh(completion)
     }
     
@@ -127,14 +127,14 @@ public protocol MissionControlDelegate: class {
         - parameter old: Previous config (nil if it's the first refresh)
         - parameter new: Current config
     */
-    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject])
+    func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject])
     
     /**
         Called when refreshing config from remote fails.
      
         - parameter error: Error which happened during config refresh from remote.
     */
-    func missionControlDidFailRefreshingConfig(error error: ErrorType)
+    func missionControlDidFailRefreshingConfig(error: ErrorProtocol)
 }
 
 // MARK: - Custom Types
@@ -161,7 +161,7 @@ public typealias ThrowJSONWithInnerBlock = (block: () throws -> [String : AnyObj
 
     - returns: Resolved setting of generic type `T` for given key.
 */
-public func ConfigGeneric<T>(key: String, fallback: T) -> T {
+public func ConfigGeneric<T>(_ key: String, fallback: T) -> T {
     if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? T {
         return remoteValue
     } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? T {
@@ -186,7 +186,7 @@ public func ConfigGeneric<T>(key: String, fallback: T) -> T {
     - parameter key: Key for the setting.
     - parameter fallback: Fallback value of generic type `T` if refresh is not successful.
 */
-public func ConfigGenericForce<T>(key: String, fallback: T, completion: ((forced: T) -> Void)) {
+public func ConfigGenericForce<T>(_ key: String, fallback: T, completion: ((forced: T) -> Void)) {
     MissionControl.refresh({ (innerBlock) in
         do {
             let _ = try innerBlock()
@@ -206,7 +206,7 @@ public func ConfigGenericForce<T>(key: String, fallback: T, completion: ((forced
 
     - returns: Resolved setting of type `Bool` for given key.
 */
-public func ConfigBool(key: String, fallback: Bool = Bool()) -> Bool {
+public func ConfigBool(_ key: String, fallback: Bool = Bool()) -> Bool {
     return ConfigGeneric(key, fallback: fallback)
 }
 
@@ -217,7 +217,7 @@ public func ConfigBool(key: String, fallback: Bool = Bool()) -> Bool {
     - parameter key: Key for the setting.
     - parameter fallback: Fallback value if refresh was not successful.
 */
-public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: Bool) -> Void)) {
+public func ConfigBoolForce(_ key: String, fallback: Bool, completion: ((forced: Bool) -> Void)) {
     ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
@@ -230,7 +230,7 @@ public func ConfigBoolForce(key: String, fallback: Bool, completion: ((forced: B
 
     - returns: Resolved setting of type `Int` for given key.
 */
-public func ConfigInt(key: String, fallback: Int = Int()) -> Int {
+public func ConfigInt(_ key: String, fallback: Int = Int()) -> Int {
     return ConfigGeneric(key, fallback: fallback)
 }
 
@@ -241,7 +241,7 @@ public func ConfigInt(key: String, fallback: Int = Int()) -> Int {
     - parameter key: Key for the setting.
     - parameter fallback: Fallback value if refresh was not successful.
 */
-public func ConfigIntForce(key: String, fallback: Int, completion: ((forced: Int) -> Void)) {
+public func ConfigIntForce(_ key: String, fallback: Int, completion: ((forced: Int) -> Void)) {
     ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
@@ -254,7 +254,7 @@ public func ConfigIntForce(key: String, fallback: Int, completion: ((forced: Int
 
     - returns: Resolved setting of type `Double` for given key.
 */
-public func ConfigDouble(key: String, fallback: Double = Double()) -> Double {
+public func ConfigDouble(_ key: String, fallback: Double = Double()) -> Double {
     return ConfigGeneric(key, fallback: fallback)
 }
 
@@ -265,7 +265,7 @@ public func ConfigDouble(key: String, fallback: Double = Double()) -> Double {
     - parameter key: Key for the setting.
     - parameter fallback: Fallback value if refresh was not successful.
 */
-public func ConfigDoubleForce(key: String, fallback: Double, completion: ((forced: Double) -> Void)) {
+public func ConfigDoubleForce(_ key: String, fallback: Double, completion: ((forced: Double) -> Void)) {
     ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
@@ -278,7 +278,7 @@ public func ConfigDoubleForce(key: String, fallback: Double, completion: ((force
 
     - returns: Resolved setting of type `String` for given key.
 */
-public func ConfigString(key: String, fallback: String = String()) -> String {
+public func ConfigString(_ key: String, fallback: String = String()) -> String {
     return ConfigGeneric(key, fallback: fallback)
 }
 
@@ -289,7 +289,7 @@ public func ConfigString(key: String, fallback: String = String()) -> String {
     - parameter key: Key for the setting.
     - parameter fallback: Fallback value if refresh was not successful.
 */
-public func ConfigStringForce(key: String, fallback: String, completion: ((forced: String) -> Void)) {
+public func ConfigStringForce(_ key: String, fallback: String, completion: ((forced: String) -> Void)) {
     ConfigGenericForce(key, fallback: fallback, completion: completion)
 }
 
@@ -307,7 +307,7 @@ class ACMissionControl {
     
     var localConfig: [String : AnyObject]?
     
-    var remoteURL: NSURL? {
+    var remoteURL: URL? {
         didSet {
             if let _ = remoteURL {
                 refresh({ (block) in
@@ -324,7 +324,7 @@ class ACMissionControl {
     var remoteConfig: [String : AnyObject]? {
         didSet {
             if let newConfig = remoteConfig {
-                refreshDate = NSDate()
+                refreshDate = Date()
                 
                 cachedConfig = newConfig
                 cacheDate = refreshDate
@@ -334,13 +334,13 @@ class ACMissionControl {
         }
     }
     
-    private func informListeners(oldConfig oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
+    private func informListeners(oldConfig: [String : AnyObject]?, newConfig: [String : AnyObject]) {
         let userInfo = userInfoWithConfig(old: oldConfig, new: newConfig)
         delegate?.missionControlDidRefreshConfig(old: oldConfig, new: newConfig)
         sendNotification(MissionControl.Notification.DidRefreshConfig, userInfo: userInfo)
     }
     
-    var refreshDate: NSDate?
+    var refreshDate: Date?
     
     private struct Cache {
         static let Config = "ACMissionControl.CachedConfig"
@@ -349,35 +349,35 @@ class ACMissionControl {
     
     var cachedConfig: [String : AnyObject]? {
         get {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            let config = userDefaults.objectForKey(Cache.Config) as? [String : AnyObject]
+            let userDefaults = UserDefaults.standard
+            let config = userDefaults.object(forKey: Cache.Config) as? [String : AnyObject]
             return config
         }
         set {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            userDefaults.setObject(newValue, forKey: Cache.Config)
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(newValue, forKey: Cache.Config)
             userDefaults.synchronize()
         }
     }
     
-    var cacheDate: NSDate? {
+    var cacheDate: Date? {
         get {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            let config = userDefaults.objectForKey(Cache.Date) as? NSDate
+            let userDefaults = UserDefaults.standard
+            let config = userDefaults.object(forKey: Cache.Date) as? Date
             return config
         }
         set {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            userDefaults.setObject(newValue, forKey: Cache.Date)
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(newValue, forKey: Cache.Date)
             userDefaults.synchronize()
         }
     }
     
     // MARK: API
     
-    func refresh(completion: ThrowWithInnerBlock? = nil) {
+    func refresh(_ completion: ThrowWithInnerBlock? = nil) {
         getRemoteConfig { [unowned self] (block) in
-            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
                 do {
                     let remoteConfig = try block()
                     self.remoteConfig = remoteConfig
@@ -390,7 +390,7 @@ class ACMissionControl {
         }
     }
     
-    private func informListeners(error: ErrorType) {
+    private func informListeners(_ error: ErrorProtocol) {
         delegate?.missionControlDidFailRefreshingConfig(error: error)
         let userInfo = ["Error" : "\(error)"]
         sendNotification(MissionControl.Notification.DidFailRefreshingConfig, userInfo: userInfo)
@@ -412,7 +412,7 @@ class ACMissionControl {
         refreshDate = nil
     }
     
-    private func userInfoWithConfig(old old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
+    private func userInfoWithConfig(old: [String : AnyObject]?, new: [String : AnyObject]?) -> [NSObject : AnyObject]? {
         if old == nil && new == nil {
             return nil
         } else {
@@ -427,38 +427,38 @@ class ACMissionControl {
         }
     }
     
-    private func sendNotification(name: String, userInfo: [NSObject : AnyObject]? = nil) {
-        let center = NSNotificationCenter.defaultCenter()
-        center.postNotificationName(name, object: self, userInfo: userInfo)
+    private func sendNotification(_ name: String, userInfo: [NSObject : AnyObject]? = nil) {
+        let center = NotificationCenter.default
+        center.post(name: Notification.Name(rawValue: name), object: self, userInfo: userInfo)
     }
     
-    private func getRemoteConfig(completion: ThrowJSONWithInnerBlock) {
+    private func getRemoteConfig(_ completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw MissionControl.Error.NoRemoteURL }); return }
+            else { completion(block: { throw MissionControl.Error.noRemoteURL }); return }
     
-        let request = NSURLRequest(URL: url)
-        let session = NSURLSession.sharedSession()
+        let request = URLRequest(url: url)
+        let session = URLSession.shared
         
-        let task = session.dataTaskWithRequest(request) { [unowned self] (data, response, error) in
-            guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200
-            else { completion(block: { throw MissionControl.Error.BadResponseCode }); return }
+        let task = session.dataTask(with: request) { [unowned self] (data, response, error) in
+            guard let httpResponse = response as? HTTPURLResponse where httpResponse.statusCode == 200
+            else { completion(block: { throw MissionControl.Error.badResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         
         task.resume()
     }
     
-    private func parseRemoteConfigFromData(data: NSData?, completion: ThrowJSONWithInnerBlock) {
+    private func parseRemoteConfigFromData(_ data: Data?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw MissionControl.Error.InvalidData }); return }
+            else { completion(block: { throw MissionControl.Error.invalidData }); return }
         
         do {
-            let json = try NSJSONSerialization.JSONObjectWithData(configData, options: .AllowFragments)
+            let json = try JSONSerialization.jsonObject(with: configData, options: .allowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw MissionControl.Error.InvalidData }); return }
+                else { completion(block: { throw MissionControl.Error.invalidData }); return }
             completion(block: { return config })
         } catch {
-            completion(block: { throw MissionControl.Error.InvalidData })
+            completion(block: { throw MissionControl.Error.invalidData })
         }
     }
     

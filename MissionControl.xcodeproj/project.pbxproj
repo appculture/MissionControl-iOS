@@ -385,9 +385,11 @@
 					};
 					8B63137A1CE5F9A10029DC98 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B6313841CE5F9A10029DC98 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -827,6 +829,7 @@
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -845,6 +848,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-iOSTests";
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -855,6 +859,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -865,6 +870,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -878,6 +884,7 @@
 				8B03C1E61CF5E10500B09B48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B03C2001CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS" */ = {
 			isa = XCConfigurationList;
@@ -886,6 +893,7 @@
 				8B03C2021CF5E1DD00B09B48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B03C2031CF5E1DD00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl tvOS Tests" */ = {
 			isa = XCConfigurationList;
@@ -894,6 +902,7 @@
 				8B03C2051CF5E1DD00B09B48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B03C21F1CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX" */ = {
 			isa = XCConfigurationList;
@@ -902,6 +911,7 @@
 				8B03C2211CF5E28C00B09B48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B03C2221CF5E28C00B09B48 /* Build configuration list for PBXNativeTarget "MissionControl OSX Tests" */ = {
 			isa = XCConfigurationList;
@@ -910,6 +920,7 @@
 				8B03C2241CF5E28C00B09B48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B6313751CE5F9A10029DC98 /* Build configuration list for PBXProject "MissionControl" */ = {
 			isa = XCConfigurationList;

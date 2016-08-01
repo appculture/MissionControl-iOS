@@ -48,31 +48,31 @@ class BaseLaunchView: UIView {
     
     var padding: CGFloat = 24.0
     
-    var buttonHighlightColor = UIColor.lightGrayColor()
-    var buttonColor = UIColor.whiteColor() {
+    var buttonHighlightColor = UIColor.lightGray()
+    var buttonColor = UIColor.white() {
         didSet {
             button.backgroundColor = buttonColor
         }
     }
-    var buttonTitleColor = UIColor.darkGrayColor() {
+    var buttonTitleColor = UIColor.darkGray() {
         didSet {
             buttonTitle.textColor = buttonTitleColor
         }
     }
     
-    var statusLightColor = UIColor.darkGrayColor() {
+    var statusLightColor = UIColor.darkGray() {
         didSet {
             statusLight.backgroundColor = statusLightColor
         }
     }
-    var statusTitleColor = UIColor.whiteColor() {
+    var statusTitleColor = UIColor.white() {
         didSet {
             statusTitle.textColor = statusTitleColor
-            statusLight.layer.borderColor = statusTitleColor.CGColor
+            statusLight.layer.borderColor = statusTitleColor.cgColor
         }
     }
     
-    var countdownColor = UIColor.whiteColor() {
+    var countdownColor = UIColor.white() {
         didSet {
             countdown.textColor = countdownColor
         }
@@ -91,7 +91,7 @@ class BaseLaunchView: UIView {
     }
     
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         commonInit()
     }
     
@@ -103,29 +103,29 @@ class BaseLaunchView: UIView {
     
     // MARK: - Override
     
-    override func layoutSublayersOfLayer(layer: CALayer) {
+    override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayersOfLayer(layer)
         gradientLayer.frame = gradient.bounds
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         
         if touchesInsideView(touches, view: button) {
             highlightButton()
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesMoved(touches, withEvent: event)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
         
         if !touchesInsideView(touches, view: button) {
             restoreButton()
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         
         if touchesInsideView(touches, view: button) {
             restoreButton()
@@ -135,24 +135,24 @@ class BaseLaunchView: UIView {
         }
     }
     
-    private func touchesInsideView(touches: Set<UITouch>, view: UIView) -> Bool {
+    private func touchesInsideView(_ touches: Set<UITouch>, view: UIView) -> Bool {
         guard let touch = touches.first else { return false }
-        let location = touch.locationInView(view)
-        let insideView = CGRectContainsPoint(view.bounds, location)
+        let location = touch.location(in: view)
+        let insideView = view.bounds.contains(location)
         return insideView
     }
     
     private func highlightButton() {
-        UIView.animateWithDuration(0.2, animations: { [unowned self] in
+        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.button.backgroundColor = self.buttonHighlightColor
-            self.buttonImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+            self.buttonImage.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
         })
     }
     
     private func restoreButton() {
-        UIView.animateWithDuration(0.2, animations: { [unowned self] in
+        UIView.animate(withDuration: 0.2, animations: { [unowned self] in
             self.button.backgroundColor = self.buttonColor
-            self.buttonImage.transform = CGAffineTransformIdentity
+            self.buttonImage.transform = CGAffineTransform.identity
         })
     }
     
@@ -167,10 +167,10 @@ class BaseLaunchView: UIView {
     
     private func configureGradient() {
         gradient.translatesAutoresizingMaskIntoConstraints = false
-        gradient.layer.insertSublayer(gradientLayer, atIndex: 0)
+        gradient.layer.insertSublayer(gradientLayer, at: 0)
         
-        gradientLayer.colors = [UIColor.orangeColor().CGColor, UIColor.blueColor().CGColor]
-        gradientLayer.contentsScale = UIScreen.mainScreen().scale
+        gradientLayer.colors = [UIColor.orange().cgColor, UIColor.blue().cgColor]
+        gradientLayer.contentsScale = UIScreen.main().scale
         gradientLayer.drawsAsynchronously = true
         gradientLayer.needsDisplayOnBoundsChange = true
         gradientLayer.setNeedsDisplay()
@@ -179,33 +179,33 @@ class BaseLaunchView: UIView {
     private func configureButton() {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = buttonColor
-        button.layer.borderColor = statusLightColor.CGColor
+        button.layer.borderColor = statusLightColor.cgColor
         button.layer.borderWidth = 10.0
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
 
         buttonImage.translatesAutoresizingMaskIntoConstraints = false
-        buttonImage.contentMode = .ScaleAspectFill
+        buttonImage.contentMode = .scaleAspectFill
         buttonImage.image = UIImage(named: "appculture")
         
         buttonTitle.translatesAutoresizingMaskIntoConstraints = false
         buttonTitle.adjustsFontSizeToFitWidth = true
-        buttonTitle.textAlignment = .Center
+        buttonTitle.textAlignment = .center
         buttonTitle.textColor = buttonTitleColor
         buttonTitle.text = "BUTTON"
     }
     
     private func configureStatus() {
         statusTitle.translatesAutoresizingMaskIntoConstraints = false
-        statusTitle.setContentHuggingPriority(251.0, forAxis: .Vertical)
+        statusTitle.setContentHuggingPriority(251.0, for: .vertical)
         statusTitle.adjustsFontSizeToFitWidth = true
-        statusTitle.textAlignment = .Center
+        statusTitle.textAlignment = .center
         statusTitle.textColor = statusTitleColor
         statusTitle.text = "STATUS"
         
         statusLight.translatesAutoresizingMaskIntoConstraints = false
         statusLight.backgroundColor = statusLightColor
-        statusLight.layer.borderColor = statusTitleColor.CGColor
+        statusLight.layer.borderColor = statusTitleColor.cgColor
         statusLight.layer.borderWidth = 2.0
         statusLight.layer.cornerRadius = 16.0
     }
@@ -213,7 +213,7 @@ class BaseLaunchView: UIView {
     private func configureCountdown() {
         countdown.translatesAutoresizingMaskIntoConstraints = false
         countdown.adjustsFontSizeToFitWidth = true
-        countdown.textAlignment = .Center
+        countdown.textAlignment = .center
         countdown.textColor = countdownColor
         countdown.text = "00"
     }
@@ -249,64 +249,64 @@ class BaseLaunchView: UIView {
     }
     
     private var gradientConstraints: [NSLayoutConstraint] {
-        let leading = gradient.leadingAnchor.constraintEqualToAnchor(leadingAnchor)
-        let trailing = gradient.trailingAnchor.constraintEqualToAnchor(trailingAnchor)
-        let top = gradient.topAnchor.constraintEqualToAnchor(topAnchor)
-        let bottom = gradient.bottomAnchor.constraintEqualToAnchor(bottomAnchor)
+        let leading = gradient.leadingAnchor.constraint(equalTo: leadingAnchor)
+        let trailing = gradient.trailingAnchor.constraint(equalTo: trailingAnchor)
+        let top = gradient.topAnchor.constraint(equalTo: topAnchor)
+        let bottom = gradient.bottomAnchor.constraint(equalTo: bottomAnchor)
         return [leading, trailing, top, bottom]
     }
     
     private var buttonConstraints: [NSLayoutConstraint] {
-        let leading = button.leadingAnchor.constraintEqualToAnchor(leadingAnchor, constant: padding)
-        let trailing = button.trailingAnchor.constraintEqualToAnchor(trailingAnchor, constant: -padding)
-        let bottom = button.bottomAnchor.constraintEqualToAnchor(bottomAnchor, constant: -padding)
-        let height = button.heightAnchor.constraintEqualToConstant(90.0)
+        let leading = button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding)
+        let trailing = button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
+        let bottom = button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding)
+        let height = button.heightAnchor.constraint(equalToConstant: 90.0)
         return [leading, trailing, bottom, height]
     }
     
     private var buttonImageConstraints: [NSLayoutConstraint] {
-        let leading = buttonImage.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor, constant: 20.0)
-        let top = buttonImage.topAnchor.constraintEqualToAnchor(button.topAnchor, constant: 22.0)
-        let bottom = buttonImage.bottomAnchor.constraintEqualToAnchor(button.bottomAnchor, constant: -22.0)
-        let width = buttonImage.widthAnchor.constraintEqualToAnchor(buttonImage.heightAnchor)
+        let leading = buttonImage.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 20.0)
+        let top = buttonImage.topAnchor.constraint(equalTo: button.topAnchor, constant: 22.0)
+        let bottom = buttonImage.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -22.0)
+        let width = buttonImage.widthAnchor.constraint(equalTo: buttonImage.heightAnchor)
         return [leading, top, bottom, width]
     }
     
     private var buttonTitleConstraints: [NSLayoutConstraint] {
-        let leading = buttonTitle.leadingAnchor.constraintEqualToAnchor(buttonImage.trailingAnchor, constant: 12.0)
-        let trailing = buttonTitle.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor, constant: -22.0)
-        let centerY = buttonTitle.centerYAnchor.constraintEqualToAnchor(button.centerYAnchor)
+        let leading = buttonTitle.leadingAnchor.constraint(equalTo: buttonImage.trailingAnchor, constant: 12.0)
+        let trailing = buttonTitle.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -22.0)
+        let centerY = buttonTitle.centerYAnchor.constraint(equalTo: button.centerYAnchor)
         return [leading, trailing, centerY]
     }
     
     private var statusTitleConstraints: [NSLayoutConstraint] {
-        let leading = statusTitle.leadingAnchor.constraintEqualToAnchor(button.leadingAnchor)
-        let trailing = statusTitle.trailingAnchor.constraintEqualToAnchor(button.trailingAnchor)
-        let bottom = statusTitle.bottomAnchor.constraintEqualToAnchor(button.topAnchor, constant: -padding)
+        let leading = statusTitle.leadingAnchor.constraint(equalTo: button.leadingAnchor)
+        let trailing = statusTitle.trailingAnchor.constraint(equalTo: button.trailingAnchor)
+        let bottom = statusTitle.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -padding)
         return [leading, trailing, bottom]
     }
     
     private var statusLightConstraints: [NSLayoutConstraint] {
-        let centerX = statusLight.centerXAnchor.constraintEqualToAnchor(centerXAnchor)
-        let bottom = statusLight.bottomAnchor.constraintEqualToAnchor(statusTitle.topAnchor, constant: -padding)
-        let width = statusLight.widthAnchor.constraintEqualToConstant(32.0)
-        let height = statusLight.heightAnchor.constraintEqualToConstant(32.0)
+        let centerX = statusLight.centerXAnchor.constraint(equalTo: centerXAnchor)
+        let bottom = statusLight.bottomAnchor.constraint(equalTo: statusTitle.topAnchor, constant: -padding)
+        let width = statusLight.widthAnchor.constraint(equalToConstant: 32.0)
+        let height = statusLight.heightAnchor.constraint(equalToConstant: 32.0)
         return [centerX, bottom, width, height]
     }
     
     private var countdownConstraints: [NSLayoutConstraint] {
-        let leading = countdown.leadingAnchor.constraintEqualToAnchor(leadingAnchor)
-        let trailing = countdown.trailingAnchor.constraintEqualToAnchor(trailingAnchor)
-        let top = countdown.topAnchor.constraintEqualToAnchor(topAnchor)
-        let bottom = countdown.bottomAnchor.constraintEqualToAnchor(statusLight.topAnchor)
+        let leading = countdown.leadingAnchor.constraint(equalTo: leadingAnchor)
+        let trailing = countdown.trailingAnchor.constraint(equalTo: trailingAnchor)
+        let top = countdown.topAnchor.constraint(equalTo: topAnchor)
+        let bottom = countdown.bottomAnchor.constraint(equalTo: statusLight.topAnchor)
         return [leading, trailing, top, bottom]
     }
     
     // MARK: - Interface Builder
     
     override func prepareForInterfaceBuilder() {
-        let bundle = NSBundle(forClass: self.dynamicType)
-        let image = UIImage(named: "appculture", inBundle: bundle, compatibleWithTraitCollection: traitCollection)
+        let bundle = Bundle(for: self.dynamicType)
+        let image = UIImage(named: "appculture", in: bundle, compatibleWith: traitCollection)
         buttonImage.image = image
     }
     
@@ -319,12 +319,12 @@ extension UIColor {
     convenience init (hex: String) {
         var colorString: String = hex
         if (hex.hasPrefix("#")) {
-            let index = hex.startIndex.advancedBy(1)
-            colorString = colorString.substringFromIndex(index)
+            let index = hex.characters.index(hex.startIndex, offsetBy: 1)
+            colorString = colorString.substring(from: index)
         }
         
         var rgbValue:UInt32 = 0
-        NSScanner(string: colorString).scanHexInt(&rgbValue)
+        Scanner(string: colorString).scanHexInt32(&rgbValue)
 
         self.init(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,

@@ -44,10 +44,10 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     // MARK: - Helper Properties
     
     struct URL {
-        static let BadResponseConfig = NSURL(string: "http://appculture.com/mission-control/not-existing-config.json")!
-        static let EmptyDataConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/empty-config")!
-        static let InvalidDataConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/invalid-config")!
-        static let RemoteTestConfig = NSURL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/test-config")!
+        static let BadResponseConfig = Foundation.URL(string: "http://appculture.com/mission-control/not-existing-config.json")!
+        static let EmptyDataConfig = Foundation.URL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/empty-config")!
+        static let InvalidDataConfig = Foundation.URL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/invalid-config")!
+        static let RemoteTestConfig = Foundation.URL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/test-config")!
     }
     
     struct Key {
@@ -83,11 +83,11 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     // MARK: - MissionControlDelegate
     
-    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject]) {
+    func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject]) {
         didRefreshConfigExpectation?.fulfill()
     }
     
-    func missionControlDidFailRefreshingConfig(error error: ErrorType) {
+    func missionControlDidFailRefreshingConfig(error: ErrorProtocol) {
         didFailRefreshingConfigExpectation?.fulfill()
     }
     
@@ -238,19 +238,19 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     // MARK: - Test Remote Accessors
     
-    func confirmRemoteConfigStateAfterNotification(notification: String) {
+    func confirmRemoteConfigStateAfterNotification(_ notification: String) {
         confirmDidRefreshConfigDelegateCallback()
         
-        let _ = expectationForNotification(notification, object: nil) { (notification) -> Bool in
+        let _ = expectation(forNotification: notification, object: nil) { (notification) -> Bool in
             self.confirmRemoteConfigState()
             return true
         }
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func confirmDidRefreshConfigDelegateCallback() {
         MissionControl.delegate = self
-        didRefreshConfigExpectation = expectationWithDescription("Should call MissionControlDelegate.")
+        didRefreshConfigExpectation = expectation(description: "Should call MissionControlDelegate.")
     }
     
     func confirmRemoteConfigState() {
@@ -305,10 +305,10 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     func testForceRemoteAccessors() {
         MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         
-        let boolExpectation = expectationWithDescription("ConfigBoolForce")
-        let intExpectation = expectationWithDescription("ConfigIntForce")
-        let doubleExpectation = expectationWithDescription("ConfigDoubleForce")
-        let stringExpectation = expectationWithDescription("ConfigStringForce")
+        let boolExpectation = expectation(description: "ConfigBoolForce")
+        let intExpectation = expectation(description: "ConfigIntForce")
+        let doubleExpectation = expectation(description: "ConfigDoubleForce")
+        let stringExpectation = expectation(description: "ConfigStringForce")
         
         let fallbackBool = fallbackTestConfig[Key.Bool] as! Bool
         let fallbackInt = fallbackTestConfig[Key.Int] as! Int
@@ -336,16 +336,16 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
             stringExpectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(10.0, handler: nil)
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
     
     func testForceRemoteAccessorsFallback() {
         MissionControl.launch(remoteConfigURL: URL.BadResponseConfig)
         
-        let boolExpectation = expectationWithDescription("ConfigBoolForceFallback")
-        let intExpectation = expectationWithDescription("ConfigIntForceFallback")
-        let doubleExpectation = expectationWithDescription("ConfigDoubleForceFallback")
-        let stringExpectation = expectationWithDescription("ConfigStringForceFallback")
+        let boolExpectation = expectation(description: "ConfigBoolForceFallback")
+        let intExpectation = expectation(description: "ConfigIntForceFallback")
+        let doubleExpectation = expectation(description: "ConfigDoubleForceFallback")
+        let stringExpectation = expectation(description: "ConfigStringForceFallback")
         
         let fallbackBool = fallbackTestConfig[Key.Bool] as! Bool
         let fallbackInt = fallbackTestConfig[Key.Int] as! Int
@@ -369,7 +369,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
             stringExpectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(10.0, handler: nil)
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
     
     // MARK: - Test Cache
@@ -383,7 +383,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
             self.confirmCachedConfigState()
             return true
         }
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func confirmCachedConfigState() {
@@ -403,7 +403,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         MissionControl.launch()
         
         /// - NOTE: refresh is NOT called automatically during launch (remote URL missing)
-        let asyncExpectation = expectationWithDescription("ManualRefreshWithoutURL")
+        let asyncExpectation = expectation(description: "ManualRefreshWithoutURL")
         MissionControl.refresh { (block) in
             do {
                 let _ = try block()
@@ -415,7 +415,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
                 asyncExpectation.fulfill()
             }
         }
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testRefreshErrorBadResponseCode() {
@@ -442,7 +442,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         confirmConfigRefreshFailedNotification(MissionControl.Error.InvalidData, message: message)
     }
     
-    func confirmConfigRefreshFailedNotification(error: MissionControl.Error, message: String) {
+    func confirmConfigRefreshFailedNotification(_ error: MissionControl.Error, message: String) {
         confirmDidFailRefreshingConfigDelegateCallback()
         
         let notification = MissionControl.Notification.DidFailRefreshingConfig
@@ -452,12 +452,12 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
             self.confirmInitialState()
             return true
         }
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func confirmDidFailRefreshingConfigDelegateCallback() {
         MissionControl.delegate = self
-        didFailRefreshingConfigExpectation = expectationWithDescription("Should call MissionControlDelegate.")
+        didFailRefreshingConfigExpectation = expectation(description: "Should call MissionControlDelegate.")
     }
     
 }

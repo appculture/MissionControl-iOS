@@ -58,7 +58,7 @@ class LaunchBrain: MissionControlDelegate {
         }
     }
     
-    var timer: NSTimer?
+    var timer: Timer?
     
     private var launchForce: Double {
         return 1.0 - ConfigDouble("LaunchForce", fallback: 0.5)
@@ -81,12 +81,12 @@ class LaunchBrain: MissionControlDelegate {
     
     // MARK: - MissionControlDelegate
     
-    func missionControlDidRefreshConfig(old old: [String : AnyObject]?, new: [String : AnyObject]) {
+    func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject]) {
         print("missionControlDidRefreshConfig")
         updateUIForState(state)
     }
     
-    func missionControlDidFailRefreshingConfig(error error: ErrorType) {
+    func missionControlDidFailRefreshingConfig(error: ErrorProtocol) {
         print("missionControlDidFailRefreshingConfig")
         
         stopCountdown()
@@ -101,7 +101,7 @@ class LaunchBrain: MissionControlDelegate {
     
     // MARK: - Actions
     
-    func didTapButton(sender: AnyObject) {
+    func didTapButton(_ sender: AnyObject) {
         switch state {
         case .Offline:
             ConfigBoolForce("Ready", fallback: false, completion: { (forced) in
@@ -126,7 +126,7 @@ class LaunchBrain: MissionControlDelegate {
         updateUIForState(state)
     }
     
-    private func updateUIForState(state: LaunchState) {
+    private func updateUIForState(_ state: LaunchState) {
         updateUIForAnyState(state)
         
         switch state {
@@ -147,16 +147,16 @@ class LaunchBrain: MissionControlDelegate {
         }
     }
     
-    private func updateUIForAnyState(state: LaunchState) {
+    private func updateUIForAnyState(_ state: LaunchState) {
         let color1 = UIColor(hex: ConfigString("TopColor", fallback: "#000000"))
         let color2 = UIColor(hex: ConfigString("BottomColor", fallback: "#4A90E2"))
         view.gradientLayer.colors = [color1.CGColor, color2.CGColor]
         
-        view.button.layer.borderColor = colorForState(state).CGColor
+        view.button.layer.borderColor = colorForState(state).cgColor
         view.buttonTitle.text = commandForState(state)
         
         view.stopBlinkingStatusLight()
-        view.statusTitle.text = "STATUS: \(state.rawValue.capitalizedString)"
+        view.statusTitle.text = "STATUS: \(state.rawValue.capitalized)"
         view.statusLightOnColor = colorForState(state)
         view.statusLightOn = true
         
@@ -167,7 +167,7 @@ class LaunchBrain: MissionControlDelegate {
         view.stopAnimatingGradient()
         view.stopRotatingButtonImage()
         
-        view.button.layer.borderColor = view.statusLightOffColor.CGColor
+        view.button.layer.borderColor = view.statusLightOffColor.cgColor
         view.countdown.alpha = 0.1
         seconds = 0
         view.startBlinkingStatusLight(timeInterval: 0.5)
@@ -204,7 +204,7 @@ class LaunchBrain: MissionControlDelegate {
         view.startBlinkingStatusLight(timeInterval: 0.25)
     }
     
-    private func commandForState(state: LaunchState) -> String {
+    private func commandForState(_ state: LaunchState) -> String {
         switch state {
         case .Offline:
             return "CONNECT"
@@ -217,7 +217,7 @@ class LaunchBrain: MissionControlDelegate {
         }
     }
     
-    private func colorForState(state: LaunchState) -> UIColor {
+    private func colorForState(_ state: LaunchState) -> UIColor {
         switch state {
         case .Offline:
             return UIColor(hex: ConfigString("OfflineColor", fallback: "#F8E71C"))
@@ -238,7 +238,7 @@ class LaunchBrain: MissionControlDelegate {
     
     private func startCountdown() {
         if timer == nil {
-            timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+            timer = Timer.scheduledTimer(timeInterval: 1.0,
                                                            target: self,
                                                            selector: #selector(timerTick(_:)),
                                                            userInfo: nil, repeats: true)
@@ -250,7 +250,7 @@ class LaunchBrain: MissionControlDelegate {
         timer = nil
     }
     
-    @objc func timerTick(sender: NSTimer) {
+    @objc func timerTick(_ sender: Timer) {
         ConfigBoolForce("Abort", fallback: true) { (forced) in
             if forced {
                 self.stopCountdown()
