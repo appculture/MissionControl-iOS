@@ -48,31 +48,31 @@ class BaseLaunchView: UIView {
     
     var padding: CGFloat = 24.0
     
-    var buttonHighlightColor = UIColor.lightGray()
-    var buttonColor = UIColor.white() {
+    var buttonHighlightColor = UIColor.lightGray
+    var buttonColor = UIColor.white {
         didSet {
             button.backgroundColor = buttonColor
         }
     }
-    var buttonTitleColor = UIColor.darkGray() {
+    var buttonTitleColor = UIColor.darkGray {
         didSet {
             buttonTitle.textColor = buttonTitleColor
         }
     }
     
-    var statusLightColor = UIColor.darkGray() {
+    var statusLightColor = UIColor.darkGray {
         didSet {
             statusLight.backgroundColor = statusLightColor
         }
     }
-    var statusTitleColor = UIColor.white() {
+    var statusTitleColor = UIColor.white {
         didSet {
             statusTitle.textColor = statusTitleColor
             statusLight.layer.borderColor = statusTitleColor.cgColor
         }
     }
     
-    var countdownColor = UIColor.white() {
+    var countdownColor = UIColor.white {
         didSet {
             countdown.textColor = countdownColor
         }
@@ -169,8 +169,8 @@ class BaseLaunchView: UIView {
         gradient.translatesAutoresizingMaskIntoConstraints = false
         gradient.layer.insertSublayer(gradientLayer, at: 0)
         
-        gradientLayer.colors = [UIColor.orange().cgColor, UIColor.blue().cgColor]
-        gradientLayer.contentsScale = UIScreen.main().scale
+        gradientLayer.colors = [UIColor.orange.cgColor, UIColor.blue.cgColor]
+        gradientLayer.contentsScale = UIScreen.main.scale
         gradientLayer.drawsAsynchronously = true
         gradientLayer.needsDisplayOnBoundsChange = true
         gradientLayer.setNeedsDisplay()

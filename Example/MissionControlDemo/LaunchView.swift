@@ -31,7 +31,7 @@ class LaunchView: BaseLaunchView {
 
     var blinkTimer: Timer?
     var statusLightOffColor = UIColor(hex: "#4A4A4A")
-    var statusLightOnColor = UIColor.white()
+    var statusLightOnColor = UIColor.white
     var statusLightOn = false {
         didSet {
             if statusLightOn {
@@ -62,10 +62,10 @@ class LaunchView: BaseLaunchView {
         gradientLayer.colors = [UIColor(hex: "#000000").cgColor, UIColor(hex: "#4A90E2").cgColor]
         gradientLayer.locations = [0.0, 1.0]
         
-        buttonColor = UIColor.white()
+        buttonColor = UIColor.white
         buttonHighlightColor = UIColor(hex: "#E4F6F6")
-        statusTitleColor = UIColor.white()
-        countdownColor = UIColor.white()
+        statusTitleColor = UIColor.white
+        countdownColor = UIColor.white
         
         buttonTitle.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
         statusTitle.font = UIFont(name: "Nasa-Display", size: 40.0)

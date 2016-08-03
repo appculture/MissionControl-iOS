@@ -86,7 +86,7 @@ class LaunchBrain: MissionControlDelegate {
         updateUIForState(state)
     }
     
-    func missionControlDidFailRefreshingConfig(error: ErrorProtocol) {
+    func missionControlDidFailRefreshingConfig(error: Error) {
         print("missionControlDidFailRefreshingConfig")
         
         stopCountdown()

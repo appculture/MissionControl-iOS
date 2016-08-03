@@ -80,14 +80,14 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     var didRefreshConfigExpectation: XCTestExpectation?
     var didFailRefreshingConfigExpectation: XCTestExpectation?
-    
+
     // MARK: - MissionControlDelegate
     
     func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject]) {
         didRefreshConfigExpectation?.fulfill()
     }
     
-    func missionControlDidFailRefreshingConfig(error: ErrorProtocol) {
+    func missionControlDidFailRefreshingConfig(error: Error) {
         didFailRefreshingConfigExpectation?.fulfill()
     }
     
@@ -411,7 +411,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
                 asyncExpectation.fulfill()
             } catch {
                 let message = "Should return NoRemoteURL error whene remoteURL is not set."
-                XCTAssertEqual("\(error)", "\(MissionControl.Error.noRemoteURL)", message)
+                XCTAssertEqual("\(error)", "\(MissionControl.ServerError.noRemoteURL)", message)
                 asyncExpectation.fulfill()
             }
         }
@@ -423,7 +423,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return BadResponseCode error when response is not 200 OK."
-        confirmConfigRefreshFailedNotification(MissionControl.Error.badResponseCode, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.ServerError.badResponseCode, message: message)
     }
     
     func testRefreshErrorInvalidDataEmpty() {
@@ -431,7 +431,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is empty."
-        confirmConfigRefreshFailedNotification(MissionControl.Error.invalidData, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.ServerError.invalidData, message: message)
     }
     
     func testRefreshErrorInvalidData() {
@@ -439,10 +439,10 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         /// - NOTE: refresh is called automatically during launch
         
         let message = "Should return InvalidData error when response data is not valid JSON."
-        confirmConfigRefreshFailedNotification(MissionControl.Error.invalidData, message: message)
+        confirmConfigRefreshFailedNotification(MissionControl.ServerError.invalidData, message: message)
     }
     
-    func confirmConfigRefreshFailedNotification(_ error: MissionControl.Error, message: String) {
+    func confirmConfigRefreshFailedNotification(_ error: Error, message: String) {
         confirmDidFailRefreshingConfigDelegateCallback()
         
         let notification = MissionControl.Notification.DidFailRefreshingConfig
@@ -459,5 +459,5 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         MissionControl.delegate = self
         didFailRefreshingConfigExpectation = expectation(description: "Should call MissionControlDelegate.")
     }
-    
+ 
 }

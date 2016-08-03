@@ -32,7 +32,7 @@ public class MissionControl {
     // MARK: Types
     
     /// Errors types which can be throwed when refreshing local config from remote.
-    public enum Error: ErrorProtocol {
+    public enum ServerError: Error {
         /// Property `remoteConfigURL` is not set on launch.
         case noRemoteURL
         /// Server returned response code other then 200 OK.
@@ -134,7 +134,7 @@ public protocol MissionControlDelegate: class {
      
         - parameter error: Error which happened during config refresh from remote.
     */
-    func missionControlDidFailRefreshingConfig(error: ErrorProtocol)
+    func missionControlDidFailRefreshingConfig(error: Error)
 }
 
 // MARK: - Custom Types
@@ -390,7 +390,7 @@ class ACMissionControl {
         }
     }
     
-    private func informListeners(_ error: ErrorProtocol) {
+    private func informListeners(_ error: Error) {
         delegate?.missionControlDidFailRefreshingConfig(error: error)
         let userInfo = ["Error" : "\(error)"]
         sendNotification(MissionControl.Notification.DidFailRefreshingConfig, userInfo: userInfo)
@@ -434,14 +434,14 @@ class ACMissionControl {
     
     private func getRemoteConfig(_ completion: ThrowJSONWithInnerBlock) {
         guard let url = remoteURL
-            else { completion(block: { throw MissionControl.Error.noRemoteURL }); return }
+            else { completion(block: { throw MissionControl.ServerError.noRemoteURL }); return }
     
         let request = URLRequest(url: url)
         let session = URLSession.shared
         
         let task = session.dataTask(with: request) { [unowned self] (data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
-            else { completion(block: { throw MissionControl.Error.badResponseCode }); return }
+            else { completion(block: { throw MissionControl.ServerError.badResponseCode }); return }
             self.parseRemoteConfigFromData(data, completion: completion)
         }
         
@@ -450,15 +450,15 @@ class ACMissionControl {
     
     private func parseRemoteConfigFromData(_ data: Data?, completion: ThrowJSONWithInnerBlock) {
         guard let configData = data
-            else { completion(block: { throw MissionControl.Error.invalidData }); return }
+            else { completion(block: { throw MissionControl.ServerError.invalidData }); return }
         
         do {
             let json = try JSONSerialization.jsonObject(with: configData, options: .allowFragments)
             guard let config = json as? [String : AnyObject]
-                else { completion(block: { throw MissionControl.Error.invalidData }); return }
+                else { completion(block: { throw MissionControl.ServerError.invalidData }); return }
             completion(block: { return config })
         } catch {
-            completion(block: { throw MissionControl.Error.invalidData })
+            completion(block: { throw MissionControl.ServerError.invalidData })
         }
     }
     
