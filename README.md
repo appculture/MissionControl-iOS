@@ -1,7 +1,7 @@
 # Mission Control
 **Super powerful remote config utility written in Swift (iOS, watchOS, tvOS, OSX)**
 
-[![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
+[![Language Swift 2.3](https://img.shields.io/badge/Language-Swift%202.3-orange.svg?style=flat)](https://swift.org)
 [![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/appculture/MissionControl-iOS/blob/master/LICENSE)
 
@@ -193,7 +193,7 @@ Just remember to pass your URL to **MissionControl** `launch:` method.
 ### So, are you ready for the "Real Time" apps?! [We are](http://appculture.com).
 
 ## Requirements
-- Xcode 7.3+
+- Xcode 8.0+
 - iOS 8.0+
 
 ## Installation
