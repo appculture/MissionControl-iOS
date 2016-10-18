@@ -61,15 +61,15 @@ public class MissionControl {
     
     /// Delegate for Mission Control.
     public class var delegate: MissionControlDelegate? {
-        get { return ACMissionControl.sharedInstance.delegate }
-        set { ACMissionControl.sharedInstance.delegate = newValue }
+        get { return ACMissionControl.shared.delegate }
+        set { ACMissionControl.shared.delegate = newValue }
     }
     
     /// The latest version of config dictionary, directly accessible, if needed.
     public class var config: [String : Any] {
-        let remoteConfig = ACMissionControl.sharedInstance.remoteConfig
-        let cachedConfig = ACMissionControl.sharedInstance.cachedConfig
-        let localConfig = ACMissionControl.sharedInstance.localConfig
+        let remoteConfig = ACMissionControl.shared.remoteConfig
+        let cachedConfig = ACMissionControl.shared.cachedConfig
+        let localConfig = ACMissionControl.shared.localConfig
         let emptyConfig = [String : Any]()
         let resolvedConfig = remoteConfig ?? cachedConfig ?? localConfig ?? emptyConfig
         return resolvedConfig
@@ -77,12 +77,12 @@ public class MissionControl {
     
     /// Date of last successful refresh from remote.
     public class var refreshDate: Date? {
-        return ACMissionControl.sharedInstance.refreshDate
+        return ACMissionControl.shared.refreshDate
     }
     
     /// Date of last cached remote config.
     public class var cacheDate: Date? {
-        return ACMissionControl.sharedInstance.cacheDate
+        return ACMissionControl.shared.cacheDate
     }
     
     // MARK: API
@@ -96,8 +96,8 @@ public class MissionControl {
         - parameter remoteConfigURL: If this parameter is set then `refresh` will be called, otherwise not.
     */
     public class func launch(localConfig: [String : Any]? = nil, remoteConfigURL url: URL? = nil) {
-        ACMissionControl.sharedInstance.localConfig = localConfig
-        ACMissionControl.sharedInstance.remoteURL = url
+        ACMissionControl.shared.localConfig = localConfig
+        ACMissionControl.shared.remoteURL = url
     }
     
     /**
@@ -108,7 +108,7 @@ public class MissionControl {
         - parameter completion: Completion handler (SEE: `ThrowWithInnerBlock`).
     */
     public class func refresh(_ completion: ThrowWithInnerBlock? = nil) {
-        ACMissionControl.sharedInstance.refresh(completion)
+        ACMissionControl.shared.refresh(completion)
     }
     
 }
@@ -162,11 +162,11 @@ public typealias ThrowJSONWithInnerBlock = (_ block: @escaping () throws -> [Str
     - returns: Resolved setting of generic type `T` for given key.
 */
 public func ConfigGeneric<T>(_ key: String, fallback: T) -> T {
-    if let remoteValue = ACMissionControl.sharedInstance.remoteConfig?[key] as? T {
+    if let remoteValue = ACMissionControl.shared.remoteConfig?[key] as? T {
         return remoteValue
-    } else if let cachedValue = ACMissionControl.sharedInstance.cachedConfig?[key] as? T {
+    } else if let cachedValue = ACMissionControl.shared.cachedConfig?[key] as? T {
         return cachedValue
-    } else if let localValue = ACMissionControl.sharedInstance.localConfig?[key] as? T {
+    } else if let localValue = ACMissionControl.shared.localConfig?[key] as? T {
         return localValue
     } else {
         return fallback
@@ -299,7 +299,7 @@ class ACMissionControl {
     
     // MARK: Singleton
     
-    static let sharedInstance = ACMissionControl()
+    static let shared = ACMissionControl()
     
     // MARK: Properties
     

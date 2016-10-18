@@ -36,7 +36,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        ACMissionControl.sharedInstance.resetAll()
+        ACMissionControl.shared.resetAll()
         
         super.tearDown()
     }
@@ -379,7 +379,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         
         let notification = MissionControl.Notification.DidRefreshConfig
         let _ = expectation(forNotification: notification, object: nil) { (notification) -> Bool in
-            ACMissionControl.sharedInstance.resetRemote()
+            ACMissionControl.shared.resetRemote()
             self.confirmCachedConfigState()
             return true
         }
