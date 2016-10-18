@@ -57,21 +57,21 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         static let String = "StringSetting"
     }
     
-    let localTestConfig: [String : AnyObject] = [
+    let localTestConfig: [String : Any] = [
         Key.Bool : false,
         Key.Int : 21,
         Key.Double : 0.8,
         Key.String : "Local"
     ]
     
-    let remoteTestConfig: [String : AnyObject] = [
+    let remoteTestConfig: [String : Any] = [
         Key.Bool : true,
         Key.Int : 8,
         Key.Double : 2.1,
         Key.String : "Remote"
     ]
     
-    let fallbackTestConfig: [String : AnyObject] = [
+    let fallbackTestConfig: [String : Any] = [
         Key.Bool : false,
         Key.Int : 1984,
         Key.Double : 21.08,
@@ -83,7 +83,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
 
     // MARK: - MissionControlDelegate
     
-    func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject]) {
+    func missionControlDidRefreshConfig(old: [String : Any]?, new: [String : Any]) {
         didRefreshConfigExpectation?.fulfill()
     }
     
