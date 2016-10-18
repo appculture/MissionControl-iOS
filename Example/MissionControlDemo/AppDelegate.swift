@@ -30,9 +30,9 @@ import MissionControl
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+    
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         let url = URL(string: "http://private-83024-missioncontrol5.apiary-mock.com/mission-control/launch-config")!
         MissionControl.launch(remoteConfigURL: url)
         

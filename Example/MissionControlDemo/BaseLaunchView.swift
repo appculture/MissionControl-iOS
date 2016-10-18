@@ -44,7 +44,7 @@ class BaseLaunchView: UIView {
     
     // MARK: - Properties
     
-    var didTapButtonAction: ((sender: AnyObject) -> Void)?
+    var didTapButtonAction: ((_ sender: AnyObject) -> Void)?
     
     var padding: CGFloat = 24.0
     
@@ -130,7 +130,7 @@ class BaseLaunchView: UIView {
         if touchesInsideView(touches, view: button) {
             restoreButton()
             if let action = didTapButtonAction {
-                action(sender: button)
+                action(button)
             }
         }
     }
@@ -305,7 +305,7 @@ class BaseLaunchView: UIView {
     // MARK: - Interface Builder
     
     override func prepareForInterfaceBuilder() {
-        let bundle = Bundle(for: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         let image = UIImage(named: "appculture", in: bundle, compatibleWith: traitCollection)
         buttonImage.image = image
     }

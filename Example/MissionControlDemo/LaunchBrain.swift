@@ -81,7 +81,7 @@ class LaunchBrain: MissionControlDelegate {
     
     // MARK: - MissionControlDelegate
     
-    func missionControlDidRefreshConfig(old: [String : AnyObject]?, new: [String : AnyObject]) {
+    func missionControlDidRefreshConfig(old: [String : Any]?, new: [String : Any]) {
         print("missionControlDidRefreshConfig")
         updateUIForState(state)
     }
