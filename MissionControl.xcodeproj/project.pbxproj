@@ -21,6 +21,12 @@
 		8B6313861CE5F9A10029DC98 /* MissionControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B63137B1CE5F9A10029DC98 /* MissionControl.framework */; };
 		8B63138B1CE5F9A10029DC98 /* MissionControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */; };
 		8B6313961CE5FA2B0029DC98 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6313951CE5FA2B0029DC98 /* MissionControl.swift */; };
+		8BFA21AE1DB66DBB00CAB201 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21AD1DB66DBB00CAB201 /* Brain.swift */; };
+		8BFA21AF1DB66DBB00CAB201 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21AD1DB66DBB00CAB201 /* Brain.swift */; };
+		8BFA21B01DB66DBB00CAB201 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21AD1DB66DBB00CAB201 /* Brain.swift */; };
+		8BFA21B21DB66DC700CAB201 /* Accessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21B11DB66DC700CAB201 /* Accessors.swift */; };
+		8BFA21B31DB66DC700CAB201 /* Accessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21B11DB66DC700CAB201 /* Accessors.swift */; };
+		8BFA21B41DB66DC700CAB201 /* Accessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA21B11DB66DC700CAB201 /* Accessors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +71,8 @@
 		8B63138A1CE5F9A10029DC98 /* MissionControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlTests.swift; sourceTree = "<group>"; };
 		8B63138C1CE5F9A10029DC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B6313951CE5FA2B0029DC98 /* MissionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionControl.swift; sourceTree = "<group>"; };
+		8BFA21AD1DB66DBB00CAB201 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		8BFA21B11DB66DC700CAB201 /* Accessors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Accessors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				8B6313951CE5FA2B0029DC98 /* MissionControl.swift */,
+				8BFA21B11DB66DC700CAB201 /* Accessors.swift */,
+				8BFA21AD1DB66DBB00CAB201 /* Brain.swift */,
 				8B6313971CE5FA3C0029DC98 /* Supporting Files */,
 			);
 			path = Sources;
@@ -365,23 +375,28 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = appculture;
 				TargetAttributes = {
 					8B03C1DF1CF5E10500B09B48 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B03C1EE1CF5E1DD00B09B48 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B03C1F71CF5E1DD00B09B48 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B03C20D1CF5E28C00B09B48 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B03C2161CF5E28C00B09B48 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					8B63137A1CE5F9A10029DC98 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -473,6 +488,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BFA21B31DB66DC700CAB201 /* Accessors.swift in Sources */,
+				8BFA21AF1DB66DBB00CAB201 /* Brain.swift in Sources */,
 				8B03C1E81CF5E17F00B09B48 /* MissionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,6 +498,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BFA21B41DB66DC700CAB201 /* Accessors.swift in Sources */,
+				8BFA21B01DB66DBB00CAB201 /* Brain.swift in Sources */,
 				8B03C2061CF5E22E00B09B48 /* MissionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +532,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BFA21B21DB66DC700CAB201 /* Accessors.swift in Sources */,
+				8BFA21AE1DB66DBB00CAB201 /* Brain.swift in Sources */,
 				8B6313961CE5FA2B0029DC98 /* MissionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,6 +583,7 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;
@@ -582,6 +604,8 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Release;
@@ -602,6 +626,7 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
@@ -622,6 +647,8 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
@@ -634,6 +661,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
 			name = Debug;
@@ -646,6 +674,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
 			name = Release;
@@ -669,6 +699,7 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -691,6 +722,8 @@
 				PRODUCT_NAME = MissionControl;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -705,6 +738,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSXTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -719,6 +753,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-OSXTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -839,7 +875,7 @@
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -859,7 +895,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appculture.MissionControl-iOSTests";
 				PRODUCT_NAME = MissionControl;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -870,7 +907,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -881,7 +918,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

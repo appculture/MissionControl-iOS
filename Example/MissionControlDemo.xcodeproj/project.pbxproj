@@ -42,6 +42,41 @@
 			remoteGlobalIDString = 8B63137A1CE5F9A10029DC98;
 			remoteInfo = "MissionControl iOS";
 		};
+		8BA444261D4F6EAA00E99FAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B03C1E01CF5E10500B09B48;
+			remoteInfo = "MissionControl watchOS";
+		};
+		8BA444281D4F6EAA00E99FAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B03C1EF1CF5E1DD00B09B48;
+			remoteInfo = "MissionControl tvOS";
+		};
+		8BA4442A1D4F6EAA00E99FAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B03C1F81CF5E1DD00B09B48;
+			remoteInfo = "MissionControl tvOS Tests";
+		};
+		8BA4442C1D4F6EAA00E99FAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B03C20E1CF5E28C00B09B48;
+			remoteInfo = "MissionControl OSX";
+		};
+		8BA4442E1D4F6EAA00E99FAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B2A29C61CEA27DF00FAE67F /* MissionControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B03C2171CF5E28C00B09B48;
+			remoteInfo = "MissionControl OSX Tests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -89,7 +124,12 @@
 			isa = PBXGroup;
 			children = (
 				8B2A29CC1CEA27DF00FAE67F /* MissionControl.framework */,
-				8B2A29CE1CEA27DF00FAE67F /* MissionControlTests.xctest */,
+				8B2A29CE1CEA27DF00FAE67F /* MissionControl iOS Tests.xctest */,
+				8BA444271D4F6EAA00E99FAE /* MissionControl.framework */,
+				8BA444291D4F6EAA00E99FAE /* MissionControl.framework */,
+				8BA4442B1D4F6EAA00E99FAE /* MissionControl tvOS Tests.xctest */,
+				8BA4442D1D4F6EAA00E99FAE /* MissionControl.framework */,
+				8BA4442F1D4F6EAA00E99FAE /* MissionControl OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,11 +229,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = appculture;
 				TargetAttributes = {
 					8B464DCB1CE3742F00BAE834 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -229,11 +270,46 @@
 			remoteRef = 8B2A29CB1CEA27DF00FAE67F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B2A29CE1CEA27DF00FAE67F /* MissionControlTests.xctest */ = {
+		8B2A29CE1CEA27DF00FAE67F /* MissionControl iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = MissionControlTests.xctest;
+			path = "MissionControl iOS Tests.xctest";
 			remoteRef = 8B2A29CD1CEA27DF00FAE67F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA444271D4F6EAA00E99FAE /* MissionControl.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MissionControl.framework;
+			remoteRef = 8BA444261D4F6EAA00E99FAE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA444291D4F6EAA00E99FAE /* MissionControl.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MissionControl.framework;
+			remoteRef = 8BA444281D4F6EAA00E99FAE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA4442B1D4F6EAA00E99FAE /* MissionControl tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "MissionControl tvOS Tests.xctest";
+			remoteRef = 8BA4442A1D4F6EAA00E99FAE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA4442D1D4F6EAA00E99FAE /* MissionControl.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MissionControl.framework;
+			remoteRef = 8BA4442C1D4F6EAA00E99FAE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BA4442F1D4F6EAA00E99FAE /* MissionControl OSX Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "MissionControl OSX Tests.xctest";
+			remoteRef = 8BA4442E1D4F6EAA00E99FAE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -309,8 +385,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -355,8 +433,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -383,24 +463,27 @@
 		8B464DDF1CE3742F00BAE834 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = MissionControlDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlDemo;
 				PRODUCT_NAME = MissionControlDemo;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		8B464DE01CE3742F00BAE834 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = MissionControlDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appculture.MissionControlDemo;
 				PRODUCT_NAME = MissionControlDemo;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
