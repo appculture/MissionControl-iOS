@@ -39,8 +39,8 @@ class LaunchViewController: UIViewController, LaunchDelegate {
         
         launch = LaunchBrain(view: launchView, delegate: self)
     }
-
-    override func prefersStatusBarHidden() -> Bool {
+    
+    override var prefersStatusBarHidden: Bool {
         return true
     }
 

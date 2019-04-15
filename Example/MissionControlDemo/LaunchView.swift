@@ -29,17 +29,17 @@ class LaunchView: BaseLaunchView {
     
     // MARK: - Properties
 
-    var blinkTimer: NSTimer?
+    var blinkTimer: Timer?
     var statusLightOffColor = UIColor(hex: "#4A4A4A")
-    var statusLightOnColor = UIColor.whiteColor()
+    var statusLightOnColor = UIColor.white
     var statusLightOn = false {
         didSet {
             if statusLightOn {
-                UIView.animateWithDuration(0.2) {
+                UIView.animate(withDuration: 0.2) {
                     self.turnStatusLightOn()
                 }
             } else {
-                UIView.animateWithDuration(0.2) {
+                UIView.animate(withDuration: 0.2) {
                     self.turnStatusLightOff()
                 }
             }
@@ -59,13 +59,13 @@ class LaunchView: BaseLaunchView {
     private func configureDefaultUI() {
         padding = 24.0
         
-        gradientLayer.colors = [UIColor(hex: "#000000").CGColor, UIColor(hex: "#4A90E2").CGColor]
+        gradientLayer.colors = [UIColor(hex: "#000000").cgColor, UIColor(hex: "#4A90E2").cgColor]
         gradientLayer.locations = [0.0, 1.0]
         
-        buttonColor = UIColor.whiteColor()
+        buttonColor = UIColor.white
         buttonHighlightColor = UIColor(hex: "#E4F6F6")
-        statusTitleColor = UIColor.whiteColor()
-        countdownColor = UIColor.whiteColor()
+        statusTitleColor = UIColor.white
+        countdownColor = UIColor.white
         
         buttonTitle.font = UIFont(name: "AvenirNext-Heavy", size: 36.0)
         statusTitle.font = UIFont(name: "Nasa-Display", size: 40.0)
@@ -74,8 +74,8 @@ class LaunchView: BaseLaunchView {
     
     // MARK: - Blink
     
-    func startBlinkingStatusLight(timeInterval timeInterval: NSTimeInterval) {
-        blinkTimer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+    func startBlinkingStatusLight(timeInterval: TimeInterval) {
+        blinkTimer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                             target: self,
                                                             selector: #selector(blinkStatusLight),
                                                             userInfo: nil, repeats: true)
@@ -93,7 +93,7 @@ class LaunchView: BaseLaunchView {
     func turnStatusLightOn() {
         statusLightColor = statusLightOnColor
         
-        statusLight.layer.shadowColor = statusLightOnColor.CGColor
+        statusLight.layer.shadowColor = statusLightOnColor.cgColor
         statusLight.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
         statusLight.layer.shadowOpacity = 1.0
         statusLight.layer.shadowRadius = 5.0
@@ -106,7 +106,7 @@ class LaunchView: BaseLaunchView {
     
     // MARK: - Button Image Rotation
     
-    func rotateButtonImageWithDuration(duration: Double) {
+    func rotateButtonImageWithDuration(_ duration: Double) {
         buttonImage.rotate(withDuration: duration)
     }
     
@@ -116,7 +116,7 @@ class LaunchView: BaseLaunchView {
     
     // MARK: - Gradient Animation
     
-    func animateGradientWithDuration(duration: Double) {
+    func animateGradientWithDuration(_ duration: Double) {
         animateGradientLayer(gradientLayer, withDuration: duration)
     }
     
@@ -131,7 +131,7 @@ private extension UIView {
     @nonobjc static let rotationKey = "AERotation"
     
     func rotate(withDuration duration: Double = 1.0) {
-        if layer.animationForKey(UIView.rotationKey) == nil {
+        if layer.animation(forKey: UIView.rotationKey) == nil {
             let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
             
             rotationAnimation.fromValue = 0.0
@@ -139,18 +139,18 @@ private extension UIView {
             rotationAnimation.duration = duration
             rotationAnimation.repeatCount = Float.infinity
             
-            layer.addAnimation(rotationAnimation, forKey: UIView.rotationKey)
+            layer.add(rotationAnimation, forKey: UIView.rotationKey)
         }
     }
     
     func stopRotation() {
-        layer.removeAnimationForKey(UIView.rotationKey)
+        layer.removeAnimation(forKey: UIView.rotationKey)
     }
     
     @nonobjc static let gradientKey = "AEGradientAnimation"
     
-    func animateGradientLayer(gradientLayer: CAGradientLayer, withDuration duration: Double = 2.0) {
-        if gradientLayer.animationForKey(UIView.gradientKey) == nil {
+    func animateGradientLayer(_ gradientLayer: CAGradientLayer, withDuration duration: Double = 2.0) {
+        if gradientLayer.animation(forKey: UIView.gradientKey) == nil {
             
             let sequenceDuration = duration / 4.0
             let currentLocations = [0.0, 1.0]
@@ -171,9 +171,9 @@ private extension UIView {
             
             let colorAnimation1 = CABasicAnimation(keyPath: "colors")
             colorAnimation1.fromValue = [color1, color1]
-            colorAnimation1.toValue = gradientLayer.colors?.reverse()
+            colorAnimation1.toValue = gradientLayer.colors?.reversed()
             colorAnimation1.duration = sequenceDuration
-            colorAnimation1.removedOnCompletion = false
+            colorAnimation1.isRemovedOnCompletion = false
             colorAnimation1.fillMode = kCAFillModeForwards
             colorAnimation1.beginTime = sequenceDuration
             
@@ -191,7 +191,7 @@ private extension UIView {
             colorAnimation2.fromValue = [color2, color2]
             colorAnimation2.toValue = gradientLayer.colors
             colorAnimation2.duration = sequenceDuration
-            colorAnimation2.removedOnCompletion = false
+            colorAnimation2.isRemovedOnCompletion = false
             colorAnimation2.fillMode = kCAFillModeForwards
             colorAnimation2.beginTime = 3 * sequenceDuration
             
@@ -202,12 +202,12 @@ private extension UIView {
             group.animations = [locationAnimation1, colorAnimation1, locationAnimation2, colorAnimation2]
             group.repeatCount = Float.infinity
 
-            gradientLayer.addAnimation(group, forKey: UIView.gradientKey)
+            gradientLayer.add(group, forKey: UIView.gradientKey)
         }
     }
     
-    func stopGradientAnimation(gradientLayer: CAGradientLayer) {
-        gradientLayer.removeAnimationForKey(UIView.gradientKey)
+    func stopGradientAnimation(_ gradientLayer: CAGradientLayer) {
+        gradientLayer.removeAnimation(forKey: UIView.gradientKey)
     }
     
 }
