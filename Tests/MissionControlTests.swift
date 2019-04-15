@@ -241,7 +241,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
     func confirmRemoteConfigStateAfterNotification(_ notification: String) {
         confirmDidRefreshConfigDelegateCallback()
         
-        let _ = expectation(forNotification: notification, object: nil) { (notification) -> Bool in
+        let _ = expectation(forNotification: NSNotification.Name(rawValue: notification), object: nil) { (notification) -> Bool in
             self.confirmRemoteConfigState()
             return true
         }
@@ -378,7 +378,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         MissionControl.launch(remoteConfigURL: URL.RemoteTestConfig)
         
         let notification = MissionControl.Notification.DidRefreshConfig
-        let _ = expectation(forNotification: notification, object: nil) { (notification) -> Bool in
+        let _ = expectation(forNotification: NSNotification.Name(rawValue: notification), object: nil) { (notification) -> Bool in
             ACMissionControl.shared.resetRemote()
             self.confirmCachedConfigState()
             return true
@@ -446,7 +446,7 @@ class MissionControlTests: XCTestCase, MissionControlDelegate {
         confirmDidFailRefreshingConfigDelegateCallback()
         
         let notification = MissionControl.Notification.DidFailRefreshingConfig
-        let _ = expectation(forNotification: notification, object: nil) { (notification) -> Bool in
+        let _ = expectation(forNotification: NSNotification.Name(rawValue: notification), object: nil) { (notification) -> Bool in
             guard let errorInfo = notification.userInfo?["Error"] as? String else { return false }
             XCTAssertEqual("\(errorInfo)", "\(error)", message)
             self.confirmInitialState()
